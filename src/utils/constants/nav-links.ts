@@ -2,30 +2,30 @@ import { HelpCircleIcon, LineChartIcon, Link2Icon, LockIcon, NewspaperIcon, QrCo
 
 export const NAV_LINKS = [
     {
-        title: "Features",
+        title: "Services",
         href: "/features",
         menu: [
             {
-                title: "Link Shortening",
-                tagline: "Shorten links and track their performance.",
+                title: "Basic Clean",
+                tagline: "Weekly or bi-weekly upkeep for homes and small offices.",
                 href: "/features/link-shortening",
                 icon: Link2Icon,
             },
             {
-                title: "Password Protection",
-                tagline: "Secure your links with a password.",
+                title: "Intermediate Clean",
+                tagline: "A deeper, more detailed clean each visit.",
                 href: "/features/password-protection",
                 icon: LockIcon,
             },
             {
-                title: "Advanced Analytics",
-                tagline: "Gain insights into who is clicking your links.",
+                title: "Advanced Clean",
+                tagline: "End-of-tenancy, seasonal, or full reset cleans.",
                 href: "/features/analytics",
                 icon: LineChartIcon,
             },
             {
-                title: "Custom QR Codes",
-                tagline: "Use QR codes to reach your audience.",
+                title: "Commercial Cleaning",
+                tagline: "Reliable cleans for offices and workspaces.",
                 href: "/features/qr-codes",
                 icon: QrCodeIcon,
             },
@@ -36,7 +36,11 @@ export const NAV_LINKS = [
         href: "/pricing",
     },
     {
-        title: "Enterprise",
+        title: "About",
+        href: "/changelog",
+    },
+    {
+        title: "Contact",
         href: "/enterprise",
     },
     {
@@ -45,20 +49,16 @@ export const NAV_LINKS = [
         menu: [
             {
                 title: "Blog",
-                tagline: "Read articles on the latest trends in tech.",
+                tagline: "Cleaning tips, checklists, and local updates.",
                 href: "/resources/blog",
                 icon: NewspaperIcon,
             },
             {
                 title: "Help",
-                tagline: "Get answers to your questions.",
+                tagline: "FAQs, booking help, and support.",
                 href: "/resources/help",
                 icon: HelpCircleIcon,
             },
         ]
-    },
-    {
-        title: "Changelog",
-        href: "/changelog",
     },
 ];

@@ -13,28 +13,28 @@ import { Label } from "./label";
 export const CARDS = [
     {
         Icon: Link2Icon,
-        name: "Shorten links",
-        description: "Create short links that are easy to remember and share.",
-        href: "#",
-        cta: "Learn more",
+        name: "Regular cleaning",
+        description: "Weekly or bi-weekly visits that keep your space consistently tidy.",
+        href: "/features/link-shortening",
+        cta: "View details",
         className: "col-span-3 lg:col-span-1",
         background: (
             <Card className="absolute top-10 left-10 origin-top rounded-none rounded-tl-md transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105 border border-border border-r-0">
                 <CardHeader>
                     <CardTitle>
-                        Create short links
+                        Your clean checklist
                     </CardTitle>
                     <CardDescription>
-                        Create short links that are easy to remember and share.
+                        Kitchens, bathrooms, floors, and the details that matter.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="-mt-4">
                     <Label>
-                        Paste your link
+                        Tell us about your space
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Paste your link here..."
+                        placeholder="2-bed flat, weekly clean"
                         className="w-full focus-visible:ring-0 focus-visible:ring-transparent"
                     />
                 </CardContent>
@@ -43,31 +43,31 @@ export const CARDS = [
     },
     {
         Icon: SearchIcon,
-        name: "Search your links",
-        description: "Quickly find the links you need with AI-powered search.",
-        href: "#",
-        cta: "Learn more",
+        name: "Deep clean focus",
+        description: "A more detailed clean when your space needs extra care.",
+        href: "/features/password-protection",
+        cta: "View details",
         className: "col-span-3 lg:col-span-2",
         background: (
             <Command className="absolute right-10 top-10 w-[70%] origin-to translate-x-0 border border-border transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)] group-hover:-translate-x-10 p-2">
-                <Input placeholder="Type to search..." />
+                <Input placeholder="Search areas..." />
                 <div className="mt-1 cursor-pointer">
-                    <div className="px-4 py-2 hover:bg-muted rounded-md">linkify.io/hdf00c</div>
-                    <div className="px-4 py-2 hover:bg-muted rounded-md">linkify.io/sdv0n0</div>
-                    <div className="px-4 py-2 hover:bg-muted rounded-md">linkify.io/03gndo</div>
-                    <div className="px-4 py-2 hover:bg-muted rounded-md">linkify.io/09vmmw</div>
-                    <div className="px-4 py-2 hover:bg-muted rounded-md">linkify.io/s09vws</div>
-                    <div className="px-4 py-2 hover:bg-muted rounded-md">linkify.io/sd8fv5</div>
+                    <div className="px-4 py-2 hover:bg-muted rounded-md">Oven and hob degrease</div>
+                    <div className="px-4 py-2 hover:bg-muted rounded-md">Skirting boards</div>
+                    <div className="px-4 py-2 hover:bg-muted rounded-md">Shower screen and taps</div>
+                    <div className="px-4 py-2 hover:bg-muted rounded-md">Inside cupboards</div>
+                    <div className="px-4 py-2 hover:bg-muted rounded-md">Window sills and frames</div>
+                    <div className="px-4 py-2 hover:bg-muted rounded-md">High-touch surfaces</div>
                 </div>
             </Command>
         ),
     },
     {
         Icon: WaypointsIcon,
-        name: "Connect your apps",
-        description: "Integrate with your favorite apps and services.",
-        href: "#",
-        cta: "Learn more",
+        name: "Commercial and office",
+        description: "Reliable, discreet cleaning for workspaces and shared areas.",
+        href: "/features/qr-codes",
+        cta: "View details",
         className: "col-span-3 lg:col-span-2 max-w-full overflow-hidden",
         background: (
             <Integrations className="absolute right-2 pl-28 md:pl-0 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
@@ -75,11 +75,11 @@ export const CARDS = [
     },
     {
         Icon: CalendarIcon,
-        name: "Calendar",
-        description: "Keep track of your links with our calendar view.",
+        name: "Flexible scheduling",
+        description: "Choose a time that works around your routine.",
         className: "col-span-3 lg:col-span-1",
-        href: "#",
-        cta: "Learn more",
+        href: "/pricing",
+        cta: "View details",
         background: (
             <Calendar
                 mode="single"
@@ -130,17 +130,17 @@ const BentoCard = ({
         key={name}
         className={cn(
             "group relative col-span-3 flex flex-col justify-between border border-border/60 overflow-hidden rounded-xl",
-            "bg-black [box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+            "bg-card [box-shadow:0_-20px_80px_-20px_rgba(113,75,75,0.08)_inset]",
             className,
         )}
     >
         <div>{background}</div>
         <div className="pointer-events-none z-10 flex flex-col gap-1 p-6 transition-all duration-300 group-hover:-translate-y-10">
-            <Icon className="h-12 w-12 origin-left text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
-            <h3 className="text-xl font-semibold text-neutral-300">
+            <Icon className="h-12 w-12 origin-left text-foreground/60 transition-all duration-300 ease-in-out group-hover:scale-75" />
+            <h3 className="text-xl font-semibold text-foreground">
                 {name}
             </h3>
-            <p className="max-w-lg text-neutral-400">{description}</p>
+            <p className="max-w-lg text-muted-foreground">{description}</p>
         </div>
 
         <div
@@ -153,7 +153,7 @@ const BentoCard = ({
                 <ArrowRightIcon className="ml-2 h-4 w-4" />
             </Link>
         </div>
-        <div className="pointer-events-none absolute inset-0 transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" />
+        <div className="pointer-events-none absolute inset-0 transition-all duration-300 group-hover:bg-primary/5" />
     </div>
 );
 

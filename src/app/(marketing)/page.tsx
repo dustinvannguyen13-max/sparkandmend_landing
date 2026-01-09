@@ -30,35 +30,35 @@ const HomePage = async () => {
       <MaxWidthWrapper>
         <div className="flex flex-col items-center justify-center w-full text-center bg-gradient-to-t from-background">
           <AnimationContainer className="flex flex-col items-center justify-center w-full text-center">
-            <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset] transition-colors duration-200">
+            <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(var(--brand-dark))_inset] transition-colors duration-200">
               <span>
                 <span className="spark mask-gradient absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full [mask:linear-gradient(white,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:rotate-[-90deg] before:animate-rotate before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)] before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]" />
               </span>
-              <span className="backdrop absolute inset-[1px] rounded-full bg-neutral-950 transition-colors duration-200 group-hover:bg-neutral-900" />
+              <span className="backdrop absolute inset-[1px] rounded-full bg-primary transition-colors duration-200 group-hover:bg-primary/90" />
               <span className="h-full w-full blur-md absolute bottom-0 inset-x-0 bg-gradient-to-tr from-primary/20"></span>
-              <span className="z-10 py-0.5 text-sm text-neutral-100 flex items-center justify-center gap-1">
-                ✨ A top-notch template designed for success
+              <span className="z-10 py-0.5 text-sm text-primary-foreground flex items-center justify-center gap-1">
+                ✨ Local Plymouth cleaners you can rely on
                 <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
               </span>
             </button>
             <h1 className="text-foreground text-center py-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
-              Premium{" "}
-              <span className="text-transparent mx-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
-                saas
+              Spark and Mend{" "}
+              <span className="text-transparent mx-2 bg-gradient-to-r from-[#714b4b] to-[#efe6d9] bg-clip-text inline-bloc">
+                cleaning
               </span>
-              template to kickstart your project
+              for homes, offices, and rentals in Plymouth
             </h1>
             <p className="mb-12 text-lg tracking-tight text-muted-foreground md:text-xl text-balance">
-              Effortlessly streamline your link management with Faria.
+              Reliable home, office, and end-of-tenancy cleaning across Plymouth.
               <br className="hidden md:block" />
               <span className="hidden md:block">
-                Shorten, track, and organize all your links in one place.
+                Local team, clear checklists, flexible scheduling, and fast quotes.
               </span>
             </p>
             <div className="flex items-center justify-center whitespace-nowrap gap-4 z-50">
               <Button asChild>
-                <Link href={"/auth/sign-in"} className="flex items-center">
-                  Start creating for free
+                <Link href={"/enterprise"} className="flex items-center">
+                  Get a Free Quote
                   <ArrowRightIcon className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -72,7 +72,7 @@ const HomePage = async () => {
             <div className="absolute md:top-[10%] left-1/2 gradient w-3/4 -translate-x-1/2 h-1/4 md:h-1/3 inset-0 blur-[5rem] animate-image-glow"></div>
             <div className="-m-2 rounded-xl p-2 ring-1 ring-inset ring-foreground/20 lg:-m-4 lg:rounded-2xl bg-opacity-50 backdrop-blur-3xl">
               <BorderBeam size={250} duration={12} delay={9} />
-              <div className="w-full h-[400px] bg-black"></div>
+              <div className="w-full h-[400px] bg-card"></div>
               <div className="absolute -bottom-4 inset-x-0 w-full h-1/2 bg-gradient-to-t from-background z-40"></div>
               <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-background z-50"></div>
             </div>
@@ -85,8 +85,8 @@ const HomePage = async () => {
         <AnimationContainer delay={0.4}>
           <div className="py-14">
             <div className="mx-auto px-4 md:px-8">
-              <h2 className="text-center text-sm font-medium font-heading text-neutral-400 uppercase">
-                Trusted by the best in the industry
+              <h2 className="text-center text-sm font-medium font-heading text-muted-foreground uppercase">
+                Trusted by Plymouth homes and local businesses
               </h2>
               <div className="mt-8">
                 <ul className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-16 justify-center">
@@ -113,13 +113,14 @@ const HomePage = async () => {
       <MaxWidthWrapper className="pt-10">
         <AnimationContainer delay={0.1}>
           <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
-            <MagicBadge title="Features" />
+            <MagicBadge title="Services" />
             <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-              Manage Links Like a Pro
+              Cleaning that fits your life
             </h2>
             <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Faria is a powerful link management tool that helps you shorten,
-              track, and organize all your links in one place.
+              No time after work or tired of cleaning that never stays done? Spark
+              and Mend delivers reliable, checklist-based cleans for homes,
+              offices, and rentals across Plymouth.
             </p>
           </div>
         </AnimationContainer>
@@ -136,13 +137,12 @@ const HomePage = async () => {
       <MaxWidthWrapper className="py-10">
         <AnimationContainer delay={0.1}>
           <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-            <MagicBadge title="The Process" />
+            <MagicBadge title="How It Works" />
             <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-              Effortless link management in 3 steps
+              A clean space in 3 simple steps
             </h2>
             <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Follow these simple steps to optimize, organize, and share your
-              links with ease.
+              Get a quote, choose a time, and let us handle the rest.
             </p>
           </div>
         </AnimationContainer>
@@ -177,13 +177,13 @@ const HomePage = async () => {
       <MaxWidthWrapper className="py-10">
         <AnimationContainer delay={0.1}>
           <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-            <MagicBadge title="Simple Pricing" />
+            <MagicBadge title="Services & Pricing" />
             <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-              Choose a plan that works for you
+              Choose the clean that works for you
             </h2>
             <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Get started with Faria today and enjoy more features with our pro
-              plans.
+              Contact us for pricing. We tailor every quote to your space and
+              schedule.
             </p>
           </div>
         </AnimationContainer>
@@ -195,7 +195,7 @@ const HomePage = async () => {
             <div className="flex items-center gap-2">
               <CreditCardIcon className="w-5 h-5 text-foreground" />
               <span className="text-muted-foreground">
-                No credit card required
+                Free, no-pressure quotes with clear pricing
               </span>
             </div>
           </div>
@@ -206,12 +206,12 @@ const HomePage = async () => {
       <MaxWidthWrapper className="py-10">
         <AnimationContainer delay={0.1}>
           <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-            <MagicBadge title="Our Customers" />
+            <MagicBadge title="Local Reviews" />
             <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-              What our users are saying
+              What Plymouth clients are saying
             </h2>
             <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Here&apos;s what some of our users have to say about Faria.
+              Feedback from homes and local businesses we clean every week.
             </p>
           </div>
         </AnimationContainer>
@@ -305,18 +305,19 @@ const HomePage = async () => {
         <AnimationContainer delay={0.1}>
           <LampContainer>
             <div className="flex flex-col items-center justify-center relative w-full text-center">
-              <h2 className="bg-gradient-to-b from-neutral-200 to-neutral-400 py-4 bg-clip-text text-center text-4xl md:text-7xl !leading-[1.15] font-medium font-heading tracking-tight text-transparent mt-8">
-                Step into the future of link management
+              <h2 className="bg-gradient-to-b from-[#efe6d9] to-[#714b4b] py-4 bg-clip-text text-center text-4xl md:text-7xl !leading-[1.15] font-medium font-heading tracking-tight text-transparent mt-8">
+                A cleaner space, without the effort
               </h2>
               <p className="text-muted-foreground mt-6 max-w-md mx-auto">
-                Experience the cutting-edge solution that transforms how you
-                handle your links. Elevate your online presence with our
-                next-gen platform.
+                Tell us about your space and we will send a free, no-obligation
+                quote. Prefer to talk? Call or email us any time.
               </p>
               <div className="mt-6">
-                <Button>
-                  Get started for free
-                  <ArrowRightIcon className="w-4 h-4 ml-2" />
+                <Button asChild>
+                  <Link href="/enterprise" className="flex items-center">
+                    Get a Free Quote
+                    <ArrowRightIcon className="w-4 h-4 ml-2" />
+                  </Link>
                 </Button>
               </div>
             </div>

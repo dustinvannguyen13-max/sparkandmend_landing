@@ -13,22 +13,22 @@ const LinkShorteningPage = () => {
             <MaxWidthWrapper>
                 <AnimationContainer delay={0.1} className="w-full">
                     <div className="flex flex-col items-center justify-center py-10 max-w-xl mx-auto">
-                        <MagicBadge title="Simple" />
+                        <MagicBadge title="Basic Clean" />
                         <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold font-heading text-center mt-6 !leading-tight">
-                            Shorten links and track their performance
+                            Regular cleaning for a fresh, tidy space
                         </h1>
                         <p className="text-base md:text-lg mt-6 text-center text-muted-foreground">
-                            Simplify your workflow with powerful link management tools. Shorten links, track clicks, and optimize your strategy with ease.
+                            Perfect for regular upkeep and maintaining a fresh, tidy space. Ideal for weekly or bi-weekly cleans for homes and small offices.
                         </p>
                         <div className="flex items-center justify-center gap-x-4 mt-8">
                             <Button size="sm" asChild>
-                                <Link href="/dashboard">
-                                    Get started
+                                <Link href="/enterprise">
+                                    Get a Free Quote
                                 </Link>
                             </Button>
                             <Button size="sm" variant="outline" asChild>
-                                <Link href="/blog">
-                                    Learn more
+                                <Link href="/pricing">
+                                    See pricing
                                 </Link>
                             </Button>
                         </div>
@@ -38,7 +38,7 @@ const LinkShorteningPage = () => {
                     <div className="w-full flex max-w-4xl py-10 mx-auto">
                         <Image
                             src="/assets/shorten-links.svg"
-                            alt="Shorten links and track their performance"
+                            alt="Basic cleaning service"
                             width={80}
                             height={80}
                             className="w-full h-auto"
@@ -48,8 +48,8 @@ const LinkShorteningPage = () => {
                 <AnimationContainer delay={0.3} className="w-full">
                     <div className="py-14">
                         <div className="mx-auto px-4 md:px-8">
-                            <h2 className="text-center text-sm font-medium font-heading text-neutral-400 uppercase">
-                                Trusted by the best in the industry
+                            <h2 className="text-center text-sm font-medium font-heading text-muted-foreground uppercase">
+                                Trusted by Plymouth homes and local businesses
                             </h2>
                             <div className="mt-8">
                                 <ul className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-16 justify-center py-8">
@@ -75,16 +75,16 @@ const LinkShorteningPage = () => {
                 <AnimationContainer delay={0.4} className="w-full">
                     <LampContainer className="max-w-2xl mx-auto">
                         <div className="flex flex-col items-center justify-center relative w-full text-center">
-                            <h2 className="bg-gradient-to-br from-neutral-300 to-neutral-500 py-4 bg-clip-text text-center text-4xl font-semibold font-heading tracking-tight text-transparent md:text-7xl mt-8">
-                                Powerup your link strategy
+                            <h2 className="bg-gradient-to-br from-[#efe6d9] to-[#714b4b] py-4 bg-clip-text text-center text-4xl font-semibold font-heading tracking-tight text-transparent md:text-7xl mt-8">
+                                Keep your space consistently clean
                             </h2>
                             <p className="text-muted-foreground mt-6 max-w-lg mx-auto text-base md:text-lg">
-                                Take control of your links with advanced features and real-time insights. Simplify your workflow and achieve more.
+                                Book regular visits and enjoy a fresh, tidy home or office every week.
                             </p>
                             <div className="mt-6">
                                 <Button asChild>
-                                    <Link href="/auth/sign-up" className="flex items-center">
-                                        Get started for free
+                                    <Link href="/enterprise" className="flex items-center">
+                                        Book a Clean
                                         <ArrowRightIcon className="w-4 h-4 ml-2" />
                                     </Link>
                                 </Button>

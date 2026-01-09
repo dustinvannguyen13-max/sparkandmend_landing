@@ -1,38 +1,38 @@
 [
     {
-        "title": "How to Maximize Your Productivity with Link Management Tools",
+        "title": "A Simple Weekly Cleaning Checklist for Busy Homes",
         "image": "/assets/blog1.jpg",
         "author_image": "https://example.com/images/author1.jpg",
-        "author_name": "John Doe",
+        "author_name": "Spark and Mend Team",
         "date_published": "2024-10-05",
-        "description": "Learn how to maximize your productivity with link management tools.",
-        "slug": "how-to-maximize-your-productivity-with-link-management-tools"
+        "description": "A practical weekly checklist to keep your home tidy between visits.",
+        "slug": "weekly-cleaning-checklist-for-busy-homes"
     },
     {
-        "title": "The Ultimate Guide to Organizing Links for Teams",
+        "title": "Deep Clean vs Regular Clean: What to Expect",
         "image": "/assets/blog2.jpg",
         "author_image": "https://example.com/images/author2.jpg",
-        "author_name": "Jane Smith",
+        "author_name": "Spark and Mend Team",
         "date_published": "2024-09-28",
-        "description": "How to organize links for teams.",
-        "slug": "the-ultimate-guide-to-organizing-links-for-teams"
+        "description": "Understand the difference and when a deeper clean makes sense.",
+        "slug": "deep-clean-vs-regular-clean-what-to-expect"
     },
     {
-        "title": "Why Link Management is Essential for Digital Marketers",
+        "title": "End-of-Tenancy Cleaning: A Landlord-Ready Checklist",
         "image": "/assets/blog3.jpg",
         "author_image": "https://example.com/images/author3.jpg",
-        "author_name": "Chris Martin",
+        "author_name": "Spark and Mend Team",
         "date_published": "2024-09-20",
-        "description": "Link management is essential for digital marketers.",
-        "slug": "why-link-management-is-essential-for-digital-marketers"
+        "description": "A complete checklist for move-out cleans that help secure your deposit.",
+        "slug": "end-of-tenancy-cleaning-checklist"
     },
     {
-        "title": "Top 5 Features Every Link Management Software Should Have",
+        "title": "Office Cleaning Tips for Healthier Workdays",
         "image": "/assets/blog4.jpg",
         "author_image": "https://example.com/images/author4.jpg",
-        "author_name": "Emily Clark",
+        "author_name": "Spark and Mend Team",
         "date_published": "2024-09-15",
-        "description": "The features that every link management software should have.",
-        "slug": "top-5-features-every-link-management-software-should-have"
+        "description": "Simple habits and schedules to keep shared workspaces fresh.",
+        "slug": "office-cleaning-tips-for-healthier-workdays"
     }
 ]

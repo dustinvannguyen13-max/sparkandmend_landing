@@ -12,7 +12,7 @@ const Privacy = () => {
           Last updated: 17th June 2024
         </p>
         <p className="mt-4">
-          At <strong>Faria</strong>, we are committed to protecting your
+          At <strong>Spark and Mend</strong>, we are committed to protecting your
           privacy. This Privacy Policy explains how we collect, use, disclose,
           and safeguard your information when you use our website and services.
         </p>
@@ -21,15 +21,15 @@ const Privacy = () => {
 
         <h3 className="text-lg mt-4">Personal Information</h3>
         <p className="mt-8 text-muted-foreground">
-          When you register for an account or use our services, we may collect
+          When you request a quote, book a clean, or contact us, we may collect
           personal information that can identify you, such as your name, email
-          address, and payment information.
+          address, phone number, and payment information.
         </p>
 
         <h3 className="text-lg font-medium mt-12">Non-Personal Information</h3>
         <p className="mt-8 text-muted-foreground">
           We may also collect non-personal information about your use of the
-          service, such as IP addresses, browser types, referring URLs, and
+          website, such as IP addresses, browser types, referring URLs, and
           other technical data.
         </p>
 
@@ -52,7 +52,7 @@ const Privacy = () => {
           <ul className="list-disc ml-8 text-muted-foreground">
             <li>Provide, operate, and maintain our services.</li>
             <li>Improve and personalize your experience.</li>
-            <li>Process transactions and manage your account.</li>
+            <li>Process payments and manage bookings.</li>
           </ul>
         </div>
 
@@ -121,8 +121,7 @@ const Privacy = () => {
         <h3 className="text-lg mt-8">Access and Update</h3>
         <p className="mt-8 text-muted-foreground">
           You have the right to access and update your personal information. You
-          can do this by logging into your account and updating your profile
-          settings.
+          can do this by contacting us directly.
         </p>
 
         <h3 className="text-lg mt-8">Opt-Out</h3>
@@ -135,7 +134,7 @@ const Privacy = () => {
         <h3 className="text-lg mt-8">Data Deletion</h3>
         <p className="mt-8 text-muted-foreground">
           You have the right to request the deletion of your personal
-          information. Please contact us at support@Faria.com to make this
+          information. Please contact us at sparkandmend@gmail.com to make this
           request.
         </p>
 
@@ -170,12 +169,12 @@ const Privacy = () => {
         <h2 className="text-xl font-medium mt-12">Contact Us</h2>
         <p className="mt-8 text-muted-foreground">
           If you have any questions or concerns about this Privacy Policy,
-          please contact us at support@Faria.io.
+          please contact us at sparkandmend@gmail.com.
         </p>
 
         <p className="mt-8 font-medium">
-          By using Faria, you acknowledge that you have read, understood, and
-          agree to the terms of this Privacy Policy.
+          By using Spark and Mend, you acknowledge that you have read,
+          understood, and agree to the terms of this Privacy Policy.
         </p>
       </AnimationContainer>
     </MaxWidthWrapper>

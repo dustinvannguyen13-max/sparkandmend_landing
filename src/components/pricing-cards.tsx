@@ -18,6 +18,13 @@ const PricingCards = () => {
 
     const [activeTab, setActiveTab] = useState<Tab>("monthly");
 
+    const formatPrice = (value: number | string) => {
+        if (typeof value === "number") {
+            return `£${value}`;
+        }
+        return value;
+    };
+
     return (
         <Tabs defaultValue="monthly" className="w-full flex flex-col items-center justify-center">
             <TabsList>
@@ -37,7 +44,7 @@ const PricingCards = () => {
                         />
                     )}
                     <span className="z-20">
-                        Monthly
+                        Regular
                     </span>
                 </MotionTabTrigger>
                 <MotionTabTrigger
@@ -56,7 +63,7 @@ const PricingCards = () => {
                         />
                     )}
                     <span className="z-20">
-                        Yearly
+                        One-off
                     </span>
                 </MotionTabTrigger>
             </TabsList>
@@ -67,30 +74,32 @@ const PricingCards = () => {
                         key={plan.name}
                         className={cn(
                             "flex flex-col w-full border-border rounded-xl",
-                            plan.name === "Pro" && "border-2 border-purple-500"
+                            plan.name === "Intermediate" && "border-2 border-primary"
                         )}
                     >
                         <CardHeader className={cn(
                             "border-b border-border",
-                            plan.name === "Pro" ? "bg-purple-500/[0.07]" : "bg-foreground/[0.03]"
+                            plan.name === "Intermediate" ? "bg-primary/10" : "bg-foreground/[0.03]"
                         )}>
-                            <CardTitle className={cn(plan.name !== "Pro" && "text-muted-foreground", "text-lg font-medium")}>
+                            <CardTitle className={cn(plan.name !== "Intermediate" && "text-muted-foreground", "text-lg font-medium")}>
                                 {plan.name}
                             </CardTitle>
                             <CardDescription>
                                 {plan.info}
                             </CardDescription>
                             <h5 className="text-3xl font-semibold">
-                                ${plan.price.monthly}
-                                <span className="text-base text-muted-foreground font-normal">
-                                    {plan.name !== "Free" ? "/month" : ""}
-                                </span>
+                                {formatPrice(plan.price.monthly)}
+                                {typeof plan.price.monthly === "number" && (
+                                    <span className="text-base text-muted-foreground font-normal">
+                                        /visit
+                                    </span>
+                                )}
                             </h5>
                         </CardHeader>
                         <CardContent className="pt-6 space-y-4">
                             {plan.features.map((feature, index) => (
                                 <div key={index} className="flex items-center gap-2">
-                                    <CheckCircleIcon className="text-purple-500 w-4 h-4" />
+                                    <CheckCircleIcon className="text-primary w-4 h-4" />
                                     <TooltipProvider>
                                         <Tooltip delayDuration={0}>
                                             <TooltipTrigger asChild>
@@ -112,7 +121,7 @@ const PricingCards = () => {
                             <Link
                                 href={plan.btn.href}
                                 style={{ width: "100%" }}
-                                className={buttonVariants({ className: plan.name === "Pro" && "bg-purple-500 hover:bg-purple-500/80 text-white" })}
+                                className={buttonVariants({ className: plan.name === "Intermediate" && "bg-primary text-primary-foreground hover:bg-primary/90" })}
                             >
                                 {plan.btn.text}
                             </Link>
@@ -126,31 +135,33 @@ const PricingCards = () => {
                         key={plan.name}
                         className={cn(
                             "flex flex-col w-full border-border rounded-xl",
-                            plan.name === "Pro" && "border-2 border-purple-500"
+                            plan.name === "Intermediate" && "border-2 border-primary"
                         )}
                     >
                         <CardHeader className={cn(
                             "border-b border-border",
-                            plan.name === "Pro" ? "bg-purple-500/[0.07]" : "bg-foreground/[0.03]"
+                            plan.name === "Intermediate" ? "bg-primary/10" : "bg-foreground/[0.03]"
                         )}>
-                            <CardTitle className={cn(plan.name !== "Pro" && "text-muted-foreground", "text-lg font-medium")}>
+                            <CardTitle className={cn(plan.name !== "Intermediate" && "text-muted-foreground", "text-lg font-medium")}>
                                 {plan.name}
                             </CardTitle>
                             <CardDescription>
                                 {plan.info}
                             </CardDescription>
                             <h5 className="text-3xl font-semibold flex items-end">
-                                ${plan.price.yearly}
-                                <div className="text-base text-muted-foreground font-normal">
-                                    {plan.name !== "Free" ? "/year" : ""}
-                                </div>
-                                {plan.name !== "Free" && (
+                                {formatPrice(plan.price.yearly)}
+                                {typeof plan.price.yearly === "number" && (
+                                    <div className="text-base text-muted-foreground font-normal">
+                                        /clean
+                                    </div>
+                                )}
+                                {typeof plan.price.yearly === "number" && (
                                     <motion.span
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 10 }}
                                         transition={{ duration: 0.3, type: "spring", bounce: 0.25 }}
-                                        className="px-2 py-0.5 ml-2 rounded-md bg-purple-500 text-foreground text-sm font-medium"
+                                        className="px-2 py-0.5 ml-2 rounded-md bg-primary text-primary-foreground text-sm font-medium"
                                     >
                                         -12%
                                     </motion.span>
@@ -160,7 +171,7 @@ const PricingCards = () => {
                         <CardContent className="pt-6 space-y-4">
                             {plan.features.map((feature, index) => (
                                 <div key={index} className="flex items-center gap-2">
-                                    <CheckCircleIcon className="text-purple-500 w-4 h-4" />
+                                    <CheckCircleIcon className="text-primary w-4 h-4" />
                                     <TooltipProvider>
                                         <Tooltip delayDuration={0}>
                                             <TooltipTrigger asChild>
@@ -182,7 +193,7 @@ const PricingCards = () => {
                             <Link
                                 href={plan.btn.href}
                                 style={{ width: "100%" }}
-                                className={buttonVariants({ className: plan.name === "Pro" && "bg-purple-500 hover:bg-purple-500/80 text-white" })}
+                                className={buttonVariants({ className: plan.name === "Intermediate" && "bg-primary text-primary-foreground hover:bg-primary/90" })}
                             >
                                 {plan.btn.text}
                             </Link>

@@ -15,10 +15,10 @@ const PricingPage = () => {
                 <div className="flex flex-col items-center justify-center py-10 max-w-lg mx-auto">
                     <MagicBadge title="Pricing" />
                     <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold font-heading text-center mt-6 !leading-tight">
-                        Simple and transparent pricing
+                        Clear, tailored pricing
                     </h1>
                     <p className="text-base md:text-lg mt-6 text-center text-muted-foreground">
-                        Choose a plan that works for you. No hidden fees. No surprises.
+                        Contact us for pricing. Every quote is tailored to your space, needs, and schedule.
                     </p>
                 </div>
             </AnimationContainer>
@@ -33,8 +33,8 @@ const PricingPage = () => {
                         <h2 className="mt-6 text-2xl font-semibold text-center lg:text-3xl xl:text-4xl">
                             Frequently Asked Questions
                         </h2>
-                        <p className="max-w-lg mt-6 text-center text-neutral-500">
-                            Here are some of the most common questions we get asked. If you have a question that isn&apos;t answered here, feel free to reach out to us.
+                        <p className="max-w-lg mt-6 text-center text-muted-foreground">
+                            Here are some of the most common questions we get asked. If your question is not answered here, reach out any time.
                         </p>
                     </div>
                     <div className="max-w-3xl mx-auto w-full mt-20">

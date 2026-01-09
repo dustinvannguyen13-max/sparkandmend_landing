@@ -12,92 +12,83 @@ const TermsPage = () => {
           Last updated: 17th June 2024
         </p>
         <p className="mt-4">
-          Welcome to Faria. These terms and conditions outline the rules and
-          regulations for the use of Faria&apos;s website and services.
+          Welcome to Spark and Mend. These terms and conditions outline the
+          rules and regulations for the use of Spark and Mend&apos;s website
+          and cleaning services.
         </p>
 
         <h2 className="text-xl font-medium mt-8">Acceptance of Terms</h2>
 
         <p className="mt-8 text-muted-foreground">
-          By accessing and using Faria, you accept and agree to be bound by
-          these terms and conditions. If you do not agree to these terms, you
-          may not use our website or services.
+          By accessing and using Spark and Mend, you accept and agree to be
+          bound by these terms and conditions. If you do not agree to these
+          terms, you may not use our website or services.
         </p>
 
         <h2 className="text-xl font-medium mt-12">Changes to Terms</h2>
         <p className="mt-8 text-muted-foreground">
-          Faria reserves the right to modify these terms at any time. We will
-          notify you of any changes by updating the &quot;Last updated&quot;
-          data at the top of this page. You continued use of our website and
-          services after any modifications indicates your acceptance of the new
-          terms.
+          Spark and Mend reserves the right to modify these terms at any time.
+          We will notify you of any changes by updating the &quot;Last
+          updated&quot; date at the top of this page. Your continued use of our
+          website and services after any modifications indicates your
+          acceptance of the new terms.
         </p>
 
         <h2 className="text-xl font-medium mt-12">Use of Services</h2>
 
         <h3 className="text-lg mt-8">Eligibility</h3>
         <p className="mt-8">
-          To use Faria, you must be at least 18 years old and capable of
-          entering into a binding contact.
+          To book cleaning services, you must be at least 18 years old and
+          capable of entering into a binding contract.
         </p>
 
-        <h3 className="text-lg mt-8">Account Registration</h3>
+        <h3 className="text-lg mt-8">Booking Information</h3>
         <div className="mt-8">
           <ul className="list-disc ml-8 text-muted-foreground">
             <li>
-              You must provide accurate and complete information during the
-              registration process.
+              You must provide accurate and complete information when
+              requesting a quote or booking a clean.
             </li>
             <li>
-              You are responsible for maintaining the confidentiality of your
-              account information and for all activities that occur under your
-              account.
+              You are responsible for access instructions and any details you
+              provide about the property.
             </li>
             <li>
-              You agree to notify us immediately of any unantuhorized use of
-              your account.
+              You agree to notify us promptly if your booking details change.
             </li>
           </ul>
         </div>
 
         <h3 className="text-lg mt-8">Acceptable Use</h3>
         <div className="mt-8">
-          You agree not to use Faria for any unlawful or prohibited activities,
-          including but not limited to:
+          You agree not to misuse our website or services, including but not
+          limited to:
           <ul className="list-disc text-muted-foreground ml-8">
-            <li>
-              Uploading or sharing content that is offensive, harmful, or
-              violates any laws.
-            </li>
-            <li>Using the service to distribute spam or malicious content.</li>
-            <li>
-              Attempting to gain unauthorized access to other user accounts or
-              Faria&apos;s systems.
-            </li>
+            <li>Attempting to gain unauthorized access to our systems.</li>
+            <li>Interfering with the website or service availability.</li>
+            <li>Using the website for unlawful or prohibited activities.</li>
           </ul>
         </div>
 
-        <h2 className="text-xl font-medium mt-12">
-          Link Shortening and Management
-        </h2>
+        <h2 className="text-xl font-medium mt-12">Cleaning Services</h2>
 
-        <h3 className="text-lg mt-8">URL Shortening</h3>
+        <h3 className="text-lg mt-8">Service Scope</h3>
         <p className="mt-8 text-muted-foreground">
-          Faria provides a URL shortening service that allows you to create
-          shortened links from long URLs. You agree not to use this service to
-          create links to illegal or harmful content.
+          We provide residential, commercial, end-of-tenancy, and deep cleaning
+          services. The scope of work and price are agreed before service
+          begins.
         </p>
 
-        <h3 className="text-lg mt-8">Analytics</h3>
+        <h3 className="text-lg mt-8">Access and Safety</h3>
         <p className="mt-8 text-muted-foreground">
-          Faria offers analytics for your shortened URLs. You agree to use this
-          data responsibly and comply with all applicable privacy laws.
+          You agree to provide safe access to the property and inform us of any
+          hazards, pets, or fragile items.
         </p>
 
-        <h3 className="text-lg mt-8">QR Code Generation</h3>
+        <h3 className="text-lg mt-8">Cancellations and Rescheduling</h3>
         <p className="mt-8 text-muted-foreground">
-          You may generate QR codes for your shortened URLs. You agree not to
-          use QR codes for any malicious purposes.
+          If you need to cancel or reschedule, please contact us as soon as
+          possible so we can arrange a new time.
         </p>
 
         <h3 className="text-lg mt-8">Business Transfers</h3>
@@ -107,21 +98,22 @@ const TermsPage = () => {
           entity.
         </p>
 
-        <h2 className="text-xl font-medium mt-12">User Content</h2>
+        <h2 className="text-xl font-medium mt-12">Service Information</h2>
 
         <h3 className="text-lg mt-8">Ownership</h3>
 
         <p className="mt-8 text-muted-foreground">
-          You retain ownership of any content you upload or create using Faria.
-          However, by uploading or creating content, you grant Faria a
-          worldwide, non-exclusive, royalty-free license to use, reproduce, and
-          display your content as necessary to provide our services.
+          You retain ownership of any information or materials you provide to
+          us, such as photos or access notes. By sharing them, you grant Spark
+          and Mend permission to use them only as needed to deliver the
+          service.
         </p>
 
         <h2 className="text-xl font-medium mt-12">Responsibility</h2>
         <p className="mt-8 text-muted-foreground">
-          You are solely responsible for the content you upload or create. Faria
-          does not endorse or assume any liability for user content.
+          You are responsible for the accuracy of the information you provide.
+          Spark and Mend does not accept liability for issues resulting from
+          inaccurate details.
         </p>
 
         <h2 className="text-xl font-medium mt-12">Privacy</h2>
@@ -136,9 +128,9 @@ const TermsPage = () => {
 
         <h2 className="text-xl font-medium mt-12">Termination</h2>
         <p className="mt-8 text-muted-foreground">
-          Faria reserves the right to suspend or terminate your account at any
-          time, with or without notice, for any reason, including but not
-          limited to violation of these terms.
+          Spark and Mend reserves the right to decline or cancel a booking at
+          any time, with or without notice, for any reason, including but not
+          limited to unsafe conditions or misuse of services.
         </p>
 
         <h2 className="text-xl font-medium mt-12">
@@ -147,33 +139,34 @@ const TermsPage = () => {
 
         <h3 className="text-lg mt-8">No Warranties</h3>
         <p className="mt-8 text-muted-foreground">
-          Faria is provided on an &quot;as is&quot; and &quot;as available&quot;
-          basis. We do not warrant that the service will be uninterrupted,
-          error-free, or free from viruses or other harmful components.
+          Services are provided on an &quot;as is&quot; and &quot;as
+          available&quot; basis. We do not warrant that the service will be
+          uninterrupted or error-free.
         </p>
 
         <h3 className="text-lg mt-8">Limitation of Liability</h3>
         <p className="mt-8 text-muted-foreground">
-          In no event shall Faria be liable for any indirect, incidental,
-          special, or consequential damages arising out of or in connection with
-          your use of the service.
+          In no event shall Spark and Mend be liable for any indirect,
+          incidental, special, or consequential damages arising out of or in
+          connection with your use of the service.
         </p>
 
         <h2 className="text-xl font-medium mt-12">Governing Law</h2>
         <p className="mt-8 text-muted-foreground">
           These terms shall be governed and construed in accordance with the
-          laws of India, without regard to its conflict of law provisions.
+          laws of England and Wales, without regard to its conflict of law
+          provisions.
         </p>
 
         <h2 className="text-xl font-medium mt-12">Contact Us</h2>
         <p className="mt-8 text-muted-foreground">
-          If you have any questions or concerns about this Privacy Policy,
-          please contact us at support@Faria.io.
+          If you have any questions or concerns about these terms, please
+          contact us at sparkandmend@gmail.com.
         </p>
 
         <p className="mt-8 font-medium">
-          By using Faria, you acknowledge that you have read, understood, and
-          agree to be bound by these terms and conditions.
+          By using Spark and Mend, you acknowledge that you have read,
+          understood, and agree to be bound by these terms and conditions.
         </p>
       </AnimationContainer>
     </MaxWidthWrapper>

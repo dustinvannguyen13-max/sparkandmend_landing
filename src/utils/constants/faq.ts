@@ -1,42 +1,42 @@
 export const FAQ = [
     {
         id: "item-1",
-        question: "Is it accessible?",
-        answer: "Yes. It adheres to the WAI-ARIA design pattern, ensuring accessibility for all users.",
+        question: "How much does a clean cost?",
+        answer: "Every quote is tailored to your space, the level of clean, and how often you need us. Contact us for pricing and a fast, no-obligation quote.",
     },
     {
         id: "item-2",
-        question: "What features does the software offer?",
-        answer: "Our link management software offers features like link shortening, click tracking, customizable branded links, and AI-powered suggestions.",
+        question: "What is included in each service?",
+        answer: "We use a checklist for every visit. Basic covers regular upkeep, Intermediate adds more detailed tasks, and Advanced is a full deep clean for end-of-tenancy or resets.",
     },
     {
         id: "item-3",
-        question: "How does the pricing work?",
-        answer: "We offer three plans: Free, Pro ($9/month), and Business ($49/month). Yearly subscriptions come with a discount.",
+        question: "Do I need to be home?",
+        answer: "Not necessarily. We can arrange access and timing in a way that works for you.",
     },
     {
         id: "item-4",
-        question: "Can I upgrade or downgrade my plan?",
-        answer: "Yes! You can easily upgrade or downgrade your plan at any time through your account settings.",
+        question: "Do I need to provide supplies or equipment?",
+        answer: "We can discuss product preferences during your quote and work with whatever suits your home or workplace.",
     },
     {
         id: "item-5",
-        question: "Is there customer support available?",
-        answer: "Absolutely! We provide community support for all users and priority support for Pro and Business plan subscribers.",
+        question: "How do I book or change a time?",
+        answer: "Call or email us and we will confirm your booking quickly. If you need to reschedule, just let us know as soon as possible.",
     },
     {
         id: "item-6",
-        question: "Can I track my link clicks?",
-        answer: "Yes, our software allows you to track clicks on your links, providing insights into user engagement and demographics.",
+        question: "Which areas do you cover?",
+        answer: "We are based in Plymouth and cover nearby areas across the city and surrounding neighborhoods.",
     },
     {
         id: "item-7",
-        question: "Is there a mobile app available?",
-        answer: "Currently, we do not have a dedicated mobile app, but our web application is fully responsive and works well on mobile devices.",
+        question: "Will it disrupt my day?",
+        answer: "We work around your routine and confirm the expected timing before each clean.",
     },
     {
         id: "item-8",
-        question: "What payment methods do you accept?",
-        answer: "We accept various payment methods including credit cards, PayPal, and other secure payment options.",
+        question: "What if something is missed?",
+        answer: "We take feedback seriously. Let us know and we will address any concerns promptly.",
     },
 ];

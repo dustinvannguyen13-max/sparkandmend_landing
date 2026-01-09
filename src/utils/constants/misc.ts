@@ -6,138 +6,138 @@ export const PAGINATION_LIMIT = 10;
 
 export const COMPANIES = [
     {
-        name: "Asana",
+        name: "Plymouth Homes",
         logo: "/assets/company-01.svg",
     },
     {
-        name: "Tidal",
+        name: "Local Offices",
         logo: "/assets/company-02.svg",
     },
     {
-        name: "Innovaccer",
+        name: "Rental Hosts",
         logo: "/assets/company-03.svg",
     },
     {
-        name: "Linear",
+        name: "Hospitality Spaces",
         logo: "/assets/company-04.svg",
     },
     {
-        name: "Raycast",
+        name: "Property Managers",
         logo: "/assets/company-05.svg",
     },
     {
-        name: "Labelbox",
+        name: "Community Spaces",
         logo: "/assets/company-06.svg",
     }
 ] as const;
 
 export const PROCESS = [
     {
-        title: "Organize Your Links",
-        description: "Efficiently categorize and tag your links for quick access and easy management.",
+        title: "Get a Free Quote",
+        description: "Tell us about your space and the service you need. We will reply quickly with a clear quote.",
         icon: FolderOpenIcon,
     },
     {
-        title: "Shorten and Customize",
-        description: "Create concise, branded links that are easy to share and track.",
+        title: "Choose a Time",
+        description: "Pick a weekly, bi-weekly, monthly, or one-off clean that fits your schedule.",
         icon: WandSparklesIcon,
     },
     {
-        title: "Analyze and Optimize",
-        description: "Gain insights into link performance and optimize for better engagement.",
+        title: "We Clean, You Relax",
+        description: "Our team arrives on time with a checklist and leaves your space spotless.",
         icon: BarChart3Icon,
     },
 ] as const;
 
 export const FEATURES = [
     {
-        title: "Link shortening",
-        description: "Create short links that are easy to remember and share.",
+        title: "Regular cleaning",
+        description: "Consistent upkeep for homes and small offices.",
     },
     {
-        title: "Advanced analytics",
-        description: "Track and measure the performance of your links.",
+        title: "Deep cleans",
+        description: "A more detailed clean when your space needs extra care.",
     },
     {
-        title: "Password protection",
-        description: "Secure your links with a password.",
+        title: "End-of-tenancy resets",
+        description: "Thorough cleans for moving out or preparing a rental.",
     },
     {
-        title: "Custom QR codes",
-        description: "Generate custom QR codes for your links.",
+        title: "Commercial cleaning",
+        description: "Reliable service for offices and shared workspaces.",
     },
     {
-        title: "Link expiration",
-        description: "Set an expiration date for your links.",
+        title: "Flexible scheduling",
+        description: "Choose a time that works around your routine.",
     },
     {
-        title: "Team collaboration",
-        description: "Share links with your team and collaborate in real-time.",
+        title: "Checklist-based quality",
+        description: "Clear standards for consistent results every visit.",
     },
 ] as const;
 
 export const REVIEWS = [
     {
-        name: "Michael Smith",
-        username: "@michaelsmith",
+        name: "Sarah Bennett",
+        username: "@sarahb",
         avatar: "https://randomuser.me/api/portraits/men/1.jpg",
         rating: 5,
-        review: "This tool is a lifesaver! Managing and tracking my links has never been easier. A must-have for anyone dealing with numerous links."
+        review: "Weekly cleans keep our flat spotless and the team is always on time."
     },
     {
-        name: "Emily Johnson",
-        username: "@emilyjohnson",
+        name: "Tom Hughes",
+        username: "@tomhughes",
         avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-        rating: 4,
-        review: "Very useful app! It has streamlined my workflow considerably. A few minor bugs, but overall a great experience."
-    },
-    {
-        name: "Daniel Williams",
-        username: "@danielwilliams",
-        avatar: "https://randomuser.me/api/portraits/men/2.jpg",
         rating: 5,
-        review: "I've been using this app daily for months. The insights and analytics it provides are invaluable. Highly recommend it!"
+        review: "Booked an end-of-tenancy clean in Plymouth and the place looked brand new."
     },
     {
-        name: "Sophia Brown",
-        username: "@sophiabrown",
-        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+        name: "Leah Carter",
+        username: "@leahc",
+        avatar: "https://randomuser.me/api/portraits/men/2.jpg",
         rating: 4,
-        review: "This app is fantastic! It offers everything I need to manage my links efficiently."
+        review: "Great attention to detail and easy communication about scheduling."
     },
     {
-        name: "James Taylor",
-        username: "@jamestaylor",
+        name: "Mark Ellis",
+        username: "@marke",
+        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+        rating: 5,
+        review: "Our office stays fresh and tidy without any disruption to the team."
+    },
+    {
+        name: "Priya Patel",
+        username: "@priyap",
         avatar: "https://randomuser.me/api/portraits/men/3.jpg",
         rating: 5,
-        review: "Absolutely love this app! It's intuitive and feature-rich. Has significantly improved how I manage and track links."
+        review: "The deep clean was thorough, especially the kitchen and bathrooms."
     },
     {
-        name: "Olivia Martinez",
-        username: "@oliviamartinez",
+        name: "Ben Walker",
+        username: "@benw",
         avatar: "https://randomuser.me/api/portraits/women/3.jpg",
         rating: 4,
-        review: "Great app with a lot of potential. It has already saved me a lot of time. Looking forward to future updates and improvements."
+        review: "Consistent results and a clear checklist every visit."
     },
     {
-        name: "William Garcia",
-        username: "@williamgarcia",
+        name: "Hannah Price",
+        username: "@hannahp",
         avatar: "https://randomuser.me/api/portraits/men/4.jpg",
         rating: 5,
-        review: "This app is a game-changer for link management. It's easy to use, extremely powerful and highly recommended!"
+        review: "Finally found cleaners we trust. Reliable and respectful of the space."
     },
     {
-        name: "Mia Rodriguez",
-        username: "@miarodriguez",
+        name: "Kyle Morgan",
+        username: "@kylem",
         avatar: "https://randomuser.me/api/portraits/women/4.jpg",
         rating: 4,
-        review: "I've tried several link management tools, but this one stands out. It's simple, effective."
+        review: "Flexible booking and fast responses to questions."
     },
     {
-        name: "Henry Lee",
-        username: "@henrylee",
+        name: "Chloe Adams",
+        username: "@chloea",
         avatar: "https://randomuser.me/api/portraits/men/5.jpg",
         rating: 5,
-        review: "This app has transformed my workflow. Managing and analyzing links is now a breeze. I can't imagine working without it."
+        review: "Post-renovation clean was handled with care and the finish was brilliant."
     },
 ] as const;

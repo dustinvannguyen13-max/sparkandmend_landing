@@ -9,7 +9,7 @@ const BlogPage = () => {
                     Blog
                 </h1>
                 <p className="text-base md:text-lg mt-6 text-center text-muted-foreground">
-                    Latest news and updates.
+                    Cleaning tips, checklists, and local updates.
                 </p>
             </AnimationContainer>
             <AnimationContainer delay={0.2} className="w-full pt-20">
