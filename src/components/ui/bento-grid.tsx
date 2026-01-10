@@ -2,7 +2,13 @@ import { buttonVariants } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/utils";
-import { ArrowRightIcon, CalendarIcon, Link2Icon, SearchIcon, WaypointsIcon } from "lucide-react";
+import {
+    ArrowRightIcon,
+    Building2Icon,
+    CalendarDaysIcon,
+    HomeIcon,
+    SprayCanIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
@@ -12,7 +18,7 @@ import { Label } from "./label";
 
 export const CARDS = [
     {
-        Icon: Link2Icon,
+        Icon: HomeIcon,
         name: "Regular cleaning",
         description: "Weekly or bi-weekly visits that keep your space consistently tidy.",
         href: "/features/link-shortening",
@@ -42,7 +48,7 @@ export const CARDS = [
         ),
     },
     {
-        Icon: SearchIcon,
+        Icon: SprayCanIcon,
         name: "Deep clean focus",
         description: "A more detailed clean when your space needs extra care.",
         href: "/features/password-protection",
@@ -63,7 +69,7 @@ export const CARDS = [
         ),
     },
     {
-        Icon: WaypointsIcon,
+        Icon: Building2Icon,
         name: "Commercial and office",
         description: "Reliable, discreet cleaning for workspaces and shared areas.",
         href: "/features/qr-codes",
@@ -74,7 +80,7 @@ export const CARDS = [
         ),
     },
     {
-        Icon: CalendarIcon,
+        Icon: CalendarDaysIcon,
         name: "Flexible scheduling",
         description: "Choose a time that works around your routine.",
         className: "col-span-3 lg:col-span-1",

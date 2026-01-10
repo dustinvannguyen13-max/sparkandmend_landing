@@ -1,4 +1,8 @@
-import { BarChart3Icon, FolderOpenIcon, WandSparklesIcon } from "lucide-react";
+import {
+    CalendarDaysIcon,
+    ClipboardListIcon,
+    SparklesIcon,
+} from "lucide-react";
 
 export const DEFAULT_AVATAR_URL = "https://api.dicebear.com/8.x/initials/svg?backgroundType=gradientLinear&backgroundRotation=0,360&seed=";
 
@@ -35,17 +39,17 @@ export const PROCESS = [
     {
         title: "Get a Free Quote",
         description: "Tell us about your space and the service you need. We will reply quickly with a clear quote.",
-        icon: FolderOpenIcon,
+        icon: ClipboardListIcon,
     },
     {
         title: "Choose a Time",
         description: "Pick a weekly, bi-weekly, monthly, or one-off clean that fits your schedule.",
-        icon: WandSparklesIcon,
+        icon: CalendarDaysIcon,
     },
     {
         title: "We Clean, You Relax",
         description: "Our team arrives on time with a checklist and leaves your space spotless.",
-        icon: BarChart3Icon,
+        icon: SparklesIcon,
     },
 ] as const;
 

@@ -1,4 +1,11 @@
-import { HelpCircleIcon, LineChartIcon, Link2Icon, LockIcon, NewspaperIcon, QrCodeIcon } from "lucide-react";
+import {
+    Building2Icon,
+    ClipboardCheckIcon,
+    HelpCircleIcon,
+    HomeIcon,
+    NewspaperIcon,
+    SprayCanIcon,
+} from "lucide-react";
 
 export const NAV_LINKS = [
     {
@@ -9,25 +16,25 @@ export const NAV_LINKS = [
                 title: "Basic Clean",
                 tagline: "Weekly or bi-weekly upkeep for homes and small offices.",
                 href: "/features/link-shortening",
-                icon: Link2Icon,
+                icon: HomeIcon,
             },
             {
                 title: "Intermediate Clean",
                 tagline: "A deeper, more detailed clean each visit.",
                 href: "/features/password-protection",
-                icon: LockIcon,
+                icon: SprayCanIcon,
             },
             {
                 title: "Advanced Clean",
                 tagline: "End-of-tenancy, seasonal, or full reset cleans.",
                 href: "/features/analytics",
-                icon: LineChartIcon,
+                icon: ClipboardCheckIcon,
             },
             {
                 title: "Commercial Cleaning",
                 tagline: "Reliable cleans for offices and workspaces.",
                 href: "/features/qr-codes",
-                icon: QrCodeIcon,
+                icon: Building2Icon,
             },
         ],
     },

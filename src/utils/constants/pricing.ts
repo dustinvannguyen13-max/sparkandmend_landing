@@ -1,4 +1,23 @@
-export const PLANS = [
+type PlanFeature = {
+  text: string;
+  tooltip?: string;
+};
+
+type Plan = {
+  name: string;
+  info: string;
+  price: {
+    monthly: number | string;
+    yearly: number | string;
+  };
+  features: PlanFeature[];
+  btn: {
+    text: string;
+    href: string;
+  };
+};
+
+export const PLANS: Plan[] = [
   {
     name: "Basic",
     info: "Regular upkeep for homes and small offices",
