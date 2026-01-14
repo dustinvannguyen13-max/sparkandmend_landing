@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AnimationContainer, Icons } from "@/components";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
-import { Facebook, Instagram, Music2 } from "lucide-react";
+import { Clock, Facebook, Instagram, Mail, MessageCircle, Phone, Music2 } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -31,7 +31,7 @@ const Footer = () => {
               <ul className="mt-4 text-sm text-muted-foreground">
                 <li className="mt-2">
                   <Link
-                    href="/features/link-shortening"
+                    href="/basic-clean"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Basic Clean
@@ -39,7 +39,7 @@ const Footer = () => {
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="/features/password-protection"
+                    href="/intermediate-clean"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Intermediate Clean
@@ -47,7 +47,7 @@ const Footer = () => {
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="/features/analytics"
+                    href="/advanced-clean"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Advanced Clean
@@ -55,7 +55,7 @@ const Footer = () => {
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="/features/qr-codes"
+                    href="/commercial-cleaning"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Commercial Cleaning
@@ -71,32 +71,36 @@ const Footer = () => {
                 <li>
                   <Link
                     href="mailto:sparkandmend@gmail.com"
-                    className="hover:text-foreground transition-all duration-300"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                   >
+                    <Mail className="h-4 w-4" />
                     Email: sparkandmend@gmail.com
                   </Link>
                 </li>
                 <li className="mt-2">
                   <Link
                     href="tel:07452824799"
-                    className="hover:text-foreground transition-all duration-300"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                   >
+                    <Phone className="h-4 w-4" />
                     Call: 07452 824799
                   </Link>
                 </li>
                 <li className="mt-2">
                   <Link
                     href="https://wa.me/447452824799"
-                    className="hover:text-foreground transition-all duration-300"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                   >
+                    <MessageCircle className="h-4 w-4" />
                     WhatsApp: 07452 824799
                   </Link>
                 </li>
                 <li className="mt-2">
                   <Link
                     href="/get-a-quote"
-                    className="hover:text-foreground transition-all duration-300"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                   >
+                    <Clock className="h-4 w-4" />
                     Hours: Mon-Fri 9am-6pm
                   </Link>
                 </li>
@@ -120,7 +124,7 @@ const Footer = () => {
                     href="/resources/help"
                     className="hover:text-foreground transition-all duration-300"
                   >
-                    Help &amp; Support
+                    Gallery
                   </Link>
                 </li>
               </ul>
@@ -132,7 +136,7 @@ const Footer = () => {
               <ul className="mt-4 text-sm text-muted-foreground">
                 <li>
                   <Link
-                    href="/changelog"
+                    href="/about"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     About Spark & Mend

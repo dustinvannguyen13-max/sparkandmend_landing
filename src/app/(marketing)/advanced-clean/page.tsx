@@ -5,6 +5,7 @@ import CTAStrip from "@/components/ui/cta-strip";
 import FAQAccordion from "@/components/ui/faq-accordion";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
@@ -16,11 +17,17 @@ export const metadata = generateMetadata({
 
 const HERO_IMAGE =
   "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w";
+const INCLUDE_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
+const sectionBase =
+  "rounded-[32px] border border-border/60 px-6 py-10 md:px-10 md:py-12";
+const heroSurface =
+  "relative overflow-hidden rounded-[32px] border border-border/60 bg-card/80 px-6 pt-8 pb-10 md:px-10 md:pt-10 md:pb-12";
 
 const concerns = [
   "Worried they will rush it and miss the details",
@@ -169,8 +176,13 @@ const CtaButtons = () => (
 const AdvancedCleanPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
-      <Section className="pt-6">
-        <AnimationContainer delay={0.1}>
+      <Section className={heroSurface}>
+        <StarsBackground
+          className="absolute inset-0 opacity-60"
+          starColor="#09484F"
+          pointerEvents={false}
+        />
+        <AnimationContainer delay={0.1} className="relative z-10">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="text-center lg:text-left">
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
@@ -206,7 +218,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-subtle/80`}>
         <AnimationContainer delay={0.15}>
           <SectionHeader
             eyebrow="Reassurance"
@@ -223,7 +235,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-tertiary/80`}>
         <AnimationContainer delay={0.2}>
           <SectionHeader
             eyebrow="Scope"
@@ -231,22 +243,33 @@ const AdvancedCleanPage = () => {
             description="Advanced is the most thorough clean. It focuses on detail, build-up, and the areas that make a full reset feel complete."
             align="left"
           />
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {includeGroups.map((group) => (
-              <div
-                key={group.title}
-                className="rounded-2xl border border-border/60 bg-card/90 p-5"
-              >
-                <h3 className="text-lg font-semibold text-foreground">
-                  {group.title}
-                </h3>
-                <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                  {group.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div className="grid gap-6 md:grid-cols-2">
+              {includeGroups.map((group) => (
+                <div
+                  key={group.title}
+                  className="rounded-2xl border border-border/60 bg-card/90 p-5"
+                >
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {group.title}
+                  </h3>
+                  <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_20px_60px_-50px_hsl(var(--primary)/0.45)]">
+              <Image
+                src={INCLUDE_IMAGE}
+                alt="Detail-focused clean with a calm finish"
+                width={1200}
+                height={900}
+                className="h-[240px] w-full rounded-[22px] object-cover sm:h-[320px] lg:h-[420px]"
+              />
+            </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
@@ -258,7 +281,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-muted/70`}>
         <AnimationContainer delay={0.25}>
           <SectionHeader
             eyebrow="Popular add-ons"
@@ -276,7 +299,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-subtle/70`}>
         <AnimationContainer delay={0.3}>
           <SectionHeader
             eyebrow="Best for"
@@ -292,7 +315,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-tertiary/70`}>
         <AnimationContainer delay={0.35}>
           <SectionHeader
             eyebrow="Process"
@@ -325,7 +348,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-card/80`}>
         <AnimationContainer delay={0.4}>
           <SectionHeader
             eyebrow="Results"
@@ -341,7 +364,7 @@ const AdvancedCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-muted/70`}>
         <AnimationContainer delay={0.45}>
           <SectionHeader
             eyebrow="FAQs"

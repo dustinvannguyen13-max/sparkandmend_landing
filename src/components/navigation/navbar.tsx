@@ -12,16 +12,39 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn, NAV_LINKS } from "@/utils";
-import { LucideIcon, ZapIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import MaxWidthWrapper from "../global/max-width-wrapper";
 import MobileNavbar from "./mobile-navbar";
 import AnimationContainer from "../global/animation-container";
 import { Icons } from "../global/icons";
+import { BrushCleaning } from "../ui/brush-cleaning";
+
+type NavMenuItem = NonNullable<(typeof NAV_LINKS)[number]["menu"]>[number];
+
+const DEFAULT_SERVICE_CARD = {
+  title: "All Services",
+  tagline: "Regular, intermediate, advanced, and commercial options for every space.",
+  href: "/",
+};
+
+const SERVICE_CARD_BACKGROUNDS: Record<string, string> = {
+  "All Services":
+    "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--primary)/0.12),transparent_60%)]",
+  "Basic Clean":
+    "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--primary)/0.16),transparent_60%)]",
+  "Intermediate Clean":
+    "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--secondary)/0.2),transparent_60%)]",
+  "Advanced Clean":
+    "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--primary)/0.22),hsl(var(--secondary)/0.12)_55%,transparent)]",
+  "Commercial Cleaning":
+    "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--secondary)/0.22),transparent_60%)]",
+};
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
+  const [activeService, setActiveService] = useState<NavMenuItem | null>(null);
 
   const handleScroll = () => {
     if (window.scrollY > 8) {
@@ -72,19 +95,35 @@ const Navbar = () => {
                                 ? "lg:grid-cols-[.75fr_1fr]"
                                 : "lg:grid-cols-2"
                             )}
+                            onMouseLeave={() => {
+                              if (link.title === "Services") setActiveService(null);
+                            }}
+                            onBlur={(event) => {
+                              if (
+                                link.title === "Services" &&
+                                !event.currentTarget.contains(event.relatedTarget as Node)
+                              ) {
+                                setActiveService(null);
+                              }
+                            }}
                           >
                             {link.title === "Services" && (
                               <li className="row-span-4 pr-2 relative rounded-xl overflow-hidden">
                                 <NavigationMenuLink asChild className="z-20 relative">
                                   <Link
-                                    href="/"
-                                    className="flex h-full w-full select-none flex-col justify-end rounded-xl border border-border/60 bg-card/90 p-4 no-underline outline-none focus:shadow-md"
+                                    href={activeService?.href ?? DEFAULT_SERVICE_CARD.href}
+                                    className={cn(
+                                      "flex h-full w-full select-none flex-col justify-end rounded-xl border border-border/60 bg-card/90 p-4 no-underline outline-none transition-all focus:shadow-md",
+                                      SERVICE_CARD_BACKGROUNDS[
+                                        activeService?.title ?? DEFAULT_SERVICE_CARD.title
+                                      ] ?? SERVICE_CARD_BACKGROUNDS["All Services"]
+                                    )}
                                   >
                                     <h6 className="mb-2 mt-4 text-lg font-semibold">
-                                      All Services
+                                      {activeService?.title ?? DEFAULT_SERVICE_CARD.title}
                                     </h6>
                                     <p className="text-sm leading-tight text-muted-foreground">
-                                      Regular, intermediate, advanced, and commercial options for every space.
+                                      {activeService?.tagline ?? DEFAULT_SERVICE_CARD.tagline}
                                     </p>
                                   </Link>
                                 </NavigationMenuLink>
@@ -96,6 +135,12 @@ const Navbar = () => {
                                 title={menuItem.title}
                                 href={menuItem.href}
                                 icon={menuItem.icon}
+                                onMouseEnter={() => {
+                                  if (link.title === "Services") setActiveService(menuItem);
+                                }}
+                                onFocus={() => {
+                                  if (link.title === "Services") setActiveService(menuItem);
+                                }}
                               >
                                 {menuItem.tagline}
                               </ListItem>
@@ -124,9 +169,9 @@ const Navbar = () => {
                 <Link href="tel:07452824799">Call 07452 824799</Link>
               </Button>
               <PrimaryButton size="sm" asChild>
-                <Link href="/get-a-quote">
+                <Link href="/get-a-quote" className="flex items-center gap-2 group">
                   Get an Instant Quote
-                  <ZapIcon className="size-3.5" />
+                  <BrushCleaning className="size-3.5" animateOnHover />
                 </Link>
               </PrimaryButton>
             </div>

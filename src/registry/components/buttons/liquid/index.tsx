@@ -15,13 +15,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "[--liquid-button-background-color:hsl(var(--accent))] [--liquid-button-color:hsl(var(--primary))] text-primary hover:text-primary-foreground shadow-xs",
+          "[--liquid-button-background-color:hsl(var(--accent))] [--liquid-button-color:hsl(var(--primary))] [--liquid-button-text-rest-color:hsl(var(--primary))] [--liquid-button-text-hover-color:hsl(var(--primary-foreground))] text-primary hover:text-primary-foreground shadow-xs",
         destructive:
-          "[--liquid-button-background-color:hsl(var(--accent))] [--liquid-button-color:hsl(var(--destructive))] text-white shadow-xs focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          "[--liquid-button-background-color:hsl(var(--accent))] [--liquid-button-color:hsl(var(--destructive))] [--liquid-button-text-rest-color:hsl(var(--destructive-foreground))] [--liquid-button-text-hover-color:hsl(var(--destructive-foreground))] text-white shadow-xs focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         secondary:
-          "[--liquid-button-background-color:hsl(var(--accent))] [--liquid-button-color:hsl(var(--secondary))] text-secondary hover:text-secondary-foreground shadow-xs",
+          "[--liquid-button-background-color:hsl(var(--accent))] [--liquid-button-color:hsl(var(--secondary))] [--liquid-button-text-rest-color:hsl(var(--secondary))] [--liquid-button-text-hover-color:hsl(var(--secondary-foreground))] text-secondary hover:text-secondary-foreground shadow-xs",
         ghost:
-          "[--liquid-button-background-color:transparent] [--liquid-button-color:hsl(var(--primary))] text-primary hover:text-primary-foreground shadow-xs",
+          "[--liquid-button-background-color:transparent] [--liquid-button-color:hsl(var(--primary))] [--liquid-button-text-rest-color:hsl(var(--primary))] [--liquid-button-text-hover-color:hsl(var(--primary-foreground))] text-primary hover:text-primary-foreground shadow-xs",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

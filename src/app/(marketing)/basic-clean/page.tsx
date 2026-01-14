@@ -5,22 +5,29 @@ import CTAStrip from "@/components/ui/cta-strip";
 import FAQAccordion from "@/components/ui/faq-accordion";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
 export const metadata = generateMetadata({
-  title: "Intermediate Clean | Spark & Mend",
+  title: "Basic Clean | Spark & Mend",
   description:
-    "Intermediate cleaning in Plymouth for when it is getting on top of you. Extra detail on build-up and touch points for a sharper finish. Get an instant quote in about 60 seconds.",
+    "Basic cleaning in Plymouth for already tidy homes. A simple, regular reset focused on visible areas. Get an instant quote in about 60 seconds.",
 });
 
 const HERO_IMAGE =
-  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w";
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w";
+const INCLUDE_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
+const sectionBase =
+  "rounded-[32px] border border-border/60 px-6 py-10 md:px-10 md:py-12";
+const heroSurface =
+  "relative overflow-hidden rounded-[32px] border border-border/60 bg-card/80 px-6 pt-8 pb-10 md:px-10 md:pt-10 md:pb-12";
 
 const concerns = [
   "Worried they will rush it and miss the details",
@@ -34,68 +41,67 @@ const includeGroups = [
   {
     title: "Kitchen",
     items: [
-      "Worktops, cupboard fronts, and splashbacks wiped",
-      "Sink, taps, and hob exterior detailed",
-      "Appliance exteriors wiped and polished",
-      "Extra attention to build-up around edges",
+      "Worktops and cupboard fronts wiped",
+      "Sink, taps, and splashback cleaned",
+      "Hob exterior wiped and polished",
+      "Bins emptied and liners tidied",
     ],
   },
   {
     title: "Bathroom",
     items: [
       "Toilet, sink, taps, and mirror cleaned",
-      "Shower or bath surfaces with limescale focus",
-      "Tiles and grout spot attention where reachable",
-      "Chrome polished for a sharper finish",
+      "Shower or bath surfaces wiped",
+      "Quick tidy of counters and toiletries",
     ],
   },
   {
     title: "Living areas",
     items: [
-      "Dusting including skirting boards and ledges",
-      "Handles, switches, and touch points wiped",
-      "Tidy surfaces and straighten soft furnishings",
+      "Dust reachable surfaces and shelves",
+      "Straighten cushions and tidy surfaces",
+      "Light touch points wiped in main rooms",
     ],
   },
   {
     title: "Floors",
     items: [
-      "Vacuum edges and under reachable furniture",
-      "Mop hard floors with extra attention",
-      "Spot clean obvious marks",
+      "Vacuum carpets and rugs",
+      "Mop hard floors",
+      "Spot wipe obvious marks",
     ],
   },
   {
     title: "Extras",
     items: [
-      "Spot clean marks on doors and frames",
-      "Bins wiped and reset",
+      "Entryway tidy and quick refresh",
+      "Recycling emptied if accessible",
       "Add-ons available when you request a quote",
     ],
   },
 ];
 
 const whoFor = [
-  "Homes where it is getting on top of you and needs a proper reset",
-  "Busy households who want a monthly clean with more detail",
-  "Homes with pets or kids where touch points build up",
-  "Pre-guest refreshes when you want a sharper finish",
-  "Small offices that need more than a quick tidy",
+  "Already fairly tidy homes that need a regular reset",
+  "Busy households who want weekly or fortnightly upkeep",
+  "Renters staying on top between deeper cleans",
+  "Small offices that need a light, reliable clean",
+  "Anyone who wants quick freshness without deep detail",
 ];
 
 const results = [
-  "Crisp bathrooms with reduced build-up",
-  "Kitchen feels properly reset",
-  "Floors look even and freshly finished",
-  "Touch points feel clean and smooth",
+  "Crisp bathrooms",
+  "Kitchen feels reset",
+  "Floors look even and fresh",
   "No sticky bits. No missed corners.",
+  "A lighter, easier-to-maintain feel",
 ];
 
 const faqs = [
   {
     question: "What is the difference between Basic, Intermediate, and Advanced?",
     answer:
-      "Basic is for light, regular upkeep. Intermediate gives extra time to build-up and touch points. Advanced is the most thorough option for a full reset.",
+      "Basic is a light, visible-area clean for regular upkeep. Intermediate goes deeper on build-up and touch points. Advanced is the most thorough option for a full reset.",
   },
   {
     question: "How long does it take?",
@@ -125,7 +131,7 @@ const faqs = [
   {
     question: "What if I need regular cleaning?",
     answer:
-      "Choose weekly, fortnightly, or monthly in the quote form. We will line up a consistent schedule that works for you.",
+      "Choose weekly or fortnightly in the quote form. We will line up a consistent schedule that works for you.",
   },
   {
     question: "Can I book for a rental or end-of-tenancy style reset?",
@@ -159,23 +165,28 @@ const CtaButtons = () => (
   </div>
 );
 
-const IntermediateCleanPage = () => {
+const BasicCleanPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
-      <Section className="pt-6">
-        <AnimationContainer delay={0.1}>
+      <Section className={heroSurface}>
+        <StarsBackground
+          className="absolute inset-0 opacity-60"
+          starColor="#09484F"
+          pointerEvents={false}
+        />
+        <AnimationContainer delay={0.1} className="relative z-10">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="text-center lg:text-left">
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                Intermediate Clean
+                Basic Clean
               </p>
               <h1 className="mt-4 text-3xl md:text-5xl font-semibold font-heading text-foreground">
-                Intermediate Clean - more detail, more time, better finish
+                Basic Clean - a simple reset for busy weeks
               </h1>
               <p className="mt-4 text-base md:text-lg text-muted-foreground">
-                Best for when it is getting on top of you and you want a proper
-                reset. We put extra attention into build-up and touch points for a
-                sharper finish.
+                A light, regular clean for already fairly tidy homes in Plymouth. We
+                focus on visible areas for quick freshness. It is not a deep or
+                detail clean.
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
@@ -189,7 +200,7 @@ const IntermediateCleanPage = () => {
             <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
               <Image
                 src={HERO_IMAGE}
-                alt="Freshly cleaned living area with calm finish"
+                alt="Neatly cleaned kitchen and dining area"
                 width={1200}
                 height={900}
                 className="h-[280px] w-full rounded-[22px] object-cover sm:h-[340px]"
@@ -199,7 +210,7 @@ const IntermediateCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-subtle/80`}>
         <AnimationContainer delay={0.15}>
           <SectionHeader
             eyebrow="Reassurance"
@@ -216,30 +227,41 @@ const IntermediateCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-tertiary/80`}>
         <AnimationContainer delay={0.2}>
           <SectionHeader
             eyebrow="Scope"
             title="What this service includes"
-            description="Intermediate is a more detailed clean that tackles build-up and high-touch areas without going fully deep."
+            description="A basic clean keeps the everyday areas in good order with a tidy, refreshed finish."
             align="left"
           />
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {includeGroups.map((group) => (
-              <div
-                key={group.title}
-                className="rounded-2xl border border-border/60 bg-card/90 p-5"
-              >
-                <h3 className="text-lg font-semibold text-foreground">
-                  {group.title}
-                </h3>
-                <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                  {group.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div className="grid gap-6 md:grid-cols-2">
+              {includeGroups.map((group) => (
+                <div
+                  key={group.title}
+                  className="rounded-2xl border border-border/60 bg-card/90 p-5"
+                >
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {group.title}
+                  </h3>
+                  <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_20px_60px_-50px_hsl(var(--primary)/0.45)]">
+              <Image
+                src={INCLUDE_IMAGE}
+                alt="Freshly cleaned kitchen surfaces"
+                width={1200}
+                height={900}
+                className="h-[240px] w-full rounded-[22px] object-cover sm:h-[320px] lg:h-[420px]"
+              />
+            </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
@@ -251,44 +273,42 @@ const IntermediateCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-muted/70`}>
         <AnimationContainer delay={0.25}>
           <SectionHeader
             eyebrow="Comparison"
-            title="Intermediate vs Advanced"
-            description="Pick the depth that suits your space today."
+            title="Basic vs Intermediate"
+            description="Choose the clean that matches your space right now."
           />
           <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
+              <h3 className="text-lg font-semibold text-foreground">Basic Clean</h3>
+              <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                <li>Light upkeep for visible areas</li>
+                <li>Best for already tidy homes</li>
+                <li>Shorter visits for regular refresh</li>
+              </ul>
+            </div>
             <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
               <h3 className="text-lg font-semibold text-foreground">
                 Intermediate Clean
               </h3>
               <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                <li>Extra attention to build-up and touch points</li>
-                <li>Great for monthly resets</li>
-                <li>More detail without full deep work</li>
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <h3 className="text-lg font-semibold text-foreground">
-                Advanced Clean
-              </h3>
-              <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                <li>Most thorough option for a full reset</li>
-                <li>Best for first cleans or seasonal refresh</li>
-                <li>More time on detailed areas and build-up</li>
+                <li>More time on build-up and touch points</li>
+                <li>Better for monthly resets</li>
+                <li>Extra detail in kitchens and bathrooms</li>
               </ul>
             </div>
           </div>
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-subtle/70`}>
         <AnimationContainer delay={0.3}>
           <SectionHeader
             eyebrow="Best for"
             title="Who it is for"
-            description="Best for when it is getting on top of you."
+            description="Ideal for keeping things tidy without deep detail."
             align="left"
           />
           <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
@@ -299,7 +319,7 @@ const IntermediateCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-tertiary/70`}>
         <AnimationContainer delay={0.35}>
           <SectionHeader
             eyebrow="Process"
@@ -332,12 +352,12 @@ const IntermediateCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-card/80`}>
         <AnimationContainer delay={0.4}>
           <SectionHeader
             eyebrow="Results"
             title="Results you will notice"
-            description="Extra detail with a sharper finish."
+            description="A lighter, fresher feel across the main areas."
             align="left"
           />
           <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
@@ -348,7 +368,7 @@ const IntermediateCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-muted/70`}>
         <AnimationContainer delay={0.45}>
           <SectionHeader
             eyebrow="FAQs"
@@ -357,7 +377,7 @@ const IntermediateCleanPage = () => {
           />
           <FAQAccordion
             items={faqs.map((faq, index) => ({
-              id: `intermediate-faq-${index}`,
+              id: `basic-faq-${index}`,
               question: faq.question,
               answer: faq.answer,
             }))}
@@ -368,8 +388,8 @@ const IntermediateCleanPage = () => {
 
       <Section>
         <CTAStrip
-          title="Ready for a more detailed clean?"
-          description="Get your instant quote, choose a slot, and let us handle the reset."
+          title="Ready for a simple, reliable clean?"
+          description="Get your instant quote, pick a time, and keep things tidy without the fuss."
           primaryHref="/get-a-quote"
           primaryLabel="Get an Instant Quote"
           secondaryHref={CONTACT_PHONE_LINK}
@@ -381,4 +401,4 @@ const IntermediateCleanPage = () => {
   );
 };
 
-export default IntermediateCleanPage;
+export default BasicCleanPage;

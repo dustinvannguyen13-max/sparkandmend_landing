@@ -44,12 +44,21 @@ const MobileNavbar = () => {
             </Button>
           </SheetClose>
           <div className="flex flex-col items-start w-full py-2 mt-10">
-            <div className="flex items-center justify-evenly w-full space-x-2">
+            <div className="grid w-full grid-cols-2 gap-2">
               <>
-                <Button variant="outline" className="w-full" asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-auto w-full px-3 py-2 text-[11px] leading-snug whitespace-normal"
+                  asChild
+                >
                   <Link href="tel:07452824799">Call 07452 824799</Link>
                 </Button>
-                <PrimaryButton className="w-full" size="sm" asChild>
+                <PrimaryButton
+                  className="h-auto w-full px-3 py-2 text-[11px] leading-snug whitespace-normal"
+                  size="sm"
+                  asChild
+                >
                   <Link href="/get-a-quote">Get an Instant Quote</Link>
                 </PrimaryButton>
               </>

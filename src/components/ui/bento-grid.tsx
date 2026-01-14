@@ -21,7 +21,7 @@ export const CARDS = [
         Icon: HomeIcon,
         name: "Regular cleaning",
         description: "Weekly or bi-weekly visits that keep your space consistently tidy.",
-        href: "/features/link-shortening",
+        href: "/basic-clean",
         cta: "View details",
         className: "col-span-3 lg:col-span-1",
         background: (
@@ -51,7 +51,7 @@ export const CARDS = [
         Icon: SprayCanIcon,
         name: "Deep clean focus",
         description: "A more detailed clean when your space needs extra care.",
-        href: "/features/password-protection",
+        href: "/intermediate-clean",
         cta: "View details",
         className: "col-span-3 lg:col-span-2",
         background: (
@@ -72,7 +72,7 @@ export const CARDS = [
         Icon: Building2Icon,
         name: "Commercial and office",
         description: "Reliable, discreet cleaning for workspaces and shared areas.",
-        href: "/features/qr-codes",
+        href: "/commercial-cleaning",
         cta: "View details",
         className: "col-span-3 lg:col-span-2 max-w-full overflow-hidden",
         background: (
@@ -84,7 +84,7 @@ export const CARDS = [
         name: "Flexible scheduling",
         description: "Choose a time that works around your routine.",
         className: "col-span-3 lg:col-span-1",
-        href: "/pricing",
+        href: "/get-a-quote",
         cta: "View details",
         background: (
             <Calendar

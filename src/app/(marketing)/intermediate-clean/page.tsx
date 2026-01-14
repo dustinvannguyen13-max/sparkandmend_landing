@@ -5,22 +5,29 @@ import CTAStrip from "@/components/ui/cta-strip";
 import FAQAccordion from "@/components/ui/faq-accordion";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
 export const metadata = generateMetadata({
-  title: "Commercial Cleaning | Spark & Mend",
+  title: "Intermediate Clean | Spark & Mend",
   description:
-    "Commercial cleaning in Plymouth for offices and small businesses. Reliable, professional, consistent cleaning with clear scope. Get an instant quote in about 60 seconds.",
+    "Intermediate cleaning in Plymouth for when it is getting on top of you. Extra detail on build-up and touch points for a sharper finish. Get an instant quote in about 60 seconds.",
 });
 
 const HERO_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w";
+const INCLUDE_IMAGE =
   "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
+const sectionBase =
+  "rounded-[32px] border border-border/60 px-6 py-10 md:px-10 md:py-12";
+const heroSurface =
+  "relative overflow-hidden rounded-[32px] border border-border/60 bg-card/80 px-6 pt-8 pb-10 md:px-10 md:pt-10 md:pb-12";
 
 const concerns = [
   "Worried they will rush it and miss the details",
@@ -32,69 +39,62 @@ const concerns = [
 
 const includeGroups = [
   {
-    title: "Work areas",
+    title: "Kitchen",
     items: [
-      "Desks and shared surfaces wiped",
-      "Reception and meeting rooms tidied",
-      "Touch points cleaned across key areas",
+      "Worktops, cupboard fronts, and splashbacks wiped",
+      "Sink, taps, and hob exterior detailed",
+      "Appliance exteriors wiped and polished",
+      "Extra attention to build-up around edges",
     ],
   },
   {
-    title: "Washrooms",
+    title: "Bathroom",
     items: [
-      "Toilets, sinks, taps, and mirrors cleaned",
-      "Soap and paper areas wiped",
-      "Bins emptied and reset",
+      "Toilet, sink, taps, and mirror cleaned",
+      "Shower or bath surfaces with limescale focus",
+      "Tiles and grout spot attention where reachable",
+      "Chrome polished for a sharper finish",
     ],
   },
   {
-    title: "Kitchens",
+    title: "Living areas",
     items: [
-      "Worktops and sinks cleaned",
-      "Appliance exteriors wiped",
-      "Tables and shared areas tidied",
+      "Dusting including skirting boards and ledges",
+      "Handles, switches, and touch points wiped",
+      "Tidy surfaces and straighten soft furnishings",
     ],
   },
   {
     title: "Floors",
     items: [
-      "Vacuum carpets and rugs",
-      "Mop hard floors",
+      "Vacuum edges and under reachable furniture",
+      "Mop hard floors with extra attention",
       "Spot clean obvious marks",
     ],
   },
   {
     title: "Extras",
     items: [
-      "Bins and recycling taken out",
-      "High-traffic touch points wiped",
+      "Spot clean marks on doors and frames",
+      "Bins wiped and reset",
       "Add-ons available when you request a quote",
     ],
   },
 ];
 
-const businessTypes = [
-  "Offices and meeting rooms",
-  "Clinics and treatment rooms",
-  "Salons and studios",
-  "Retail shops and showrooms",
-  "Cafes and restaurant front-of-house areas",
-  "Landlord common areas and stairwells",
-];
-
 const whoFor = [
-  "Small businesses that need a consistent, professional finish",
-  "Offices that want tidy, client-ready spaces",
-  "Clinics, salons, and studios with steady footfall",
-  "Retail and hospitality spaces that need reliable upkeep",
-  "Landlord-managed common areas",
+  "Homes where it is getting on top of you and needs a proper reset",
+  "Busy households who want a monthly clean with more detail",
+  "Homes with pets or kids where touch points build up",
+  "Pre-guest refreshes when you want a sharper finish",
+  "Small offices that need more than a quick tidy",
 ];
 
 const results = [
-  "Tidy work areas that feel professional",
-  "Crisp washrooms and kitchens",
-  "Floors that look even and fresh",
-  "Touch points feel clean and well kept",
+  "Crisp bathrooms with reduced build-up",
+  "Kitchen feels properly reset",
+  "Floors look even and freshly finished",
+  "Touch points feel clean and smooth",
   "No sticky bits. No missed corners.",
 ];
 
@@ -102,17 +102,17 @@ const faqs = [
   {
     question: "What is the difference between Basic, Intermediate, and Advanced?",
     answer:
-      "Those are residential options. Commercial cleaning is scoped to your workspace needs, with clear areas and frequency agreed in advance.",
+      "Basic is for light, regular upkeep. Intermediate gives extra time to build-up and touch points. Advanced is the most thorough option for a full reset.",
   },
   {
     question: "How long does it take?",
     answer:
-      "It depends on the size and condition of your space. Your instant quote gives a clear estimate, and we confirm timings before booking.",
+      "It depends on the size and condition of the property. Your instant quote gives a clear estimate, and we confirm timings before booking.",
   },
   {
-    question: "Do we need to be on site?",
+    question: "Do I need to be home?",
     answer:
-      "Not necessarily. We can work around your hours and access preferences once we confirm the booking.",
+      "No. Many clients provide access details. We will confirm the plan and arrival details in advance.",
   },
   {
     question: "Do you bring supplies?",
@@ -125,19 +125,19 @@ const faqs = [
       "Yes. Tell us what matters most in your quote notes and we will prioritise those areas.",
   },
   {
-    question: "What about pets or staff on site?",
+    question: "What about pets?",
     answer:
-      "No problem. We work around people calmly and keep disruption low.",
+      "Pets are fine. Please let us know so we can plan around them calmly and safely.",
   },
   {
     question: "What if I need regular cleaning?",
     answer:
-      "Choose weekly or fortnightly in the quote form. We will line up a consistent schedule that suits your space.",
+      "Choose weekly, fortnightly, or monthly in the quote form. We will line up a consistent schedule that works for you.",
   },
   {
     question: "Can I book for a rental or end-of-tenancy style reset?",
     answer:
-      "Yes. If you need a full reset for a property, tell us in the quote and we will confirm the scope.",
+      "Yes. If you need a fuller reset, Advanced Clean is the closest fit. Tell us in the quote so we can confirm the scope.",
   },
 ];
 
@@ -166,22 +166,28 @@ const CtaButtons = () => (
   </div>
 );
 
-const CommercialCleanPage = () => {
+const IntermediateCleanPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
-      <Section className="pt-6">
-        <AnimationContainer delay={0.1}>
+      <Section className={heroSurface}>
+        <StarsBackground
+          className="absolute inset-0 opacity-60"
+          starColor="#09484F"
+          pointerEvents={false}
+        />
+        <AnimationContainer delay={0.1} className="relative z-10">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="text-center lg:text-left">
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                Commercial Cleaning
+                Intermediate Clean
               </p>
               <h1 className="mt-4 text-3xl md:text-5xl font-semibold font-heading text-foreground">
-                Commercial Cleaning - reliable, professional, consistent
+                Intermediate Clean - more detail, more time, better finish
               </h1>
               <p className="mt-4 text-base md:text-lg text-muted-foreground">
-                Keep your workspace client-ready with a tidy, professional finish. We
-                work around your hours and keep the scope clear.
+                Best for when it is getting on top of you and you want a proper
+                reset. We put extra attention into build-up and touch points for a
+                sharper finish.
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
@@ -195,7 +201,7 @@ const CommercialCleanPage = () => {
             <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
               <Image
                 src={HERO_IMAGE}
-                alt="Clean, professional workspace environment"
+                alt="Freshly cleaned living area with calm finish"
                 width={1200}
                 height={900}
                 className="h-[280px] w-full rounded-[22px] object-cover sm:h-[340px]"
@@ -205,7 +211,7 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-subtle/80`}>
         <AnimationContainer delay={0.15}>
           <SectionHeader
             eyebrow="Reassurance"
@@ -222,30 +228,41 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-tertiary/80`}>
         <AnimationContainer delay={0.2}>
           <SectionHeader
             eyebrow="Scope"
             title="What this service includes"
-            description="We focus on the areas that matter most for a professional, tidy workspace."
+            description="Intermediate is a more detailed clean that tackles build-up and high-touch areas without going fully deep."
             align="left"
           />
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {includeGroups.map((group) => (
-              <div
-                key={group.title}
-                className="rounded-2xl border border-border/60 bg-card/90 p-5"
-              >
-                <h3 className="text-lg font-semibold text-foreground">
-                  {group.title}
-                </h3>
-                <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                  {group.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div className="grid gap-6 md:grid-cols-2">
+              {includeGroups.map((group) => (
+                <div
+                  key={group.title}
+                  className="rounded-2xl border border-border/60 bg-card/90 p-5"
+                >
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {group.title}
+                  </h3>
+                  <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_20px_60px_-50px_hsl(var(--primary)/0.45)]">
+              <Image
+                src={INCLUDE_IMAGE}
+                alt="Neatly reset kitchen and dining area"
+                width={1200}
+                height={900}
+                className="h-[240px] w-full rounded-[22px] object-cover sm:h-[320px] lg:h-[420px]"
+              />
+            </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
@@ -257,30 +274,44 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-muted/70`}>
         <AnimationContainer delay={0.25}>
           <SectionHeader
-            eyebrow="Business types"
-            title="What we clean"
-            description="We work with a range of local businesses across Plymouth."
-            align="left"
+            eyebrow="Comparison"
+            title="Intermediate vs Advanced"
+            description="Pick the depth that suits your space today."
           />
-          <ul className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
-            {businessTypes.map((item) => (
-              <li key={item} className="rounded-xl border border-border/60 bg-card/80 px-4 py-3">
-                {item}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
+              <h3 className="text-lg font-semibold text-foreground">
+                Intermediate Clean
+              </h3>
+              <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                <li>Extra attention to build-up and touch points</li>
+                <li>Great for monthly resets</li>
+                <li>More detail without full deep work</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
+              <h3 className="text-lg font-semibold text-foreground">
+                Advanced Clean
+              </h3>
+              <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                <li>Most thorough option for a full reset</li>
+                <li>Best for first cleans or seasonal refresh</li>
+                <li>More time on detailed areas and build-up</li>
+              </ul>
+            </div>
+          </div>
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-subtle/70`}>
         <AnimationContainer delay={0.3}>
           <SectionHeader
             eyebrow="Best for"
             title="Who it is for"
-            description="A consistent, professional finish for client-facing spaces."
+            description="Best for when it is getting on top of you."
             align="left"
           />
           <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
@@ -291,7 +322,7 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-tertiary/70`}>
         <AnimationContainer delay={0.35}>
           <SectionHeader
             eyebrow="Process"
@@ -324,12 +355,12 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-card/80`}>
         <AnimationContainer delay={0.4}>
           <SectionHeader
             eyebrow="Results"
             title="Results you will notice"
-            description="A professional finish across the areas that matter most."
+            description="Extra detail with a sharper finish."
             align="left"
           />
           <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
@@ -340,7 +371,7 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section className={`${sectionBase} bg-muted/70`}>
         <AnimationContainer delay={0.45}>
           <SectionHeader
             eyebrow="FAQs"
@@ -349,7 +380,7 @@ const CommercialCleanPage = () => {
           />
           <FAQAccordion
             items={faqs.map((faq, index) => ({
-              id: `commercial-faq-${index}`,
+              id: `intermediate-faq-${index}`,
               question: faq.question,
               answer: faq.answer,
             }))}
@@ -360,8 +391,8 @@ const CommercialCleanPage = () => {
 
       <Section>
         <CTAStrip
-          title="Ready to keep your workspace client-ready?"
-          description="Get your instant quote, choose a slot, and keep the workplace tidy and professional."
+          title="Ready for a more detailed clean?"
+          description="Get your instant quote, choose a slot, and let us handle the reset."
           primaryHref="/get-a-quote"
           primaryLabel="Get an Instant Quote"
           secondaryHref={CONTACT_PHONE_LINK}
@@ -373,4 +404,4 @@ const CommercialCleanPage = () => {
   );
 };
 
-export default CommercialCleanPage;
+export default IntermediateCleanPage;

@@ -1,8 +1,8 @@
 import {
     Building2Icon,
     ClipboardCheckIcon,
-    HelpCircleIcon,
     HomeIcon,
+    ImageIcon,
     NewspaperIcon,
     SprayCanIcon,
 } from "lucide-react";
@@ -10,41 +10,37 @@ import {
 export const NAV_LINKS = [
     {
         title: "Services",
-        href: "/features",
+        href: "/basic-clean",
         menu: [
             {
                 title: "Basic Clean",
                 tagline: "Weekly or bi-weekly upkeep for homes and small offices.",
-                href: "/features/link-shortening",
+                href: "/basic-clean",
                 icon: HomeIcon,
             },
             {
                 title: "Intermediate Clean",
                 tagline: "A deeper, more detailed clean each visit.",
-                href: "/features/password-protection",
+                href: "/intermediate-clean",
                 icon: SprayCanIcon,
             },
             {
                 title: "Advanced Clean",
                 tagline: "End-of-tenancy, seasonal, or full reset cleans.",
-                href: "/features/analytics",
+                href: "/advanced-clean",
                 icon: ClipboardCheckIcon,
             },
             {
                 title: "Commercial Cleaning",
                 tagline: "Reliable cleans for offices and workspaces.",
-                href: "/features/qr-codes",
+                href: "/commercial-cleaning",
                 icon: Building2Icon,
             },
         ],
     },
     {
-        title: "Pricing",
-        href: "/pricing",
-    },
-    {
         title: "About",
-        href: "/changelog",
+        href: "/about",
     },
     {
         title: "Contact",
@@ -61,10 +57,10 @@ export const NAV_LINKS = [
                 icon: NewspaperIcon,
             },
             {
-                title: "Help",
-                tagline: "FAQs, booking help, and support.",
+                title: "Gallery",
+                tagline: "See recent cleans and service highlights.",
                 href: "/resources/help",
-                icon: HelpCircleIcon,
+                icon: ImageIcon,
             },
         ]
     },

@@ -3,6 +3,7 @@ import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import CTAStrip from "@/components/ui/cta-strip";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
@@ -62,8 +63,13 @@ const ContactDetails = () => (
 const TeamPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
-      <Section className="pt-6">
-        <AnimationContainer delay={0.1}>
+      <Section className="pt-6 relative overflow-hidden">
+        <StarsBackground
+          className="absolute inset-0 opacity-55"
+          starColor="#09484F"
+          pointerEvents={false}
+        />
+        <AnimationContainer delay={0.1} className="relative z-10">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="text-center lg:text-left">
               <SectionHeader

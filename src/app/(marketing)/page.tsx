@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   AnimationContainer,
   MaxWidthWrapper,
-  PricingCards,
 } from "@/components";
 import { BentoCard, BentoGrid, CARDS } from "@/components/ui/bento-grid";
 import { BorderBeam } from "@/components/ui/border-beam";
@@ -19,8 +18,9 @@ import { LampContainer } from "@/components/ui/lamp";
 import MagicBadge from "@/components/ui/magic-badge";
 import MagicCard from "@/components/ui/magic-card";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import { RotatingText, RotatingTextContainer } from "@/components/ui/rotating-text";
 import { COMPANIES, PROCESS, REVIEWS } from "@/utils";
-import { ArrowRight, CreditCard, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 
 const HomePage = async () => {
   return (
@@ -44,7 +44,17 @@ const HomePage = async () => {
               <span className="text-transparent mx-2 bg-gradient-to-r from-[#714b4b] to-[#efe6d9] bg-clip-text inline-bloc">
                 cleaning
               </span>
-              for homes, offices, and rentals in Plymouth
+              for{" "}
+              <RotatingTextContainer
+                text={["homes", "offices", "rentals"]}
+                duration={2200}
+                y={32}
+                className="inline-flex min-w-[7ch] items-baseline"
+                style={{ paddingBlock: 0 }}
+              >
+                <RotatingText className="text-primary font-semibold" />
+              </RotatingTextContainer>{" "}
+              in Plymouth
             </h1>
             <p className="mb-12 text-lg tracking-tight text-muted-foreground md:text-xl text-balance">
               Reliable home, office, and end-of-tenancy cleaning across Plymouth.
@@ -70,7 +80,7 @@ const HomePage = async () => {
             <div className="absolute md:top-[10%] left-1/2 gradient w-3/4 -translate-x-1/2 h-1/4 md:h-1/3 inset-0 blur-[5rem] animate-image-glow"></div>
             <div className="-m-2 rounded-xl p-2 ring-1 ring-inset ring-foreground/20 lg:-m-4 lg:rounded-2xl bg-opacity-50 backdrop-blur-3xl">
               <div
-                className="relative w-full h-[460px] md:h-[540px] lg:h-[600px] overflow-hidden rounded-[inherit] bg-center bg-cover bg-no-repeat"
+                className="relative w-full h-[460px] md:h-[540px] lg:h-[600px] max-h-[200px] sm:max-h-none overflow-hidden rounded-[inherit] bg-center bg-cover bg-no-repeat"
                 style={{
                   backgroundImage:
                     "url('https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/spark-and-mend-cover.png')",
@@ -171,35 +181,6 @@ const HomePage = async () => {
             </AnimationContainer>
           ))}
         </div>
-      </MaxWidthWrapper>
-
-      {/* Pricing Section */}
-      <MaxWidthWrapper className="py-10">
-        <AnimationContainer delay={0.1}>
-          <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-            <MagicBadge title="Services & Pricing" />
-            <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-              Choose the clean that works for you
-            </h2>
-            <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Contact us for pricing. We tailor every quote to your space and
-              schedule.
-            </p>
-          </div>
-        </AnimationContainer>
-        <AnimationContainer delay={0.2}>
-          <PricingCards />
-        </AnimationContainer>
-        <AnimationContainer delay={0.3}>
-          <div className="flex flex-wrap items-start md:items-center justify-center lg:justify-evenly gap-6 mt-12 max-w-5xl mx-auto w-full">
-            <div className="flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-foreground" />
-              <span className="text-muted-foreground">
-                Free, no-pressure quotes with clear pricing
-              </span>
-            </div>
-          </div>
-        </AnimationContainer>
       </MaxWidthWrapper>
 
       {/* Reviews Section */}
