@@ -14,12 +14,12 @@ const MarketingLayout = ({ children }: Props) => {
                 className="absolute inset-0 h-full [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"
             >
                 <Image
-                    src="https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/spark-and-mend-banner.jpg"
-                    alt="Cleaning services banner"
+                    src="https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w"
+                    alt="Spark & Mend cleaning scene"
                     fill
                     priority
                     sizes="100vw"
-                    className="h-full w-full object-cover object-top opacity-30 sepia"
+                    className="h-full w-full object-cover object-top opacity-15"
                 />
             </div>
             <Navbar />

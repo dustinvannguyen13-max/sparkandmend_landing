@@ -31,7 +31,7 @@ export const COMPANIES = [
 
 export const PROCESS = [
     {
-        title: "Get a Free Quote",
+        title: "Get an Instant Quote",
         description: "Tell us about your space and the service you need. We will reply quickly with a clear quote.",
         icon: ClipboardListIcon,
     },

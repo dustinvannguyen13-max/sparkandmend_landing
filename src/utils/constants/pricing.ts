@@ -33,7 +33,7 @@ export const PLANS: Plan[] = [
       { text: "Ideal for ongoing maintenance" },
     ],
     btn: {
-      text: "Get a Free Quote",
+      text: "Get an Instant Quote",
       href: "/get-a-quote",
     },
   },
@@ -52,7 +52,7 @@ export const PLANS: Plan[] = [
       { text: "Great for monthly resets" },
     ],
     btn: {
-      text: "Get a Free Quote",
+      text: "Get an Instant Quote",
       href: "/get-a-quote",
     },
   },
@@ -71,7 +71,7 @@ export const PLANS: Plan[] = [
       { text: "Seasonal or post-renovation resets" },
     ],
     btn: {
-      text: "Get a Free Quote",
+      text: "Get an Instant Quote",
       href: "/get-a-quote",
     },
   },

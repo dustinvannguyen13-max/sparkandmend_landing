@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -15,7 +16,7 @@ const DashboardPage = () => {
         <Button onClick={() => router.push("/")} variant="outline">
           Back to home
         </Button>
-        <Button>Sign Out</Button>
+        <PrimaryButton size="sm">Sign Out</PrimaryButton>
       </div>
     </div>
   );

@@ -1,57 +1,87 @@
+import Image from "next/image";
 import { AnimationContainer, MaxWidthWrapper, PricingCards } from "@/components";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
-import MagicBadge from "@/components/ui/magic-badge";
+import CTAStrip from "@/components/ui/cta-strip";
+import FAQAccordion from "@/components/ui/faq-accordion";
+import { PrimaryButton } from "@/components/ui/primary-button";
+import { Section, SectionHeader } from "@/components/ui/section";
 import { FAQ } from "@/utils/constants/faq";
+import Link from "next/link";
+
+const SUPPORT_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w";
 
 const PricingPage = () => {
-    return (
-        <MaxWidthWrapper className="mb-40">
-            <AnimationContainer delay={0.1}>
-                <div className="flex flex-col items-center justify-center py-10 max-w-lg mx-auto">
-                    <MagicBadge title="Pricing" />
-                    <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold font-heading text-center mt-6 !leading-tight">
-                        Clear, tailored pricing
-                    </h1>
-                    <p className="text-base md:text-lg mt-6 text-center text-muted-foreground">
-                        Contact us for pricing. Every quote is tailored to your space, needs, and schedule.
-                    </p>
-                </div>
-            </AnimationContainer>
+  return (
+    <MaxWidthWrapper className="pt-16 pb-20">
+      <Section className="pt-6">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <AnimationContainer delay={0.1}>
+            <div>
+              <SectionHeader
+                eyebrow="Pricing"
+                title="Clear, tailored pricing"
+                description="Contact us for pricing. Every quote is tailored to your space, needs, and schedule."
+                align="left"
+              />
+              <div className="mt-6">
+                <PrimaryButton asChild>
+                  <Link href="/get-a-quote">Get an Instant Quote</Link>
+                </PrimaryButton>
+              </div>
+            </div>
+          </AnimationContainer>
+          <AnimationContainer delay={0.2}>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
+              <Image
+                src={SUPPORT_IMAGE}
+                alt="Fresh, tidy kitchen with clean surfaces"
+                width={1200}
+                height={900}
+                className="h-[280px] w-full rounded-[22px] object-cover sm:h-[340px]"
+              />
+            </div>
+          </AnimationContainer>
+        </div>
+      </Section>
 
-            <AnimationContainer delay={0.2}>
-                <PricingCards />
-            </AnimationContainer>
+      <Section>
+        <AnimationContainer delay={0.2}>
+          <PricingCards />
+        </AnimationContainer>
+      </Section>
 
-            <AnimationContainer delay={0.3}>
-                <div className="mt-20 w-full">
-                    <div className="flex flex-col items-center justify-center w-full pt-12">
-                        <h2 className="mt-6 text-2xl font-semibold text-center lg:text-3xl xl:text-4xl">
-                            Frequently Asked Questions
-                        </h2>
-                        <p className="max-w-lg mt-6 text-center text-muted-foreground">
-                            Here are some of the most common questions we get asked. If your question is not answered here, reach out any time.
-                        </p>
-                    </div>
-                    <div className="max-w-3xl mx-auto w-full mt-20">
-                        <Accordion type="single" collapsible>
-                            {FAQ.map((faq) => (
-                                <AccordionItem key={faq.id} value={faq.id}>
-                                    <AccordionTrigger>{faq.question}</AccordionTrigger>
-                                    <AccordionContent>{faq.answer}</AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
-                    </div>
-                </div>
-            </AnimationContainer>
+      <Section>
+        <AnimationContainer delay={0.1}>
+          <SectionHeader
+            eyebrow="FAQs"
+            title="Pricing questions answered"
+            description="Here are the most common questions we get asked. If your question is not answered here, reach out any time."
+          />
+        </AnimationContainer>
+        <AnimationContainer delay={0.2}>
+          <FAQAccordion
+            items={FAQ.map((item) => ({
+              id: item.id,
+              question: item.question,
+              answer: item.answer,
+            }))}
+            className="mt-10"
+          />
+        </AnimationContainer>
+      </Section>
 
-        </MaxWidthWrapper>
-    )
+      <Section>
+        <CTAStrip
+          title="Ready for a clear, calm clean?"
+          description="Start with an instant quote and choose a slot that works for you."
+          primaryHref="/get-a-quote"
+          primaryLabel="Get an Instant Quote"
+          secondaryHref="tel:07452824799"
+          secondaryLabel="Call or WhatsApp us"
+        />
+      </Section>
+    </MaxWidthWrapper>
+  );
 };
 
-export default PricingPage
+export default PricingPage;

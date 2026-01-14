@@ -6,11 +6,8 @@ interface Props {
 
 const MagicBadge = ({ title }: Props) => {
     return (
-        <div className="relative inline-flex h-8 overflow-hidden rounded-full p-[1.5px] focus:outline-none select-none">
-            <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary))_0%,hsl(var(--secondary))_50%,hsl(var(--primary))_100%)]" />
-            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-primary px-4 py-1 text-sm font-medium text-primary-foreground backdrop-blur-3xl">
-                {title}
-            </span>
+        <div className="inline-flex items-center rounded-full border border-border/70 bg-background/70 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-secondary shadow-[0_10px_30px_-24px_hsl(var(--secondary)/0.35)]">
+            {title}
         </div>
     )
 };

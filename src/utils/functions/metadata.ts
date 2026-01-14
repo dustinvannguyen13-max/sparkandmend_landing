@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const generateMetadata = ({
     title,
     description,
-    image = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/spark-and-mend-banner.jpg",
+    image = "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
     icons = {
         icon: [
             { url: "/favicon/favicon.ico" },
@@ -25,7 +25,7 @@ export const generateMetadata = ({
 } = {}): Metadata => {
     const appName = process.env.NEXT_PUBLIC_APP_NAME || "Spark & Mend";
     const resolvedTitle = title ?? `${appName} Professional Cleaning in Plymouth`;
-    const resolvedDescription = description ?? `${appName} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Get a free quote and enjoy a spotless space without the stress.`;
+    const resolvedDescription = description ?? `${appName} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Get an instant quote in about 60 seconds and enjoy a spotless space without the stress.`;
 
     return {
         title: resolvedTitle,

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, LoaderIcon } from "lucide-react";
 import Link from "next/link";
@@ -57,13 +58,13 @@ const SignUpForm = () => {
           </InputOTP>
         </div>
         <div className="mt-4 w-full">
-          <Button type="submit" disabled={isLoading} className="w-full">
+          <PrimaryButton type="submit" disabled={isLoading} className="w-full">
             {isLoading ? (
               <LoaderIcon className="w-5 h-5 animate-spin" />
             ) : (
               "Verify code"
             )}
-          </Button>
+          </PrimaryButton>
         </div>
         <p className="text-sm text-muted-foreground mt-4">
           Didn&apos;t receive the code?{" "}
@@ -94,7 +95,7 @@ const SignUpForm = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="w-full focus-visible:border-foreground"
+            className="w-full"
           />
         </div>
         <div className="mt-4 space-y-2 w-full">
@@ -105,7 +106,7 @@ const SignUpForm = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            className="w-full focus-visible:border-foreground"
+            className="w-full"
           />
         </div>
         <div className="mt-4 space-y-2">
@@ -117,7 +118,7 @@ const SignUpForm = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full focus-visible:border-foreground"
+              className="w-full"
             />
             <Button
               type="button"
@@ -135,13 +136,13 @@ const SignUpForm = () => {
           </div>
         </div>
         <div className="mt-4 w-full">
-          <Button type="submit" className="w-full">
+          <PrimaryButton type="submit" className="w-full">
             {isUpdating ? (
               <LoaderIcon className="w-5 h-5 animate-spin" />
             ) : (
               "Continue"
             )}
-          </Button>
+          </PrimaryButton>
         </div>
       </form>
     </div>

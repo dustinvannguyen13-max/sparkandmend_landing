@@ -8,10 +8,12 @@ interface Props {
 
 const MaxWidthWrapper = ({ className, children }: Props) => {
     return (
-        <section className={cn(
-            "h-full mx-auto w-full max-w-full md:max-w-screen-xl px-4 md:px-12 lg:px-20",
-            className,
-        )}>
+        <section
+            className={cn(
+                "h-full mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-10",
+                className,
+            )}
+        >
             {children}
         </section>
     )

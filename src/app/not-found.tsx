@@ -1,5 +1,5 @@
 import { Footer, Navbar } from "@/components";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import Link from "next/link";
 
 const NotFound = () => {
@@ -9,7 +9,7 @@ const NotFound = () => {
 
       <div className="flex flex-col items-center justify-center mx-auto h-screen">
         <div className="flex items-center justify-center h-full flex-col">
-          <span className="text-sm font-medium px-3.5 py-1 rounded-md bg-secondary text-secondary-foreground not-found">
+          <span className="text-xs font-semibold px-3.5 py-1 rounded-full bg-secondary/15 text-secondary border border-secondary/30">
             404
           </span>
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mt-5">
@@ -23,9 +23,9 @@ const NotFound = () => {
             </Link>
             .
           </p>
-          <Link href="/">
-            <Button className="mt-8">Back to homepage</Button>
-          </Link>
+          <PrimaryButton asChild className="mt-8">
+            <Link href="/">Back to homepage</Link>
+          </PrimaryButton>
         </div>
       </div>
 

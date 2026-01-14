@@ -5,28 +5,29 @@ import { Facebook, Instagram, Music2 } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col relative items-center justify-center border-t border-border pt-16 pb-8 md:pb-0 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[radial-gradient(35%_128px_at_50%_0%,hsl(var(--brand-dark)/0.08),transparent)]">
-      <div className="absolute top-0 left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1.5 bg-foreground rounded-full"></div>
+    <footer className="relative w-full border-t border-border/60 bg-[radial-gradient(40%_160px_at_50%_0%,hsl(var(--primary)/0.08),transparent)]">
+      <div className="flex flex-col items-center justify-center px-6 lg:px-10 pt-16 pb-8 md:pb-0 w-full max-w-6xl mx-auto lg:pt-24">
+        <div className="absolute top-0 left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-1.5 bg-foreground rounded-full"></div>
 
-      <div className="grid gap-8 xl:grid-cols-3 xl:gap-8 w-full">
-        <AnimationContainer delay={0.1}>
-          <div className="flex flex-col items-start justify-start md:max-w-[200px]">
-            <div className="flex items-start">
-              <Icons.logo className="w-7 h-7" />
+        <div className="grid gap-10 xl:grid-cols-3 xl:gap-12 w-full">
+          <AnimationContainer delay={0.1}>
+            <div className="flex flex-col items-start justify-start md:max-w-[200px]">
+              <div className="flex items-start">
+                <Icons.logo className="w-7 h-7" />
+              </div>
+              <p className="text-muted-foreground mt-4 text-sm text-start">
+                Reliable cleaning for homes, offices, and rentals in Plymouth.
+              </p>
+              <span className="mt-4 text-muted-foreground text-sm">
+                Plymouth, UK
+              </span>
             </div>
-            <p className="text-muted-foreground mt-4 text-sm text-start">
-              Reliable cleaning for homes, offices, and rentals in Plymouth.
-            </p>
-            <span className="mt-4 text-muted-foreground text-sm">
-              Plymouth, UK
-            </span>
-          </div>
-        </AnimationContainer>
+          </AnimationContainer>
 
-        <div className="grid gap-8 mt-16 xl:col-span-2 xl:mt-0 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimationContainer delay={0.2}>
-            <div className="flex flex-col">
-              <h3 className="text-base font-medium text-foreground">Services</h3>
+          <div className="grid gap-8 mt-10 xl:col-span-2 xl:mt-0 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimationContainer delay={0.2}>
+              <div className="flex flex-col">
+                <h3 className="text-base font-medium text-foreground">Services</h3>
               <ul className="mt-4 text-sm text-muted-foreground">
                 <li className="mt-2">
                   <Link
@@ -125,7 +126,7 @@ const Footer = () => {
               </ul>
             </div>
           </AnimationContainer>
-          <AnimationContainer delay={0.5}>
+            <AnimationContainer delay={0.5}>
             <div className="flex flex-col">
               <h3 className="text-base font-medium text-foreground">Company</h3>
               <ul className="mt-4 text-sm text-muted-foreground">
@@ -134,7 +135,15 @@ const Footer = () => {
                     href="/changelog"
                     className="hover:text-foreground transition-all duration-300"
                   >
-                    About Spark and Mend
+                    About Spark & Mend
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/team"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Meet the Team
                   </Link>
                 </li>
                 <li className="mt-2">
@@ -156,7 +165,7 @@ const Footer = () => {
               </ul>
             </div>
           </AnimationContainer>
-          <AnimationContainer delay={0.6}>
+            <AnimationContainer delay={0.6}>
             <div className="flex flex-col">
               <h3 className="text-base font-medium text-foreground">Socials</h3>
               <ul className="mt-4 text-sm text-muted-foreground">
@@ -196,19 +205,20 @@ const Footer = () => {
               </ul>
             </div>
           </AnimationContainer>
+          </div>
         </div>
-      </div>
 
-      <div className="mt-8 border-t border-border/40 pt-4 md:pt-8 md:flex md:items-center md:justify-between w-full">
-        <AnimationContainer delay={0.6}>
-          <p className="text-sm text-muted-foreground mt-8 md:mt-0">
-            &copy; {new Date().getFullYear()} Spark and Mend. All rights reserved.
-          </p>
-        </AnimationContainer>
-      </div>
+        <div className="mt-10 border-t border-border/40 pt-4 md:pt-8 md:flex md:items-center md:justify-between w-full">
+          <AnimationContainer delay={0.6}>
+            <p className="text-sm text-muted-foreground mt-8 md:mt-0">
+              &copy; {new Date().getFullYear()} Spark & Mend. All rights reserved.
+            </p>
+          </AnimationContainer>
+        </div>
 
-      <div className="h-[20rem] lg:h-[20rem] hidden md:flex items-center justify-center">
-        <TextHoverEffect text="S & M" />
+        <div className="h-[16rem] hidden md:flex items-center justify-center">
+          <TextHoverEffect text="S & M" />
+        </div>
       </div>
     </footer>
   );

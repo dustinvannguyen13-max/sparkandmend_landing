@@ -1,7 +1,7 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn, PLANS } from "@/utils";
@@ -73,21 +73,21 @@ const PricingCards = () => {
                     <Card
                         key={plan.name}
                         className={cn(
-                            "flex flex-col w-full border-border rounded-xl",
-                            plan.name === "Intermediate" && "border-2 border-primary"
+                            "flex flex-col w-full border-border/70 bg-card/90",
+                            plan.name === "Intermediate" && "border-2 border-primary/70"
                         )}
                     >
                         <CardHeader className={cn(
-                            "border-b border-border",
-                            plan.name === "Intermediate" ? "bg-primary/10" : "bg-foreground/[0.03]"
+                            "border-b border-border/60",
+                            plan.name === "Intermediate" ? "bg-primary/10" : "bg-subtle/70"
                         )}>
-                            <CardTitle className={cn(plan.name !== "Intermediate" && "text-muted-foreground", "text-lg font-medium")}>
+                            <CardTitle className={cn(plan.name !== "Intermediate" && "text-muted-foreground", "text-lg font-semibold")}>
                                 {plan.name}
                             </CardTitle>
                             <CardDescription>
                                 {plan.info}
                             </CardDescription>
-                            <h5 className="text-3xl font-semibold">
+                            <h5 className="text-3xl font-semibold text-foreground">
                                 {formatPrice(plan.price.monthly)}
                                 {typeof plan.price.monthly === "number" && (
                                     <span className="text-base text-muted-foreground font-normal">
@@ -118,13 +118,9 @@ const PricingCards = () => {
                             ))}
                         </CardContent>
                         <CardFooter className="w-full mt-auto">
-                            <Link
-                                href={plan.btn.href}
-                                style={{ width: "100%" }}
-                                className={buttonVariants({ className: plan.name === "Intermediate" && "bg-primary text-primary-foreground hover:bg-primary/90" })}
-                            >
-                                {plan.btn.text}
-                            </Link>
+                            <PrimaryButton asChild className="w-full" size="sm">
+                                <Link href={plan.btn.href}>{plan.btn.text}</Link>
+                            </PrimaryButton>
                         </CardFooter>
                     </Card>
                 ))}
@@ -134,21 +130,21 @@ const PricingCards = () => {
                     <Card
                         key={plan.name}
                         className={cn(
-                            "flex flex-col w-full border-border rounded-xl",
-                            plan.name === "Intermediate" && "border-2 border-primary"
+                            "flex flex-col w-full border-border/70 bg-card/90",
+                            plan.name === "Intermediate" && "border-2 border-primary/70"
                         )}
                     >
                         <CardHeader className={cn(
-                            "border-b border-border",
-                            plan.name === "Intermediate" ? "bg-primary/10" : "bg-foreground/[0.03]"
+                            "border-b border-border/60",
+                            plan.name === "Intermediate" ? "bg-primary/10" : "bg-subtle/70"
                         )}>
-                            <CardTitle className={cn(plan.name !== "Intermediate" && "text-muted-foreground", "text-lg font-medium")}>
+                            <CardTitle className={cn(plan.name !== "Intermediate" && "text-muted-foreground", "text-lg font-semibold")}>
                                 {plan.name}
                             </CardTitle>
                             <CardDescription>
                                 {plan.info}
                             </CardDescription>
-                            <h5 className="text-3xl font-semibold flex items-end">
+                            <h5 className="text-3xl font-semibold flex items-end text-foreground">
                                 {formatPrice(plan.price.yearly)}
                                 {typeof plan.price.yearly === "number" && (
                                     <div className="text-base text-muted-foreground font-normal">
@@ -190,13 +186,9 @@ const PricingCards = () => {
                             ))}
                         </CardContent>
                         <CardFooter className="w-full pt- mt-auto">
-                            <Link
-                                href={plan.btn.href}
-                                style={{ width: "100%" }}
-                                className={buttonVariants({ className: plan.name === "Intermediate" && "bg-primary text-primary-foreground hover:bg-primary/90" })}
-                            >
-                                {plan.btn.text}
-                            </Link>
+                            <PrimaryButton asChild className="w-full" size="sm">
+                                <Link href={plan.btn.href}>{plan.btn.text}</Link>
+                            </PrimaryButton>
                         </CardFooter>
                     </Card>
                 ))}

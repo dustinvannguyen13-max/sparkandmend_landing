@@ -6,7 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import {
   Sheet,
   SheetClose,
@@ -45,21 +46,12 @@ const MobileNavbar = () => {
           <div className="flex flex-col items-start w-full py-2 mt-10">
             <div className="flex items-center justify-evenly w-full space-x-2">
               <>
-                <Link
-                  href="tel:07715293761"
-                  className={buttonVariants({
-                    variant: "outline",
-                    className: "w-full",
-                  })}
-                >
-                  Call 07715 293761
-                </Link>
-                <Link
-                  href="/get-a-quote"
-                  className={buttonVariants({ className: "w-full" })}
-                >
-                  Get a Free Quote
-                </Link>
+                <Button variant="outline" className="w-full" asChild>
+                  <Link href="tel:07452824799">Call 07452 824799</Link>
+                </Button>
+                <PrimaryButton className="w-full" size="sm" asChild>
+                  <Link href="/get-a-quote">Get an Instant Quote</Link>
+                </PrimaryButton>
               </>
             </div>
             <ul className="flex flex-col items-start w-full mt-6">

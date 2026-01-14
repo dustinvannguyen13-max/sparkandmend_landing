@@ -1,5 +1,8 @@
+import Image from "next/image";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
-import { Button } from "@/components/ui/button";
+import CTAStrip from "@/components/ui/cta-strip";
+import { PrimaryButton } from "@/components/ui/primary-button";
+import { Section, SectionHeader } from "@/components/ui/section";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
@@ -8,6 +11,9 @@ export const metadata = generateMetadata({
   description:
     "Learn about Spark & Mend, a local Plymouth cleaning team focused on clear communication, detail-focused work, and no-fuss service.",
 });
+
+const HERO_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
@@ -23,7 +29,7 @@ const values = [
 ];
 
 const ContactDetails = () => (
-  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground lg:justify-start">
     <Link href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">
       Email: {CONTACT_EMAIL}
     </Link>
@@ -36,99 +42,95 @@ const ContactDetails = () => (
   </div>
 );
 
-const CtaButtons = () => (
-  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-    <Button asChild>
-      <Link href="/get-a-quote">Get an Instant Quote</Link>
-    </Button>
-    <Button variant="outline" asChild>
-      <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
-    </Button>
-  </div>
-);
-
 const AboutPage = () => {
   return (
-    <MaxWidthWrapper className="py-16 space-y-16">
-      <AnimationContainer delay={0.1}>
-        <section className="text-center max-w-3xl mx-auto space-y-4">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            About
-          </p>
-          <h1 className="text-3xl md:text-5xl font-semibold font-heading text-foreground">
-            About Spark &amp; Mend
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground">
-            We are a small, local cleaning team in Plymouth focused on clear
-            communication, consistent standards, and a calm, respectful service.
-          </p>
-          <CtaButtons />
-          <p className="text-sm text-muted-foreground">
-            Instant quote takes about 60 seconds.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Fast quote. Clear scope. No pressure.
-          </p>
-          <ContactDetails />
-        </section>
-      </AnimationContainer>
+    <MaxWidthWrapper className="pt-16 pb-20">
+      <Section className="pt-6">
+        <AnimationContainer delay={0.1}>
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="text-center lg:text-left">
+              <SectionHeader
+                eyebrow="About"
+                title="About Spark & Mend"
+                description="We are a small, local cleaning team in Plymouth focused on clear communication, consistent standards, and a calm, respectful service."
+                align="left"
+              />
+              <div className="mt-6">
+                <PrimaryButton asChild>
+                  <Link href="/get-a-quote">Get an Instant Quote</Link>
+                </PrimaryButton>
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Instant quote takes about 60 seconds.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Fast quote. Clear scope. No pressure.
+              </p>
+              <ContactDetails />
+            </div>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
+              <Image
+                src={HERO_IMAGE}
+                alt="Fresh, calm interior with clean finishes"
+                width={1200}
+                height={900}
+                className="h-[280px] w-full rounded-[22px] object-cover sm:h-[340px]"
+              />
+            </div>
+          </div>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.15}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Why the name Spark &amp; Mend?
-          </h2>
-          <p className="text-muted-foreground">
-            Spark is the fresh, bright feeling you get after a proper clean. Mend
-            is our promise to fix the common issues people have with cleaners -
-            missed details, lack of trust, and poor communication.
-          </p>
-        </section>
-      </AnimationContainer>
+      <Section>
+        <AnimationContainer delay={0.15}>
+          <SectionHeader
+            eyebrow="The name"
+            title="Why the name Spark & Mend?"
+            description="Spark is the fresh, bright feeling you get after a proper clean. Mend is our promise to fix the common issues people have with cleaners - missed details, lack of trust, and poor communication."
+            align="left"
+          />
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.2}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Why we started
-          </h2>
-          <p className="text-muted-foreground">
-            We kept hearing the same stories: inconsistent standards, unclear
-            pricing, and awkward experiences. We wanted to build a cleaning
-            service that feels simple, respectful, and consistent - with a clear
-            scope and a straightforward booking process.
-          </p>
-        </section>
-      </AnimationContainer>
+      <Section>
+        <AnimationContainer delay={0.2}>
+          <SectionHeader
+            eyebrow="Why we started"
+            title="Cleaning that feels simple and respectful"
+            description="We kept hearing the same stories: inconsistent standards, unclear pricing, and awkward experiences. We wanted to build a cleaning service that feels simple, respectful, and consistent - with a clear scope and a straightforward booking process."
+            align="left"
+          />
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.25}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            The values we work by
-          </h2>
-          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+      <Section>
+        <AnimationContainer delay={0.25}>
+          <SectionHeader
+            eyebrow="Values"
+            title="The values we work by"
+            align="left"
+          />
+          <ul className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
             {values.map((value) => (
-              <li key={value}>{value}</li>
+              <li key={value} className="rounded-xl border border-border/60 bg-card/80 px-4 py-3">
+                {value}
+              </li>
             ))}
           </ul>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.3}>
-        <section className="rounded-3xl border border-border/60 p-8 text-center space-y-4">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Ready to see what a clear, calm clean feels like?
-          </h2>
-          <p className="text-muted-foreground">
-            Get your instant quote, choose a time, and we will take it from
-            there.
-          </p>
-          <CtaButtons />
-          <p className="text-sm text-muted-foreground">
-            Fast quote. Clear scope. No pressure.
-          </p>
-          <ContactDetails />
-        </section>
-      </AnimationContainer>
+      <Section>
+        <CTAStrip
+          title="Ready to see what a clear, calm clean feels like?"
+          description="Get your instant quote, choose a time, and we will take it from there."
+          primaryHref="/get-a-quote"
+          primaryLabel="Get an Instant Quote"
+          secondaryHref={CONTACT_PHONE_LINK}
+          secondaryLabel="Call or WhatsApp us"
+        />
+        <ContactDetails />
+      </Section>
     </MaxWidthWrapper>
   );
 };

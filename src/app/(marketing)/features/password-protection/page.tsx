@@ -1,5 +1,10 @@
+import Image from "next/image";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import { Button } from "@/components/ui/button";
+import CTAStrip from "@/components/ui/cta-strip";
+import FAQAccordion from "@/components/ui/faq-accordion";
+import { PrimaryButton } from "@/components/ui/primary-button";
+import { Section, SectionHeader } from "@/components/ui/section";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
@@ -8,6 +13,9 @@ export const metadata = generateMetadata({
   description:
     "Intermediate cleaning in Plymouth for when it is getting on top of you. Extra detail on build-up and touch points for a sharper finish. Get an instant quote in about 60 seconds.",
 });
+
+const HERO_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
@@ -127,7 +135,7 @@ const faqs = [
 ];
 
 const ContactDetails = () => (
-  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground lg:justify-start">
     <Link href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">
       Email: {CONTACT_EMAIL}
     </Link>
@@ -141,10 +149,10 @@ const ContactDetails = () => (
 );
 
 const CtaButtons = () => (
-  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-    <Button asChild>
+  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
+    <PrimaryButton asChild>
       <Link href="/get-a-quote">Get an Instant Quote</Link>
-    </Button>
+    </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
     </Button>
@@ -153,61 +161,75 @@ const CtaButtons = () => (
 
 const IntermediateCleanPage = () => {
   return (
-    <MaxWidthWrapper className="py-16 space-y-16">
-      <AnimationContainer delay={0.1}>
-        <section className="text-center max-w-3xl mx-auto space-y-4">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Intermediate Clean
-          </p>
-          <h1 className="text-3xl md:text-5xl font-semibold font-heading text-foreground">
-            Intermediate Clean - more detail, more time, better finish
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground">
-            Best for when it is getting on top of you and you want a proper
-            reset. We put extra attention into build-up and touch points for a
-            sharper finish.
-          </p>
-          <CtaButtons />
-          <p className="text-sm text-muted-foreground">
-            Instant quote takes about 60 seconds.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Fast quote. Clear scope. No pressure.
-          </p>
-          <ContactDetails />
-        </section>
-      </AnimationContainer>
+    <MaxWidthWrapper className="pt-16 pb-20">
+      <Section className="pt-6">
+        <AnimationContainer delay={0.1}>
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="text-center lg:text-left">
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                Intermediate Clean
+              </p>
+              <h1 className="mt-4 text-3xl md:text-5xl font-semibold font-heading text-foreground">
+                Intermediate Clean - more detail, more time, better finish
+              </h1>
+              <p className="mt-4 text-base md:text-lg text-muted-foreground">
+                Best for when it is getting on top of you and you want a proper
+                reset. We put extra attention into build-up and touch points for a
+                sharper finish.
+              </p>
+              <CtaButtons />
+              <p className="mt-3 text-sm text-muted-foreground">
+                Instant quote takes about 60 seconds.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Fast quote. Clear scope. No pressure.
+              </p>
+              <ContactDetails />
+            </div>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
+              <Image
+                src={HERO_IMAGE}
+                alt="Freshly cleaned living area with calm finish"
+                width={1200}
+                height={900}
+                className="h-[280px] w-full rounded-[22px] object-cover sm:h-[340px]"
+              />
+            </div>
+          </div>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.15}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            We get your concerns
-          </h2>
-          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+      <Section>
+        <AnimationContainer delay={0.15}>
+          <SectionHeader
+            eyebrow="Reassurance"
+            title="We get your concerns"
+            description="That is why we keep it simple and transparent."
+          />
+          <ul className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
             {concerns.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item} className="rounded-xl border border-border/60 bg-card/80 px-4 py-3">
+                {item}
+              </li>
             ))}
           </ul>
-          <p className="text-muted-foreground">
-            That is why we keep it simple and transparent.
-          </p>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.2}>
-        <section className="space-y-6">
-          <div className="max-w-2xl">
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-              What this service includes
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              Intermediate is a more detailed clean that tackles build-up and
-              high-touch areas without going fully deep.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
+      <Section>
+        <AnimationContainer delay={0.2}>
+          <SectionHeader
+            eyebrow="Scope"
+            title="What this service includes"
+            description="Intermediate is a more detailed clean that tackles build-up and high-touch areas without going fully deep."
+            align="left"
+          />
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
             {includeGroups.map((group) => (
-              <div key={group.title} className="rounded-2xl border border-border/60 p-5">
+              <div
+                key={group.title}
+                className="rounded-2xl border border-border/60 bg-card/90 p-5"
+              >
                 <h3 className="text-lg font-semibold text-foreground">
                   {group.title}
                 </h3>
@@ -219,23 +241,25 @@ const IntermediateCleanPage = () => {
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
               Get an Instant Quote
             </Link>
             .
           </p>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.25}>
-        <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Intermediate vs Advanced
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-border/60 p-5">
+      <Section>
+        <AnimationContainer delay={0.25}>
+          <SectionHeader
+            eyebrow="Comparison"
+            title="Intermediate vs Advanced"
+            description="Pick the depth that suits your space today."
+          />
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
               <h3 className="text-lg font-semibold text-foreground">
                 Intermediate Clean
               </h3>
@@ -245,7 +269,7 @@ const IntermediateCleanPage = () => {
                 <li>More detail without full deep work</li>
               </ul>
             </div>
-            <div className="rounded-2xl border border-border/60 p-5">
+            <div className="rounded-2xl border border-border/60 bg-card/90 p-5">
               <h3 className="text-lg font-semibold text-foreground">
                 Advanced Clean
               </h3>
@@ -256,31 +280,34 @@ const IntermediateCleanPage = () => {
               </ul>
             </div>
           </div>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.3}>
-        <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Who it is for
-          </h2>
-          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+      <Section>
+        <AnimationContainer delay={0.3}>
+          <SectionHeader
+            eyebrow="Best for"
+            title="Who it is for"
+            description="Best for when it is getting on top of you."
+            align="left"
+          />
+          <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
             {whoFor.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.35}>
-        <section className="space-y-6">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-              How it works
-            </h2>
-          </div>
-          <ol className="grid gap-4 md:grid-cols-3">
-            <li className="rounded-2xl border border-border/60 p-5">
+      <Section>
+        <AnimationContainer delay={0.35}>
+          <SectionHeader
+            eyebrow="Process"
+            title="How it works"
+            description="No back-and-forth. Just a straightforward booking."
+          />
+          <ol className="mt-8 grid gap-6 md:grid-cols-3">
+            <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
               <p className="text-sm font-semibold text-foreground">1)</p>
               <p className="mt-2 text-muted-foreground">
                 <Link href="/get-a-quote" className="text-foreground underline">
@@ -289,69 +316,67 @@ const IntermediateCleanPage = () => {
                 in about 60 seconds.
               </p>
             </li>
-            <li className="rounded-2xl border border-border/60 p-5">
+            <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
               <p className="text-sm font-semibold text-foreground">2)</p>
               <p className="mt-2 text-muted-foreground">
                 Choose a slot and any add-ons you want.
               </p>
             </li>
-            <li className="rounded-2xl border border-border/60 p-5">
+            <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
               <p className="text-sm font-semibold text-foreground">3)</p>
               <p className="mt-2 text-muted-foreground">
                 We arrive and clean to a clear standard.
               </p>
             </li>
           </ol>
-          <p className="text-muted-foreground">
-            No back-and-forth. Just a straightforward booking.
-          </p>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.4}>
-        <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Results you will notice
-          </h2>
-          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+      <Section>
+        <AnimationContainer delay={0.4}>
+          <SectionHeader
+            eyebrow="Results"
+            title="Results you will notice"
+            description="Extra detail with a sharper finish."
+            align="left"
+          />
+          <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
             {results.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-        </section>
-      </AnimationContainer>
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.45}>
-        <section className="space-y-6">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">FAQs</h2>
-          <div className="space-y-4">
-            {faqs.map((faq) => (
-              <div key={faq.question} className="rounded-2xl border border-border/60 p-5">
-                <h3 className="text-base font-semibold text-foreground">
-                  {faq.question}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </AnimationContainer>
+      <Section>
+        <AnimationContainer delay={0.45}>
+          <SectionHeader
+            eyebrow="FAQs"
+            title="Answers before you book"
+            description="Quick answers to the questions we hear most often."
+          />
+          <FAQAccordion
+            items={faqs.map((faq, index) => ({
+              id: `intermediate-faq-${index}`,
+              question: faq.question,
+              answer: faq.answer,
+            }))}
+            className="mt-8"
+          />
+        </AnimationContainer>
+      </Section>
 
-      <AnimationContainer delay={0.5}>
-        <section className="rounded-3xl border border-border/60 p-8 text-center space-y-4">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Ready for a more detailed clean?
-          </h2>
-          <p className="text-muted-foreground">
-            Get your instant quote, choose a slot, and let us handle the reset.
-          </p>
-          <CtaButtons />
-          <p className="text-sm text-muted-foreground">
-            Fast quote. Clear scope. No pressure.
-          </p>
-          <ContactDetails />
-        </section>
-      </AnimationContainer>
+      <Section>
+        <CTAStrip
+          title="Ready for a more detailed clean?"
+          description="Get your instant quote, choose a slot, and let us handle the reset."
+          primaryHref="/get-a-quote"
+          primaryLabel="Get an Instant Quote"
+          secondaryHref={CONTACT_PHONE_LINK}
+          secondaryLabel="Call or WhatsApp us"
+        />
+        <ContactDetails />
+      </Section>
     </MaxWidthWrapper>
   );
 };

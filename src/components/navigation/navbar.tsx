@@ -1,6 +1,7 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -40,8 +41,8 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        "sticky top-0 inset-x-0 h-14 w-full border-b border-transparent z-[99999] select-none",
-        scroll && "border-background/80 bg-background/40 backdrop-blur-md"
+        "sticky top-0 inset-x-0 h-16 w-full border-b border-transparent z-[99999] select-none",
+        scroll && "border-border/60 bg-background/80 backdrop-blur-lg"
       )}
     >
       <AnimationContainer reverse delay={0.1} className="size-full">
@@ -49,7 +50,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-12">
             <Link href="/#home" className="flex items-center gap-x-2">
               <Icons.logo className="w-6 h-6" />
-              <h1 className="text-lg font-semibold uppercase tracking-[0.05em] text-primary whitespace-nowrap">
+              <h1 className="text-base md:text-lg font-semibold uppercase tracking-[0.02em] text-primary whitespace-nowrap">
                 Spark &amp; Mend
               </h1>
             </Link>
@@ -73,21 +74,17 @@ const Navbar = () => {
                             )}
                           >
                             {link.title === "Services" && (
-                              <li className="row-span-4 pr-2 relative rounded-lg overflow-hidden">
-                                <div className="absolute inset-0 !z-10 h-full w-[calc(100%-10px)] bg-[linear-gradient(to_right,rgba(113,75,75,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(113,75,75,0.2)_1px,transparent_1px)] bg-[size:1rem_1rem]"></div>
-                                <NavigationMenuLink
-                                  asChild
-                                  className="z-20 relative"
-                                >
+                              <li className="row-span-4 pr-2 relative rounded-xl overflow-hidden">
+                                <NavigationMenuLink asChild className="z-20 relative">
                                   <Link
                                     href="/"
-                                    className="flex h-full w-full select-none flex-col justify-end rounded-lg bg-gradient-to-b from-muted/50 to-muted p-4 no-underline outline-none focus:shadow-md"
+                                    className="flex h-full w-full select-none flex-col justify-end rounded-xl border border-border/60 bg-card/90 p-4 no-underline outline-none focus:shadow-md"
                                   >
-                                    <h6 className="mb-2 mt-4 text-lg font-medium">
+                                    <h6 className="mb-2 mt-4 text-lg font-semibold">
                                       All Services
                                     </h6>
                                     <p className="text-sm leading-tight text-muted-foreground">
-                                      Regular, deep, and end-of-tenancy cleans tailored to you.
+                                      Regular, intermediate, advanced, and commercial options for every space.
                                     </p>
                                   </Link>
                                 </NavigationMenuLink>
@@ -122,20 +119,16 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:flex items-center">
-            <div className="flex items-center gap-x-4">
-              <Link
-                href="tel:07715293761"
-                className={buttonVariants({ size: "sm", variant: "ghost" })}
-              >
-                Call 07715 293761
-              </Link>
-              <Link
-                href="/get-a-quote"
-                className={buttonVariants({ size: "sm" })}
-              >
-                Get a Free Quote
-                <ZapIcon className="size-3.5 ml-1.5 text-primary-foreground fill-primary-foreground" />
-              </Link>
+            <div className="flex items-center gap-x-3">
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="tel:07452824799">Call 07452 824799</Link>
+              </Button>
+              <PrimaryButton size="sm" asChild>
+                <Link href="/get-a-quote">
+                  Get an Instant Quote
+                  <ZapIcon className="size-3.5" />
+                </Link>
+              </PrimaryButton>
             </div>
           </div>
 

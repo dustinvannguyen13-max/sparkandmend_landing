@@ -10,10 +10,10 @@
     --foreground: var(--brand-dark);
     --background: var(--brand-light);
 
-    --card: 0 0% 100%;
+    --card: 32 36% 96%;
     --card-foreground: var(--brand-dark);
 
-    --popover: 0 0% 100%;
+    --popover: 32 36% 96%;
     --popover-foreground: var(--brand-dark);
 
     --primary: var(--brand-dark);
@@ -22,26 +22,26 @@
     --secondary: 0 20.6% 37.1%;
     --secondary-foreground: var(--brand-light);
 
-    --tertiary: 33 28% 88%;
+    --tertiary: 32 28% 90%;
     --tertiary-foreground: var(--brand-dark);
 
-    --subtle: 33 24% 92%;
+    --subtle: 32 30% 93%;
     --subtle-foreground: var(--brand-dark);
 
-    --muted: 33 20% 92%;
-    --muted-foreground: 0 10% 40%;
+    --muted: 32 25% 92%;
+    --muted-foreground: 186 15% 32%;
 
-    --accent: 33 28% 90%;
+    --accent: 32 28% 90%;
     --accent-foreground: var(--brand-dark);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 33 20% 82%;
-    --input: 33 20% 84%;
+    --border: 32 18% 78%;
+    --input: 32 22% 88%;
     --ring: var(--brand-dark);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -86,8 +86,10 @@
   color: hsl(var(--foreground));
 }
 
-html, body {
-  font-family: "Inter", sans-serif !important;
+html,
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
 }
 
 ::-webkit-scrollbar {

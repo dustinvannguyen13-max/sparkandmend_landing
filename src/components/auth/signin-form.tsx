@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, LoaderIcon } from "lucide-react";
 import React, { useState } from "react";
@@ -18,7 +19,7 @@ const SignInForm = () => {
 
   return (
     <div className="flex flex-col items-start gap-y-6 py-8 w-full px-0.5">
-      <h2 className="text-2xl font-semibold">Sign in to Spark and Mend</h2>
+      <h2 className="text-2xl font-semibold">Sign in to Spark & Mend</h2>
 
       <form onSubmit={handleSignIn} className="w-full">
         <div className="space-y-2 w-full">
@@ -29,7 +30,7 @@ const SignInForm = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            className="w-full focus-visible:border-foreground"
+            className="w-full"
           />
         </div>
         <div className="mt-4 space-y-2">
@@ -41,7 +42,7 @@ const SignInForm = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full focus-visible:border-foreground"
+              className="w-full"
             />
             <Button
               type="button"
@@ -59,13 +60,13 @@ const SignInForm = () => {
           </div>
         </div>
         <div className="mt-4 w-full">
-          <Button type="submit" className="w-full">
+          <PrimaryButton type="submit" className="w-full">
             {isLoading ? (
               <LoaderIcon className="w-5 h-5 animate-spin" />
             ) : (
               "Sign in with email"
             )}
-          </Button>
+          </PrimaryButton>
         </div>
       </form>
     </div>
