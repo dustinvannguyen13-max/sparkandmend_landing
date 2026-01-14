@@ -1,7 +1,5 @@
 # Faria - SaaS Landing Page Template
 
-![Faria Thumbnail](./public/thumbnail.png)
-
 Welcome to **Faria**, a premium SaaS landing page template designed to help you kickstart your next SaaS project or create a polished marketing page for your product. Built with modern tools like **Shadcn**, **Framer Motion**, and **Tailwind CSS**, this template offers a robust foundation for creating stunning, fully customizable websites.
 
 ---
@@ -98,7 +96,6 @@ faria/
 ├── .env.example       # Example environment variables
 ├── tailwind.config.js # Tailwind CSS configuration
 ├── next.config.js     # Next.js configuration file
-├── thumbnail.png      # Thumbnail image for the template
 └── ...
 ```
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AnimationContainer, Icons } from "@/components";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+import { Facebook, Instagram, Music2 } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -22,159 +23,179 @@ const Footer = () => {
           </div>
         </AnimationContainer>
 
-        <div className="grid-cols-2 gap-8 grid mt-16 xl:col-span-2 xl:mt-0">
-          <div className="md:grid md:grid-cols-2 md:gap-8">
-            <AnimationContainer delay={0.2}>
-              <div className="">
-                <h3 className="text-base font-medium text-foreground">Services</h3>
-                <ul className="mt-4 text-sm text-muted-foreground">
-                  <li className="mt-2">
-                    <Link
-                      href="/features/link-shortening"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Basic Clean
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/features/password-protection"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Intermediate Clean
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/features/analytics"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Advanced Clean
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/features/qr-codes"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Commercial Cleaning
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </AnimationContainer>
-            <AnimationContainer delay={0.3}>
-              <div className="mt-10 md:mt-0 flex flex-col">
-                <h3 className="text-base font-medium text-foreground">Contact</h3>
-                <ul className="mt-4 text-sm text-muted-foreground">
-                  <li className="">
-                    <Link
-                      href="mailto:sparkandmend@gmail.com"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Email: sparkandmend@gmail.com
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="tel:07715293761"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Call: 07715 293761
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="tel:07452824799"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Call: 07452 824799
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/enterprise"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Hours: Mon-Fri 9am-6pm
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="https://facebook.com"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Facebook
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="https://instagram.com"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Instagram
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </AnimationContainer>
-          </div>
-          <div className="md:grid md:grid-cols-2 md:gap-8">
-            <AnimationContainer delay={0.4}>
-              <div className="">
-                <h3 className="text-base font-medium text-foreground">Resources</h3>
-                <ul className="mt-4 text-sm text-muted-foreground">
-                  <li className="mt-2">
-                    <Link
-                      href="/resources/blog"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Blog
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/resources/help"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Help &amp; Support
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </AnimationContainer>
-            <AnimationContainer delay={0.5}>
-              <div className="mt-10 md:mt-0 flex flex-col">
-                <h3 className="text-base font-medium text-foreground">Company</h3>
-                <ul className="mt-4 text-sm text-muted-foreground">
-                  <li className="">
-                    <Link
-                      href="/changelog"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      About Spark and Mend
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/privacy"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li className="mt-2">
-                    <Link
-                      href="/terms"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
-                      Terms & Conditions
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </AnimationContainer>
-          </div>
+        <div className="grid gap-8 mt-16 xl:col-span-2 xl:mt-0 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimationContainer delay={0.2}>
+            <div className="flex flex-col">
+              <h3 className="text-base font-medium text-foreground">Services</h3>
+              <ul className="mt-4 text-sm text-muted-foreground">
+                <li className="mt-2">
+                  <Link
+                    href="/features/link-shortening"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Basic Clean
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/features/password-protection"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Intermediate Clean
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/features/analytics"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Advanced Clean
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/features/qr-codes"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Commercial Cleaning
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </AnimationContainer>
+          <AnimationContainer delay={0.3}>
+            <div className="flex flex-col">
+              <h3 className="text-base font-medium text-foreground">Contact</h3>
+              <ul className="mt-4 text-sm text-muted-foreground">
+                <li>
+                  <Link
+                    href="mailto:sparkandmend@gmail.com"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Email: sparkandmend@gmail.com
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="tel:07452824799"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Call: 07452 824799
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="https://wa.me/447452824799"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    WhatsApp: 07452 824799
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/get-a-quote"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Hours: Mon-Fri 9am-6pm
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </AnimationContainer>
+          <AnimationContainer delay={0.4}>
+            <div className="flex flex-col">
+              <h3 className="text-base font-medium text-foreground">Resources</h3>
+              <ul className="mt-4 text-sm text-muted-foreground">
+                <li className="mt-2">
+                  <Link
+                    href="/resources/blog"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/resources/help"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Help &amp; Support
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </AnimationContainer>
+          <AnimationContainer delay={0.5}>
+            <div className="flex flex-col">
+              <h3 className="text-base font-medium text-foreground">Company</h3>
+              <ul className="mt-4 text-sm text-muted-foreground">
+                <li>
+                  <Link
+                    href="/changelog"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    About Spark and Mend
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/privacy"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/terms"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Terms & Conditions
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </AnimationContainer>
+          <AnimationContainer delay={0.6}>
+            <div className="flex flex-col">
+              <h3 className="text-base font-medium text-foreground">Socials</h3>
+              <ul className="mt-4 text-sm text-muted-foreground">
+                <li className="mt-2">
+                  <Link
+                    href="https://facebook.com"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Facebook className="h-4 w-4" />
+                    Facebook
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="https://instagram.com"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Instagram className="h-4 w-4" />
+                    Instagram
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="https://www.tiktok.com"
+                    className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Music2 className="h-4 w-4" />
+                    TikTok
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </AnimationContainer>
         </div>
       </div>
 
@@ -187,7 +208,7 @@ const Footer = () => {
       </div>
 
       <div className="h-[20rem] lg:h-[20rem] hidden md:flex items-center justify-center">
-        <TextHoverEffect text="Spark & Mend" />
+        <TextHoverEffect text="S & M" />
       </div>
     </footer>
   );

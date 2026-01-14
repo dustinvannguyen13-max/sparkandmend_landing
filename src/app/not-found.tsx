@@ -9,7 +9,7 @@ const NotFound = () => {
 
       <div className="flex flex-col items-center justify-center mx-auto h-screen">
         <div className="flex items-center justify-center h-full flex-col">
-          <span className="text-sm font-medium px-3.5 py-1 rounded-md bg-[#714b4b] text-[#efe6d9] not-found">
+          <span className="text-sm font-medium px-3.5 py-1 rounded-md bg-secondary text-secondary-foreground not-found">
             404
           </span>
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mt-5">

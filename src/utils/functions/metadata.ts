@@ -1,26 +1,20 @@
 import { Metadata } from "next";
 
 export const generateMetadata = ({
-    title = `${process.env.NEXT_PUBLIC_APP_NAME} - Professional Cleaning in Plymouth`,
-    description = `${process.env.NEXT_PUBLIC_APP_NAME} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Get a free quote and enjoy a spotless space without the stress.`,
-    image = "/thumbnail.png",
-    icons = [
-        {
-            rel: "apple-touch-icon",
-            sizes: "32x32",
-            url: "/apple-touch-icon.png"
-        },
-        {
-            rel: "icon",
-            sizes: "32x32",
-            url: "/favicon-32x32.png"
-        },
-        {
-            rel: "icon",
-            sizes: "16x16",
-            url: "/favicon-16x16.png"
-        },
-    ],
+    title,
+    description,
+    image = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/spark-and-mend-banner.jpg",
+    icons = {
+        icon: [
+            { url: "/favicon/favicon.ico" },
+            { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+            { url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+        ],
+        apple: [
+            { url: "/favicon/apple-touch-icon.png", sizes: "180x180" },
+        ],
+        shortcut: "/favicon/favicon.ico",
+    },
     noIndex = false
 }: {
     title?: string;
@@ -28,21 +22,28 @@ export const generateMetadata = ({
     image?: string | null;
     icons?: Metadata["icons"];
     noIndex?: boolean;
-} = {}): Metadata => ({
-    title,
-    description,
-    icons,
-    openGraph: {
-        title,
-        description,
-        ...(image && { images: [{ url: image }] }),
-    },
-    twitter: {
-        title,
-        description,
-        ...(image && { card: "summary_large_image", images: [image] }),
-        creator: "@sparkandmend",
-    },
-    // metadataBase: new URL(process.env.APP_DOMAIN!),
-    ...(noIndex && { robots: { index: false, follow: false } }),
-});
+} = {}): Metadata => {
+    const appName = process.env.NEXT_PUBLIC_APP_NAME || "Spark & Mend";
+    const resolvedTitle = title ?? `${appName} Professional Cleaning in Plymouth`;
+    const resolvedDescription = description ?? `${appName} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Get a free quote and enjoy a spotless space without the stress.`;
+
+    return {
+        title: resolvedTitle,
+        description: resolvedDescription,
+        icons,
+        manifest: "/favicon/site.webmanifest",
+        openGraph: {
+            title: resolvedTitle,
+            description: resolvedDescription,
+            ...(image && { images: [{ url: image }] }),
+        },
+        twitter: {
+            title: resolvedTitle,
+            description: resolvedDescription,
+            ...(image && { card: "summary_large_image", images: [image] }),
+            creator: "@sparkandmend",
+        },
+        // metadataBase: new URL(process.env.APP_DOMAIN!),
+        ...(noIndex && { robots: { index: false, follow: false } }),
+    };
+};

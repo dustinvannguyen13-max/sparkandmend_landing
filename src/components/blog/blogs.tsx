@@ -14,14 +14,22 @@ const Blogs = () => {
                         <Card className="group border-0">
                             <CardContent className="p-4 lg:p-6">
                                 <div className="flex items-center justify-center h-40 lg:h-52 overflow-hidden">
-                                    <Image
-                                        src={blog.image}
-                                        alt={blog.title}
-                                        width={1024}
-                                        height={1024}
-                                        unoptimized
-                                        className="w-full h-full object-cover rounded-lg"
-                                    />
+                                    {blog.image ? (
+                                        <Image
+                                            src={blog.image}
+                                            alt={blog.title}
+                                            width={1024}
+                                            height={1024}
+                                            unoptimized
+                                            className="w-full h-full object-cover rounded-lg"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full rounded-lg border border-border/60 bg-gradient-to-br from-background via-white to-secondary/25 flex items-center justify-center">
+                                            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+                                                Spark &amp; Mend
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex flex-col items-start justify-start mt-4">
                                     <CardTitle className="text-lg font-semibold text-foreground/80 group-hover:text-foreground transition-all duration-300">

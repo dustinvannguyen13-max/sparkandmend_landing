@@ -22,6 +22,8 @@ import PricingCards from "./pricing-cards";
 
 // blog
 import Blogs from "./blog/blogs";
+// quote
+import QuoteCalculator from "./quote/quote-calculator";
 
 
 export {
@@ -42,4 +44,6 @@ export {
     PricingCards,
 
     Blogs,
+
+    QuoteCalculator,
 };

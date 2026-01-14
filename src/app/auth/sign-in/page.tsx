@@ -7,7 +7,9 @@ const SignInPage = () => {
       <div className="flex items-center w-full py-8 border-b border-border/80">
         <Link href="/#home" className="flex items-center gap-x-2">
           <Icons.logo className="w-6 h-6" />
-          <h1 className="text-lg font-medium">Spark &amp; Mend</h1>
+          <h1 className="text-lg font-semibold uppercase tracking-[0.05em] text-primary whitespace-nowrap">
+            Spark &amp; Mend
+          </h1>
         </Link>
       </div>
 

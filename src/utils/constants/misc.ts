@@ -11,27 +11,21 @@ export const PAGINATION_LIMIT = 10;
 export const COMPANIES = [
     {
         name: "Plymouth Homes",
-        logo: "/assets/company-01.svg",
     },
     {
         name: "Local Offices",
-        logo: "/assets/company-02.svg",
     },
     {
         name: "Rental Hosts",
-        logo: "/assets/company-03.svg",
     },
     {
         name: "Hospitality Spaces",
-        logo: "/assets/company-04.svg",
     },
     {
         name: "Property Managers",
-        logo: "/assets/company-05.svg",
     },
     {
         name: "Community Spaces",
-        logo: "/assets/company-06.svg",
     }
 ] as const;
 

@@ -1,100 +1,349 @@
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import { Button } from "@/components/ui/button";
-import { LampContainer } from "@/components/ui/lamp";
-import MagicBadge from "@/components/ui/magic-badge";
-import { COMPANIES } from "@/utils";
-import { ArrowRightIcon } from "lucide-react";
-import Image from "next/image";
+import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
-const LinkShorteningPage = () => {
-    return (
-        <>
-            <MaxWidthWrapper>
-                <AnimationContainer delay={0.1} className="w-full">
-                    <div className="flex flex-col items-center justify-center py-10 max-w-lg mx-auto">
-                        <MagicBadge title="Commercial" />
-                        <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold font-heading text-center mt-6 !leading-tight">
-                            Professional cleaning for offices and workspaces
-                        </h1>
-                        <p className="text-base md:text-lg mt-6 text-center text-muted-foreground">
-                            Reliable, discreet commercial cleaning that keeps your team and clients comfortable and productive.
-                        </p>
-                        <div className="flex items-center justify-center gap-x-4 mt-8">
-                            <Button size="sm" asChild>
-                                <Link href="/enterprise">
-                                    Get a Free Quote
-                                </Link>
-                            </Button>
-                            <Button size="sm" variant="outline" asChild>
-                                <Link href="/pricing">
-                                    See pricing
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
-                </AnimationContainer>
-                <AnimationContainer delay={0.2} className="w-full">
-                    <div className="w-full flex max-w-4xl py-10 mx-auto">
-                        <Image
-                            src="/assets/qr-codes.svg"
-                            alt="Commercial cleaning service"
-                            width={80}
-                            height={80}
-                            className="w-full h-auto"
-                        />
-                    </div>
-                </AnimationContainer>
-                <AnimationContainer delay={0.3} className="w-full">
-                    <div className="py-14">
-                        <div className="mx-auto px-4 md:px-8">
-                            <h2 className="text-center text-sm font-medium font-heading text-muted-foreground uppercase">
-                                Trusted by Plymouth homes and local businesses
-                            </h2>
-                            <div className="mt-8">
-                                <ul className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-16 justify-center py-8">
-                                    {COMPANIES.map((company) => (
-                                        <li key={company.name}>
-                                            <Image
-                                                src={company.logo}
-                                                alt={company.name}
-                                                width={80}
-                                                height={80}
-                                                quality={100}
-                                                className="w-28 h-auto"
-                                            />
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </AnimationContainer>
-            </MaxWidthWrapper>
-            <MaxWidthWrapper className="pt-20">
-                <AnimationContainer delay={0.4} className="w-full">
-                    <LampContainer className="max-w-2xl mx-auto">
-                        <div className="flex flex-col items-center justify-center relative w-full text-center">
-                            <h2 className="bg-gradient-to-br from-[#efe6d9] to-[#714b4b] py-4 bg-clip-text text-center text-4xl font-semibold font-heading tracking-tight text-transparent md:text-7xl mt-8">
-                                A cleaner workplace, every day
-                            </h2>
-                            <p className="text-muted-foreground mt-6 max-w-lg mx-auto text-base md:text-lg">
-                                From shared areas to meeting rooms, we keep your space tidy and professional.
-                            </p>
-                            <div className="mt-6">
-                                <Button asChild>
-                                    <Link href="/enterprise" className="flex items-center">
-                                        Book a Clean
-                                        <ArrowRightIcon className="w-4 h-4 ml-2" />
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
-                    </LampContainer>
-                </AnimationContainer>
-            </MaxWidthWrapper>
-        </>
-    )
+export const metadata = generateMetadata({
+  title: "Commercial Cleaning | Spark & Mend",
+  description:
+    "Commercial cleaning in Plymouth for offices and small businesses. Reliable, professional, consistent cleaning with clear scope. Get an instant quote in about 60 seconds.",
+});
+
+const CONTACT_EMAIL = "sparkandmend@gmail.com";
+const CONTACT_PHONE = "07452 824799";
+const CONTACT_PHONE_LINK = "tel:07452824799";
+const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
+
+const concerns = [
+  "Worried they will rush it and miss the details",
+  "Not sure what is included",
+  "Had someone cancel last minute",
+  "Do not want awkward upsells or changing prices",
+  "Need it done properly, first time",
+];
+
+const includeGroups = [
+  {
+    title: "Work areas",
+    items: [
+      "Desks and shared surfaces wiped",
+      "Reception and meeting rooms tidied",
+      "Touch points cleaned across key areas",
+    ],
+  },
+  {
+    title: "Washrooms",
+    items: [
+      "Toilets, sinks, taps, and mirrors cleaned",
+      "Soap and paper areas wiped",
+      "Bins emptied and reset",
+    ],
+  },
+  {
+    title: "Kitchens",
+    items: [
+      "Worktops and sinks cleaned",
+      "Appliance exteriors wiped",
+      "Tables and shared areas tidied",
+    ],
+  },
+  {
+    title: "Floors",
+    items: [
+      "Vacuum carpets and rugs",
+      "Mop hard floors",
+      "Spot clean obvious marks",
+    ],
+  },
+  {
+    title: "Extras",
+    items: [
+      "Bins and recycling taken out",
+      "High-traffic touch points wiped",
+      "Add-ons available when you request a quote",
+    ],
+  },
+];
+
+const businessTypes = [
+  "Offices and meeting rooms",
+  "Clinics and treatment rooms",
+  "Salons and studios",
+  "Retail shops and showrooms",
+  "Cafes and restaurant front-of-house areas",
+  "Landlord common areas and stairwells",
+];
+
+const whoFor = [
+  "Small businesses that need a consistent, professional finish",
+  "Offices that want tidy, client-ready spaces",
+  "Clinics, salons, and studios with steady footfall",
+  "Retail and hospitality spaces that need reliable upkeep",
+  "Landlord-managed common areas",
+];
+
+const results = [
+  "Tidy work areas that feel professional",
+  "Crisp washrooms and kitchens",
+  "Floors that look even and fresh",
+  "Touch points feel clean and well kept",
+  "No sticky bits. No missed corners.",
+];
+
+const faqs = [
+  {
+    question: "What is the difference between Basic, Intermediate, and Advanced?",
+    answer:
+      "Those are residential options. Commercial cleaning is scoped to your workspace needs, with clear areas and frequency agreed in advance.",
+  },
+  {
+    question: "How long does it take?",
+    answer:
+      "It depends on the size and condition of your space. Your instant quote gives a clear estimate, and we confirm timings before booking.",
+  },
+  {
+    question: "Do we need to be on site?",
+    answer:
+      "Not necessarily. We can work around your hours and access preferences once we confirm the booking.",
+  },
+  {
+    question: "Do you bring supplies?",
+    answer:
+      "Yes, we bring our own kit. If you prefer specific products, just let us know in the quote notes.",
+  },
+  {
+    question: "Can you focus on specific areas?",
+    answer:
+      "Yes. Tell us what matters most in your quote notes and we will prioritise those areas.",
+  },
+  {
+    question: "What about pets or staff on site?",
+    answer:
+      "No problem. We work around people calmly and keep disruption low.",
+  },
+  {
+    question: "What if I need regular cleaning?",
+    answer:
+      "Choose weekly or fortnightly in the quote form. We will line up a consistent schedule that suits your space.",
+  },
+  {
+    question: "Can I book for a rental or end-of-tenancy style reset?",
+    answer:
+      "Yes. If you need a full reset for a property, tell us in the quote and we will confirm the scope.",
+  },
+];
+
+const ContactDetails = () => (
+  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+    <Link href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">
+      Email: {CONTACT_EMAIL}
+    </Link>
+    <Link href={CONTACT_PHONE_LINK} className="hover:text-foreground">
+      Call: {CONTACT_PHONE}
+    </Link>
+    <Link href={CONTACT_WHATSAPP_LINK} className="hover:text-foreground">
+      WhatsApp: {CONTACT_PHONE}
+    </Link>
+  </div>
+);
+
+const CtaButtons = () => (
+  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+    <Button asChild>
+      <Link href="/get-a-quote">Get an Instant Quote</Link>
+    </Button>
+    <Button variant="outline" asChild>
+      <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
+    </Button>
+  </div>
+);
+
+const CommercialCleanPage = () => {
+  return (
+    <MaxWidthWrapper className="py-16 space-y-16">
+      <AnimationContainer delay={0.1}>
+        <section className="text-center max-w-3xl mx-auto space-y-4">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            Commercial Cleaning
+          </p>
+          <h1 className="text-3xl md:text-5xl font-semibold font-heading text-foreground">
+            Commercial Cleaning - reliable, professional, consistent
+          </h1>
+          <p className="text-base md:text-lg text-muted-foreground">
+            Keep your workspace client-ready with a tidy, professional finish. We
+            work around your hours and keep the scope clear.
+          </p>
+          <CtaButtons />
+          <p className="text-sm text-muted-foreground">
+            Instant quote takes about 60 seconds.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Fast quote. Clear scope. No pressure.
+          </p>
+          <ContactDetails />
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.15}>
+        <section className="space-y-4 max-w-3xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            We get your concerns
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+            {concerns.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p className="text-muted-foreground">
+            That is why we keep it simple and transparent.
+          </p>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.2}>
+        <section className="space-y-6">
+          <div className="max-w-2xl">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+              What this service includes
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              We focus on the areas that matter most for a professional, tidy
+              workspace.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {includeGroups.map((group) => (
+              <div key={group.title} className="rounded-2xl border border-border/60 p-5">
+                <h3 className="text-lg font-semibold text-foreground">
+                  {group.title}
+                </h3>
+                <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Not sure which clean you need?{" "}
+            <Link href="/get-a-quote" className="text-foreground underline">
+              Get an Instant Quote
+            </Link>
+            .
+          </p>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.25}>
+        <section className="space-y-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            What we clean
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+            {businessTypes.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.3}>
+        <section className="space-y-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            Who it is for
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+            {whoFor.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.35}>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+              How it works
+            </h2>
+          </div>
+          <ol className="grid gap-4 md:grid-cols-3">
+            <li className="rounded-2xl border border-border/60 p-5">
+              <p className="text-sm font-semibold text-foreground">1)</p>
+              <p className="mt-2 text-muted-foreground">
+                <Link href="/get-a-quote" className="text-foreground underline">
+                  Get an instant quote
+                </Link>{" "}
+                in about 60 seconds.
+              </p>
+            </li>
+            <li className="rounded-2xl border border-border/60 p-5">
+              <p className="text-sm font-semibold text-foreground">2)</p>
+              <p className="mt-2 text-muted-foreground">
+                Choose a slot and any add-ons you want.
+              </p>
+            </li>
+            <li className="rounded-2xl border border-border/60 p-5">
+              <p className="text-sm font-semibold text-foreground">3)</p>
+              <p className="mt-2 text-muted-foreground">
+                We arrive and clean to a clear standard.
+              </p>
+            </li>
+          </ol>
+          <p className="text-muted-foreground">
+            No back-and-forth. Just a straightforward booking.
+          </p>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.4}>
+        <section className="space-y-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            Results you will notice
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+            {results.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.45}>
+        <section className="space-y-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">FAQs</h2>
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="rounded-2xl border border-border/60 p-5">
+                <h3 className="text-base font-semibold text-foreground">
+                  {faq.question}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </AnimationContainer>
+
+      <AnimationContainer delay={0.5}>
+        <section className="rounded-3xl border border-border/60 p-8 text-center space-y-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            Ready to keep your workspace client-ready?
+          </h2>
+          <p className="text-muted-foreground">
+            Get your instant quote, choose a slot, and keep the workplace tidy
+            and professional.
+          </p>
+          <CtaButtons />
+          <p className="text-sm text-muted-foreground">
+            Fast quote. Clear scope. No pressure.
+          </p>
+          <ContactDetails />
+        </section>
+      </AnimationContainer>
+    </MaxWidthWrapper>
+  );
 };
 
-export default LinkShorteningPage
+export default CommercialCleanPage;

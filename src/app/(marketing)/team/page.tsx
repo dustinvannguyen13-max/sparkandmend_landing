@@ -4,9 +4,9 @@ import { generateMetadata } from "@/utils";
 import Link from "next/link";
 
 export const metadata = generateMetadata({
-  title: "About Spark & Mend",
+  title: "Meet the Team | Spark & Mend",
   description:
-    "Learn about Spark & Mend, a local Plymouth cleaning team focused on clear communication, detail-focused work, and no-fuss service.",
+    "Meet the small Spark & Mend team in Plymouth. Consistent standards, friendly service, and clear communication.",
 });
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
@@ -14,12 +14,29 @@ const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
 
-const values = [
-  "Clear communication",
-  "Detail-focused work",
-  "Turning up on time",
-  "Respecting homes and workplaces",
-  "No drama, no pressure",
+const team = [
+  {
+    name: "Lenny B",
+    role: "Co-founder / Cleaning Lead",
+    traits: [
+      "Detail-focused and methodical",
+      "Calm and friendly on site",
+      "Reliable and punctual",
+      "Clear communicator",
+    ],
+    why: "Lenny likes seeing the before-and-after difference a proper clean makes for busy households.",
+  },
+  {
+    name: "Tino G",
+    role: "Cleaning Specialist",
+    traits: [
+      "Consistent standards",
+      "Quick, tidy finish",
+      "Respectful in homes and workplaces",
+      "Happy to work around schedules",
+    ],
+    why: "Tino enjoys helping people feel more relaxed in their space without the fuss.",
+  },
 ];
 
 const ContactDetails = () => (
@@ -47,20 +64,20 @@ const CtaButtons = () => (
   </div>
 );
 
-const AboutPage = () => {
+const TeamPage = () => {
   return (
     <MaxWidthWrapper className="py-16 space-y-16">
       <AnimationContainer delay={0.1}>
         <section className="text-center max-w-3xl mx-auto space-y-4">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            About
+            Team
           </p>
           <h1 className="text-3xl md:text-5xl font-semibold font-heading text-foreground">
-            About Spark &amp; Mend
+            Meet the Spark &amp; Mend team
           </h1>
           <p className="text-base md:text-lg text-muted-foreground">
-            We are a small, local cleaning team in Plymouth focused on clear
-            communication, consistent standards, and a calm, respectful service.
+            A small team with consistent standards. You will see the same faces
+            and the same level of care each visit.
           </p>
           <CtaButtons />
           <p className="text-sm text-muted-foreground">
@@ -74,52 +91,36 @@ const AboutPage = () => {
       </AnimationContainer>
 
       <AnimationContainer delay={0.15}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Why the name Spark &amp; Mend?
+        <section className="space-y-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground text-center">
+            Small team, consistent standards
           </h2>
-          <p className="text-muted-foreground">
-            Spark is the fresh, bright feeling you get after a proper clean. Mend
-            is our promise to fix the common issues people have with cleaners -
-            missed details, lack of trust, and poor communication.
-          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            {team.map((member) => (
+              <div key={member.name} className="rounded-2xl border border-border/60 p-6">
+                <h3 className="text-xl font-semibold text-foreground">
+                  {member.name}
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">{member.role}</p>
+                <ul className="mt-4 list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+                  {member.traits.map((trait) => (
+                    <li key={trait}>{trait}</li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-sm text-muted-foreground">{member.why}</p>
+              </div>
+            ))}
+          </div>
         </section>
       </AnimationContainer>
 
       <AnimationContainer delay={0.2}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Why we started
-          </h2>
-          <p className="text-muted-foreground">
-            We kept hearing the same stories: inconsistent standards, unclear
-            pricing, and awkward experiences. We wanted to build a cleaning
-            service that feels simple, respectful, and consistent - with a clear
-            scope and a straightforward booking process.
-          </p>
-        </section>
-      </AnimationContainer>
-
-      <AnimationContainer delay={0.25}>
-        <section className="space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            The values we work by
-          </h2>
-          <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-            {values.map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
-        </section>
-      </AnimationContainer>
-
-      <AnimationContainer delay={0.3}>
         <section className="rounded-3xl border border-border/60 p-8 text-center space-y-4">
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Ready to see what a clear, calm clean feels like?
+            Ready to book a clean with a consistent team?
           </h2>
           <p className="text-muted-foreground">
-            Get your instant quote, choose a time, and we will take it from
+            Get your instant quote, choose a slot, and we will take it from
             there.
           </p>
           <CtaButtons />
@@ -133,4 +134,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default TeamPage;

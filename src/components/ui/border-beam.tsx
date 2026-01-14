@@ -17,8 +17,8 @@ export const BorderBeam = ({
     duration = 15,
     anchor = 90,
     borderWidth = 1.5,
-    colorFrom = "#efe6d9",
-    colorTo = "#714b4b",
+    colorFrom = "hsl(var(--primary))",
+    colorTo = "hsl(var(--secondary))",
     delay = 0,
 }: BorderBeamProps) => {
     return (

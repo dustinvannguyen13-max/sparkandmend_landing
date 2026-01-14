@@ -34,7 +34,7 @@ export const PLANS: Plan[] = [
     ],
     btn: {
       text: "Get a Free Quote",
-      href: "/enterprise",
+      href: "/get-a-quote",
     },
   },
   {
@@ -53,7 +53,7 @@ export const PLANS: Plan[] = [
     ],
     btn: {
       text: "Get a Free Quote",
-      href: "/enterprise",
+      href: "/get-a-quote",
     },
   },
   {
@@ -72,7 +72,7 @@ export const PLANS: Plan[] = [
     ],
     btn: {
       text: "Get a Free Quote",
-      href: "/enterprise",
+      href: "/get-a-quote",
     },
   },
 ];

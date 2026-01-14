@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --brand-light: 35.5 40.7% 89.4%;
-    --brand-dark: 0 20.2% 36.9%;
+    --brand-light: 32.7 42.3% 89.8%;
+    --brand-dark: 186 79.5% 17.3%;
 
     --foreground: var(--brand-dark);
     --background: var(--brand-light);
@@ -19,26 +19,26 @@
     --primary: var(--brand-dark);
     --primary-foreground: var(--brand-light);
 
-    --secondary: 35 30% 93%;
-    --secondary-foreground: var(--brand-dark);
+    --secondary: 0 20.6% 37.1%;
+    --secondary-foreground: var(--brand-light);
 
-    --tertiary: 35 26% 88%;
+    --tertiary: 33 28% 88%;
     --tertiary-foreground: var(--brand-dark);
 
-    --subtle: 35 22% 92%;
+    --subtle: 33 24% 92%;
     --subtle-foreground: var(--brand-dark);
 
-    --muted: 35 20% 92%;
+    --muted: 33 20% 92%;
     --muted-foreground: 0 10% 40%;
 
-    --accent: 35 28% 90%;
+    --accent: 33 28% 90%;
     --accent-foreground: var(--brand-dark);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 35 20% 82%;
-    --input: 35 20% 84%;
+    --border: 33 20% 82%;
+    --input: 33 20% 84%;
     --ring: var(--brand-dark);
 
     --radius: 0.5rem;

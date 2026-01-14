@@ -48,7 +48,7 @@ export const NAV_LINKS = [
     },
     {
         title: "Contact",
-        href: "/enterprise",
+        href: "/get-a-quote",
     },
     {
         title: "Resources",

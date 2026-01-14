@@ -20,7 +20,6 @@ import MagicCard from "@/components/ui/magic-card";
 import { COMPANIES, PROCESS } from "@/utils";
 import { REVIEWS } from "@/utils/constants/misc";
 import { ArrowRightIcon, CreditCardIcon, StarIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 const HomePage = async () => {
@@ -43,7 +42,7 @@ const HomePage = async () => {
             </button>
             <h1 className="text-foreground text-center py-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
               Spark and Mend{" "}
-              <span className="text-transparent mx-2 bg-gradient-to-r from-[#714b4b] to-[#efe6d9] bg-clip-text inline-bloc">
+              <span className="text-transparent mx-2 bg-gradient-to-r from-primary to-secondary bg-clip-text inline-bloc">
                 cleaning
               </span>
               for homes, offices, and rentals in Plymouth
@@ -57,7 +56,7 @@ const HomePage = async () => {
             </p>
             <div className="flex items-center justify-center whitespace-nowrap gap-4 z-50">
               <Button asChild>
-                <Link href={"/enterprise"} className="flex items-center">
+                <Link href="/get-a-quote" className="flex items-center">
                   Get a Free Quote
                   <ArrowRightIcon className="w-4 h-4 ml-2" />
                 </Link>
@@ -72,7 +71,13 @@ const HomePage = async () => {
             <div className="absolute md:top-[10%] left-1/2 gradient w-3/4 -translate-x-1/2 h-1/4 md:h-1/3 inset-0 blur-[5rem] animate-image-glow"></div>
             <div className="-m-2 rounded-xl p-2 ring-1 ring-inset ring-foreground/20 lg:-m-4 lg:rounded-2xl bg-opacity-50 backdrop-blur-3xl">
               <BorderBeam size={250} duration={12} delay={9} />
-              <div className="w-full h-[400px] bg-card"></div>
+              <div
+                className="w-full h-[460px] md:h-[540px] lg:h-[600px] bg-center bg-cover bg-no-repeat"
+                style={{
+                  backgroundImage:
+                    "url('https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/spark-and-mend-cover.png')",
+                }}
+              ></div>
               <div className="absolute -bottom-4 inset-x-0 w-full h-1/2 bg-gradient-to-t from-background z-40"></div>
               <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-background z-50"></div>
             </div>
@@ -89,17 +94,12 @@ const HomePage = async () => {
                 Trusted by Plymouth homes and local businesses
               </h2>
               <div className="mt-8">
-                <ul className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-16 justify-center">
+                <ul className="flex flex-wrap items-center gap-3 md:gap-4 justify-center">
                   {COMPANIES.map((company) => (
                     <li key={company.name}>
-                      <Image
-                        src={company.logo}
-                        alt={company.name}
-                        width={80}
-                        height={80}
-                        quality={100}
-                        className="w-28 h-auto"
-                      />
+                      <span className="inline-flex items-center rounded-full border border-border/60 px-4 py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {company.name}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -305,7 +305,7 @@ const HomePage = async () => {
         <AnimationContainer delay={0.1}>
           <LampContainer>
             <div className="flex flex-col items-center justify-center relative w-full text-center">
-              <h2 className="bg-gradient-to-b from-[#efe6d9] to-[#714b4b] py-4 bg-clip-text text-center text-4xl md:text-7xl !leading-[1.15] font-medium font-heading tracking-tight text-transparent mt-8">
+              <h2 className="bg-gradient-to-b from-primary to-secondary py-4 bg-clip-text text-center text-4xl md:text-7xl !leading-[1.15] font-medium font-heading tracking-tight text-transparent mt-8">
                 A cleaner space, without the effort
               </h2>
               <p className="text-muted-foreground mt-6 max-w-md mx-auto">
@@ -314,7 +314,7 @@ const HomePage = async () => {
               </p>
               <div className="mt-6">
                 <Button asChild>
-                  <Link href="/enterprise" className="flex items-center">
+                  <Link href="/get-a-quote" className="flex items-center">
                     Get a Free Quote
                     <ArrowRightIcon className="w-4 h-4 ml-2" />
                   </Link>
