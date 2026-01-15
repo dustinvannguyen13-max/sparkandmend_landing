@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import { Button } from "@/components/ui/button";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
 import {
   calculateQuote,
@@ -15,6 +16,7 @@ interface QuoteResultPageProps {
 
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
+const STRIPE_PAYMENT_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
 const CONTACT_METHOD_LABELS: Record<string, string> = {
   text: "text message",
@@ -174,10 +176,7 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                   </h3>
                   <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                     {quote.packageItems.map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-secondary" />
-                        <span>{item}</span>
-                      </li>
+                      <CheckListItem key={item}>{item}</CheckListItem>
                     ))}
                   </ul>
                 </div>
@@ -189,10 +188,7 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                     </h3>
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                       {quote.addOns.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-secondary" />
-                          <span>{item}</span>
-                        </li>
+                        <CheckListItem key={item}>{item}</CheckListItem>
                       ))}
                     </ul>
                   </div>
@@ -236,12 +232,31 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                       calendar hold.
                     </p>
                   )}
+                  {STRIPE_PAYMENT_LINK ? (
+                    <PrimaryButton asChild size="sm">
+                      <Link
+                        href={STRIPE_PAYMENT_LINK}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Pay by card (Stripe)
+                      </Link>
+                    </PrimaryButton>
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      We can send a secure Stripe payment link once we confirm
+                      your booking.
+                    </p>
+                  )}
                   <Button variant="outline" asChild>
                     <Link href={whatsappUrl}>WhatsApp us</Link>
                   </Button>
                   <Button variant="outline" asChild>
                     <Link href={CONTACT_PHONE_LINK}>Call {CONTACT_PHONE}</Link>
                   </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Prefer to pay later or in cash? Just let us know on WhatsApp.
+                  </p>
                 </div>
               </div>
             </div>

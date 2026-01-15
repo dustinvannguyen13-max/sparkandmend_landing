@@ -32,12 +32,12 @@ export const COMPANIES = [
 export const PROCESS = [
     {
         title: "Get an Instant Quote",
-        description: "Tell us about your space and the service you need. We will reply quickly with a clear quote.",
+        description: "Define your requirements in the quote calculator for a fixed instant quote.",
         icon: ClipboardListIcon,
     },
     {
         title: "Choose a Time",
-        description: "Pick a weekly, bi-weekly, monthly, or one-off clean that fits your schedule.",
+        description: "Choose a slot and book instantly once your requirements are set.",
         icon: CalendarDaysIcon,
     },
     {

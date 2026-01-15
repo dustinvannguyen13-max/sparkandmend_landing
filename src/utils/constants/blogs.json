@@ -1,34 +1,455 @@
 [
-    {
-        "title": "A Simple Weekly Cleaning Checklist for Busy Homes",
-        "author_image": "https://example.com/images/author1.jpg",
-        "author_name": "Spark & Mend Team",
-        "date_published": "2024-10-05",
-        "description": "A practical weekly checklist to keep your home tidy between visits.",
-        "slug": "weekly-cleaning-checklist-for-busy-homes"
-    },
-    {
-        "title": "Deep Clean vs Regular Clean: What to Expect",
-        "author_image": "https://example.com/images/author2.jpg",
-        "author_name": "Spark & Mend Team",
-        "date_published": "2024-09-28",
-        "description": "Understand the difference and when a deeper clean makes sense.",
-        "slug": "deep-clean-vs-regular-clean-what-to-expect"
-    },
-    {
-        "title": "End-of-Tenancy Cleaning: A Landlord-Ready Checklist",
-        "author_image": "https://example.com/images/author3.jpg",
-        "author_name": "Spark & Mend Team",
-        "date_published": "2024-09-20",
-        "description": "A complete checklist for move-out cleans that help secure your deposit.",
-        "slug": "end-of-tenancy-cleaning-checklist"
-    },
-    {
-        "title": "Office Cleaning Tips for Healthier Workdays",
-        "author_image": "https://example.com/images/author4.jpg",
-        "author_name": "Spark & Mend Team",
-        "date_published": "2024-09-15",
-        "description": "Simple habits and schedules to keep shared workspaces fresh.",
-        "slug": "office-cleaning-tips-for-healthier-workdays"
-    }
+  {
+    "title": "A Simple Weekly Cleaning Checklist for Busy Homes",
+    "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2024-10-05",
+    "reading_time": "6 min read",
+    "category": "Cleaning Tips",
+    "tags": ["weekly cleaning", "cleaning checklist", "Plymouth"],
+    "description": "A practical weekly checklist to keep your home tidy between visits.",
+    "meta_title": "Weekly Cleaning Checklist for Busy Homes | Spark & Mend",
+    "meta_description": "A practical weekly cleaning checklist for busy homes in Plymouth. Room-by-room tasks, quick resets, and tips to keep your space tidy between visits.",
+    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
+    "slug": "weekly-cleaning-checklist-for-busy-homes",
+    "content": [
+      {
+        "type": "p",
+        "text": "If your weeks are full, a simple routine beats a big weekend clean. The aim is to keep your Plymouth home calm between visits and stop jobs from piling up."
+      },
+      {
+        "type": "p",
+        "text": "This checklist focuses on quick wins that make the house feel tidy fast. Most tasks take 10 to 20 minutes when done little and often."
+      },
+      {
+        "type": "h2",
+        "text": "The 30-minute midweek reset"
+      },
+      {
+        "type": "p",
+        "text": "Set a timer and move through the house in the same order each time. You will be surprised how much you can get done."
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Clear kitchen counters and wipe surfaces",
+          "Load or empty the dishwasher",
+          "Quick bathroom wipe: sink, taps, mirror",
+          "Fast vacuum of main traffic areas",
+          "Take out rubbish and recycling"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Weekly checklist by room"
+      },
+      {
+        "type": "h3",
+        "text": "Kitchen"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Hob and splashback degrease",
+          "Wipe cupboard fronts and handles",
+          "Clean the sink and drain",
+          "Empty crumbs from toaster and wipe small appliances"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Bathroom"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Remove limescale on taps and shower screen",
+          "Clean toilet bowl and exterior",
+          "Scrub bath and tiles",
+          "Replace towels and wipe shelf surfaces"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Living areas"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Dust shelves and electronics",
+          "Fluff cushions and fold throws",
+          "Vacuum sofa and under cushions",
+          "Spot clean fingerprints on doors and switches"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Bedrooms"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Change bedding",
+          "Dust bedside tables and lamps",
+          "Vacuum or sweep floors",
+          "Sort laundry into a basket"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Hallway and stairs"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Quick sweep or vacuum",
+          "Wipe skirting boards and bannister",
+          "Clear shoes and coats"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Supplies that save time"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Microfibre cloths in two colours",
+          "All-purpose cleaner",
+          "Descaler for bathrooms",
+          "Glass cleaner",
+          "Vacuum with a crevice tool",
+          "Bin bags and spare liners"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "When a deeper clean makes sense"
+      },
+      {
+        "type": "p",
+        "text": "If you are constantly playing catch-up, a deeper clean can reset the space and make weekly upkeep easier."
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Before guests or after a busy stretch",
+          "When moving in or out",
+          "After building work or decorating",
+          "Every 3 to 6 months for hard-to-reach areas"
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Want a fixed instant quote?",
+        "text": "Define your requirements in our quote calculator and get a fixed instant quote in about 60 seconds.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  },
+  {
+    "title": "Deep Clean vs Regular Clean: What to Expect",
+    "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2024-09-28",
+    "reading_time": "7 min read",
+    "category": "Cleaning Advice",
+    "tags": ["deep clean", "regular cleaning", "Plymouth cleaning"],
+    "description": "Understand the difference and when a deeper clean makes sense.",
+    "meta_title": "Deep Clean vs Regular Clean | Spark & Mend",
+    "meta_description": "Deep clean vs regular clean explained. Learn what each covers, how often to book, and how to choose the right clean for your Plymouth home.",
+    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
+    "slug": "deep-clean-vs-regular-clean-what-to-expect",
+    "content": [
+      {
+        "type": "p",
+        "text": "Most people ask what the difference really is. A regular clean keeps things tidy. A deep clean tackles build-up and the details you do not hit every week."
+      },
+      {
+        "type": "p",
+        "text": "Below is a straightforward guide so you can choose the right level and know what to expect in a Plymouth home or rental."
+      },
+      {
+        "type": "h2",
+        "text": "What a regular clean covers"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Surfaces wiped and dusted",
+          "Kitchen and bathroom cleaned",
+          "Floors vacuumed and mopped",
+          "Bins emptied and reset",
+          "Tidy finish on visible areas"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "What a deep clean adds"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Skirting boards and door frames",
+          "Build-up around taps, grout, and shower screens",
+          "Inside cupboards where accessible",
+          "High-touch areas like handles and switches",
+          "Spot cleaning marks on walls and doors"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "How long does it take?"
+      },
+      {
+        "type": "p",
+        "text": "Time depends on the size and condition of the property. A deep clean needs more time because there are more detailed tasks, especially in kitchens and bathrooms."
+      },
+      {
+        "type": "h2",
+        "text": "How often should you book each?"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Regular cleaning: weekly or every two weeks for upkeep",
+          "Deep clean: every few months or for the first visit",
+          "Seasonal reset: spring or autumn is a good time for a full refresh"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "What affects the price?"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Number of bedrooms and bathrooms",
+          "Level of build-up",
+          "Add-ons such as oven or internal windows",
+          "Access and parking",
+          "One-off vs ongoing schedule"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Which one should you choose?"
+      },
+      {
+        "type": "p",
+        "text": "If the home is already tidy and you want maintenance, go regular. If it has been a while or you are starting a new routine, start with a deeper clean and then maintain it."
+      },
+      {
+        "type": "callout",
+        "title": "Get a fixed instant quote",
+        "text": "Use the quote calculator to define your requirements and get a fixed instant quote in about 60 seconds.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  },
+  {
+    "title": "End-of-Tenancy Cleaning: A Landlord-Ready Checklist",
+    "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2024-09-20",
+    "reading_time": "8 min read",
+    "category": "Rentals",
+    "tags": ["end of tenancy", "move out cleaning", "Plymouth rentals"],
+    "description": "A complete checklist for move-out cleans that help present your property well.",
+    "meta_title": "End-of-Tenancy Cleaning Checklist | Spark & Mend",
+    "meta_description": "A landlord-ready end-of-tenancy cleaning checklist for Plymouth rentals. Room-by-room tasks and common misses to look out for before handover.",
+    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w",
+    "slug": "end-of-tenancy-cleaning-checklist",
+    "content": [
+      {
+        "type": "p",
+        "text": "Moving out is busy and the end-of-tenancy clean often gets left to the final day. A structured checklist helps you present the property well and avoid last-minute surprises."
+      },
+      {
+        "type": "p",
+        "text": "Use the inventory as your guide and work room by room. It keeps the clean focused and stops small jobs being missed."
+      },
+      {
+        "type": "h2",
+        "text": "Before you start"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Remove personal items and rubbish",
+          "Defrost and empty the fridge and freezer",
+          "Open windows for ventilation",
+          "Check the inventory for specific notes",
+          "Have bags, cloths, and a vacuum ready"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Kitchen checklist"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Oven, hob, and extractor hood degreased",
+          "Cupboard doors and handles wiped",
+          "Sink, taps, and drain cleaned",
+          "Worktops and splashback wiped",
+          "Fridge and freezer cleaned inside",
+          "Skirting boards and floor edges"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Bathroom checklist"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Shower screen and tiles descaled",
+          "Toilet cleaned inside and out",
+          "Bath and basin scrubbed",
+          "Mirrors and chrome polished",
+          "Floor and skirting cleaned"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Living areas and bedrooms"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Dust high surfaces, shelves, and light fittings",
+          "Wipe switches and door handles",
+          "Clean windowsills and frames",
+          "Vacuum edges and under furniture",
+          "Remove marks on doors where possible"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Common misses we see"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Top of doors and door frames",
+          "Inside the microwave",
+          "Behind the toilet",
+          "Radiator tops",
+          "Window tracks"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Hand-over tips"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Take date-stamped photos when finished",
+          "Check keys and meters are ready",
+          "Leave the property aired and tidy",
+          "Remove the final bin bag"
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Need a fixed instant quote?",
+        "text": "Use the quote calculator to define your requirements and get a fixed instant quote before booking.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  },
+  {
+    "title": "Office Cleaning Tips for Healthier Workdays",
+    "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2024-09-15",
+    "reading_time": "6 min read",
+    "category": "Commercial",
+    "tags": ["office cleaning", "workspaces", "Plymouth"],
+    "description": "Simple habits and schedules to keep shared workspaces fresh.",
+    "meta_title": "Office Cleaning Tips for Healthier Workdays | Spark & Mend",
+    "meta_description": "Practical office cleaning tips for Plymouth workspaces. Daily resets, weekly rota ideas, and shared kitchen basics to keep teams feeling fresh.",
+    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
+    "slug": "office-cleaning-tips-for-healthier-workdays",
+    "content": [
+      {
+        "type": "p",
+        "text": "Shared workspaces pick up dirt fast. A small daily routine keeps the office feeling fresh and reduces the big clean at the end of the week."
+      },
+      {
+        "type": "p",
+        "text": "These tips are aimed at small Plymouth offices, studios, and shared spaces where first impressions matter."
+      },
+      {
+        "type": "h2",
+        "text": "Daily 10-minute reset"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Wipe desks and shared surfaces",
+          "Empty bins and replace liners",
+          "Sanitise touch points like door handles and switches",
+          "Clear the kitchen sink and wipe counters",
+          "Quick vacuum of the entrance and main walkway"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Weekly cleaning rota"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Deep clean kitchen appliances and cupboard fronts",
+          "Mop hard floors and spot clean carpets",
+          "Clean meeting room tables and chairs",
+          "Dust screens, shelves, and window sills",
+          "Restock soap, towels, and toilet roll"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Shared kitchen basics"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Label shelves in the fridge",
+          "Wipe the microwave after use",
+          "Run a descaler in the kettle weekly",
+          "Empty food waste daily"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Reception and meeting rooms"
+      },
+      {
+        "type": "p",
+        "text": "These areas set the tone for visitors, so keep them clear of clutter and fingerprints. A quick wipe of door handles and chair arms goes a long way."
+      },
+      {
+        "type": "h2",
+        "text": "When you need a reset"
+      },
+      {
+        "type": "p",
+        "text": "If the office has been busy or you are onboarding new staff, a deeper clean can reset standards and keep the space professional."
+      },
+      {
+        "type": "callout",
+        "title": "Want a fixed instant quote?",
+        "text": "Use the quote calculator to define your requirements and book instantly with a fixed instant quote.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  }
 ]

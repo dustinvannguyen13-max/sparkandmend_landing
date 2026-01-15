@@ -1,5 +1,6 @@
 import { MaxWidthWrapper } from "@/components";
 import CTAStrip from "@/components/ui/cta-strip";
+import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
 
 const EnterprisePage = () => {
@@ -7,23 +8,23 @@ const EnterprisePage = () => {
     <MaxWidthWrapper className="pt-16 pb-20">
       <Section className="pt-6">
         <SectionHeader
-          eyebrow="Get an instant quote"
+          eyebrow="Get a fixed instant quote"
           title="Tell us what you need"
-          description="Interested in our services? Share a few details and we will be in touch shortly."
+          description="Interested in our services? Share a few details and we will be in touch shortly. Prefer a fixed instant quote? Use the calculator to book instantly."
         />
         <div className="mt-8 text-sm md:text-base text-muted-foreground">
           <p className="font-medium text-foreground text-center">
             To get started, share:
           </p>
-          <ul className="list-disc text-left mt-4 max-w-lg mx-auto">
-            <li>Name (first and last)</li>
-            <li>Email (required)</li>
-            <li>Phone</li>
-            <li>Service interest: Basic, Intermediate, or Advanced</li>
-            <li>Preferred date</li>
-            <li>How you heard about us</li>
-            <li>Message (required)</li>
-            <li>Optional: sign up for news and updates</li>
+          <ul className="mt-4 max-w-lg mx-auto space-y-2 text-left">
+            <CheckListItem>Name (first and last)</CheckListItem>
+            <CheckListItem>Email (required)</CheckListItem>
+            <CheckListItem>Phone</CheckListItem>
+            <CheckListItem>Service interest: Basic, Intermediate, or Advanced</CheckListItem>
+            <CheckListItem>Preferred date</CheckListItem>
+            <CheckListItem>How you heard about us</CheckListItem>
+            <CheckListItem>Message (required)</CheckListItem>
+            <CheckListItem>Optional: sign up for news and updates</CheckListItem>
           </ul>
         </div>
         <div className="mt-10 text-base md:text-lg text-center text-muted-foreground space-y-2">
@@ -36,8 +37,8 @@ const EnterprisePage = () => {
 
       <Section>
         <CTAStrip
-          title="Prefer an instant quote instead?"
-          description="Get a fast estimate and choose a slot that works for you."
+          title="Prefer a fixed instant quote instead?"
+          description="Get a fixed instant quote with the calculator and book instantly."
           primaryHref="/get-a-quote"
           primaryLabel="Get an Instant Quote"
           secondaryHref="tel:07452824799"

@@ -1,4 +1,5 @@
 import { MaxWidthWrapper } from "@/components";
+import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
 
 const Privacy = () => {
@@ -57,31 +58,37 @@ const Privacy = () => {
             <h2 className="text-lg font-semibold text-foreground">How We Use Your Information</h2>
             <h3 className="text-base font-semibold text-foreground">Provide and Improve Services</h3>
             <p>We use the information we collect to:</p>
-            <ul className="list-disc ml-5 space-y-2">
-              <li>Provide, operate, and maintain our services.</li>
-              <li>Improve and personalize your experience.</li>
-              <li>Process payments and manage bookings.</li>
+            <ul className="space-y-2 text-muted-foreground">
+              <CheckListItem>Provide, operate, and maintain our services.</CheckListItem>
+              <CheckListItem>Improve and personalize your experience.</CheckListItem>
+              <CheckListItem>Process payments and manage bookings.</CheckListItem>
             </ul>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-foreground">Communication</h3>
             <p>We may use your information to:</p>
-            <ul className="list-disc ml-5 space-y-2">
-              <li>
+            <ul className="space-y-2 text-muted-foreground">
+              <CheckListItem>
                 Send you updates, promotional materials, and other information
                 related to our services.
-              </li>
-              <li>Respond to your inquiries and provide customer support.</li>
+              </CheckListItem>
+              <CheckListItem>
+                Respond to your inquiries and provide customer support.
+              </CheckListItem>
             </ul>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-foreground">Analytics and Research</h3>
             <p>We use non-personal information for analytical purposes, such as:</p>
-            <ul className="list-disc ml-5 space-y-2">
-              <li>Monitoring and analyzing usage trends and preferences.</li>
-              <li>Conducting research and improving our services.</li>
+            <ul className="space-y-2 text-muted-foreground">
+              <CheckListItem>
+                Monitoring and analyzing usage trends and preferences.
+              </CheckListItem>
+              <CheckListItem>
+                Conducting research and improving our services.
+              </CheckListItem>
             </ul>
           </div>
 

@@ -1,4 +1,5 @@
 import { MaxWidthWrapper } from "@/components";
+import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
 import Link from "next/link";
 
@@ -55,18 +56,18 @@ const TermsPage = () => {
 
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-foreground">Booking Information</h3>
-            <ul className="list-disc ml-5 space-y-2">
-              <li>
+            <ul className="space-y-2 text-muted-foreground">
+              <CheckListItem>
                 You must provide accurate and complete information when requesting
                 a quote or booking a clean.
-              </li>
-              <li>
+              </CheckListItem>
+              <CheckListItem>
                 You are responsible for access instructions and any details you
                 provide about the property.
-              </li>
-              <li>
+              </CheckListItem>
+              <CheckListItem>
                 You agree to notify us promptly if your booking details change.
-              </li>
+              </CheckListItem>
             </ul>
           </div>
 
@@ -76,10 +77,16 @@ const TermsPage = () => {
               You agree not to misuse our website or services, including but not
               limited to:
             </p>
-            <ul className="list-disc ml-5 space-y-2">
-              <li>Attempting to gain unauthorized access to our systems.</li>
-              <li>Interfering with the website or service availability.</li>
-              <li>Using the website for unlawful or prohibited activities.</li>
+            <ul className="space-y-2 text-muted-foreground">
+              <CheckListItem>
+                Attempting to gain unauthorized access to our systems.
+              </CheckListItem>
+              <CheckListItem>
+                Interfering with the website or service availability.
+              </CheckListItem>
+              <CheckListItem>
+                Using the website for unlawful or prohibited activities.
+              </CheckListItem>
             </ul>
           </div>
 

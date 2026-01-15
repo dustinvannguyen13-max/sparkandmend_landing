@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, SparklesIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -18,6 +18,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import {
+  PreviewCard,
+  PreviewCardPanel,
+  PreviewCardTrigger,
+} from "@/components/ui/preview-card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -202,6 +207,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     preferredContact: "",
     notes: "",
   });
+  const [customExtrasEnabled, setCustomExtrasEnabled] = useState(false);
+  const [customExtrasLoading, setCustomExtrasLoading] = useState(false);
+  const [customExtrasError, setCustomExtrasError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -230,6 +238,89 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       setForm((prev) => ({ ...prev, frequency: "one-time" }));
     }
   }, [form.service, form.frequency]);
+
+  useEffect(() => {
+    if (!customExtrasEnabled) {
+      setCustomExtrasLoading(false);
+      setCustomExtrasError(null);
+      setForm((prev) => ({
+        ...prev,
+        customExtras: "",
+        customExtrasPrice: 0,
+        customExtrasSummary: "",
+        customExtrasReason: "",
+      }));
+      return;
+    }
+
+    const extrasText = form.customExtras?.trim() ?? "";
+    if (!extrasText) {
+      setCustomExtrasLoading(false);
+      setCustomExtrasError(null);
+      setForm((prev) => ({
+        ...prev,
+        customExtrasPrice: 0,
+        customExtrasSummary: "",
+        customExtrasReason: "",
+      }));
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(async () => {
+      setCustomExtrasLoading(true);
+      setCustomExtrasError(null);
+      try {
+        const response = await fetch("/api/custom-extras", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: extrasText,
+            service: form.service,
+            propertyType: form.propertyType,
+          }),
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Estimate unavailable");
+        }
+
+        const data = (await response.json()) as {
+          price?: number;
+          summary?: string;
+          reason?: string;
+        };
+
+        setForm((prev) => ({
+          ...prev,
+          customExtrasPrice: Number(data.price) || 0,
+          customExtrasSummary: data.summary || "",
+          customExtrasReason: data.reason || "",
+        }));
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        setCustomExtrasError(
+          "We will review custom extras and confirm the price."
+        );
+        setForm((prev) => ({
+          ...prev,
+          customExtrasPrice: 0,
+          customExtrasSummary: "",
+          customExtrasReason: "",
+        }));
+      } finally {
+        if (!controller.signal.aborted) {
+          setCustomExtrasLoading(false);
+        }
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [customExtrasEnabled, form.customExtras, form.propertyType, form.service]);
 
   const toggleExtra = (extraId: ExtraOption) => {
     setForm((prev) => {
@@ -325,6 +416,14 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     if (form.extras.length > 0) {
       params.set("extras", form.extras.join(","));
     }
+    if (form.customExtrasSummary) {
+      params.set("customExtrasSummary", form.customExtrasSummary);
+    } else if (form.customExtras) {
+      params.set("customExtras", form.customExtras.slice(0, 160));
+    }
+    if (form.customExtrasPrice) {
+      params.set("customExtrasPrice", String(form.customExtrasPrice));
+    }
     if (contact.preferredDate) {
       params.set("preferredDate", contact.preferredDate);
     }
@@ -340,7 +439,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     <Card className="w-full border-border/70 bg-card/90">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-primary">
-          Instant Quote Calculator
+          Instant Quote Calculator form
         </CardTitle>
         <CardDescription>
           Answer a few quick questions and we will show your instant estimate at the end.
@@ -750,6 +849,103 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                         </div>
                       );
                     })}
+                    <div
+                      className={cn(
+                        "flex flex-col gap-3 rounded-2xl border p-4 transition-all",
+                        customExtrasEnabled
+                          ? "border-primary/70 bg-primary/10 md:col-span-2"
+                          : "border-border/60 bg-card/80"
+                      )}
+                    >
+                      <div className="flex items-start gap-3">
+                        <Checkbox
+                          id="extra-custom"
+                          checked={customExtrasEnabled}
+                          onCheckedChange={() =>
+                            setCustomExtrasEnabled((prev) => !prev)
+                          }
+                        />
+                        <Label
+                          htmlFor="extra-custom"
+                          className="flex-1 space-y-2 cursor-pointer"
+                        >
+                          <span className="block text-sm font-semibold text-foreground">
+                            Custom requests
+                          </span>
+                          <span className="block text-xs text-muted-foreground">
+                            Tell us what extra help you need and we will estimate it.
+                          </span>
+                        </Label>
+                      </div>
+                      {customExtrasEnabled && (
+                        <div className="space-y-2">
+                          <Textarea
+                            value={form.customExtras ?? ""}
+                            onChange={(event) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                customExtras: event.target.value,
+                              }))
+                            }
+                            placeholder="e.g. inside fridge, balcony sweep, blinds wiped"
+                          />
+                          {customExtrasLoading && (
+                            <p className="text-xs text-muted-foreground">
+                              Estimating extra tasks and price...
+                            </p>
+                          )}
+                          {!customExtrasLoading && customExtrasError && (
+                            <p className="text-xs text-muted-foreground">
+                              {customExtrasError}
+                            </p>
+                          )}
+                          {!customExtrasLoading &&
+                            !customExtrasError &&
+                            (form.customExtrasSummary || form.customExtrasPrice ? (
+                              <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                                  <SparklesIcon className="h-3 w-3 text-primary" />
+                                  AI estimate
+                                </span>
+                                {form.customExtrasSummary && (
+                                  <span>Summary: {form.customExtrasSummary}</span>
+                                )}
+                                <span>
+                                  Estimated add-on:{" "}
+                                  {form.customExtrasPrice
+                                    ? `+${formatCurrency(form.customExtrasPrice)}`
+                                    : "We will confirm after review"}
+                                </span>
+                                {form.customExtrasReason && (
+                                  <PreviewCard>
+                                    <PreviewCardTrigger
+                                      delay={150}
+                                      closeDelay={150}
+                                      className="text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+                                    >
+                                      Why this price?
+                                    </PreviewCardTrigger>
+                                    <PreviewCardPanel>
+                                      <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                                        <SparklesIcon className="h-4 w-4 text-primary" />
+                                        AI reasoning
+                                      </div>
+                                      <p className="mt-2 text-xs text-muted-foreground">
+                                        {form.customExtrasReason}
+                                      </p>
+                                      {form.customExtrasSummary && (
+                                        <p className="mt-2 text-xs text-muted-foreground">
+                                          Summary: {form.customExtrasSummary}
+                                        </p>
+                                      )}
+                                    </PreviewCardPanel>
+                                  </PreviewCard>
+                                )}
+                              </div>
+                            ) : null)}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

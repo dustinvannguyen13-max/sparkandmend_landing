@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/utils";
 import MagicBadge from "@/components/ui/magic-badge";
+import { ShimmeringText } from "@/components/ui/shimmering-text";
 
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   as?: React.ElementType;
@@ -22,6 +23,7 @@ interface SectionHeaderProps {
   description?: string;
   align?: "left" | "center";
   className?: string;
+  titleClassName?: string;
 }
 
 const SectionHeader = ({
@@ -30,6 +32,7 @@ const SectionHeader = ({
   description,
   align = "center",
   className,
+  titleClassName,
 }: SectionHeaderProps) => {
   const alignment =
     align === "center"
@@ -39,8 +42,17 @@ const SectionHeader = ({
   return (
     <div className={cn("flex flex-col gap-4", alignment, className)}>
       {eyebrow ? <MagicBadge title={eyebrow} /> : null}
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold font-heading text-foreground leading-tight">
-        {title}
+      <h2
+        className={cn(
+          "text-3xl md:text-4xl lg:text-5xl font-semibold font-heading text-foreground leading-tight break-words text-balance",
+          titleClassName
+        )}
+      >
+        <ShimmeringText
+          text={title}
+          color="hsl(var(--foreground))"
+          shimmeringColor="hsl(var(--secondary))"
+        />
       </h2>
       {description ? (
         <p className="text-base md:text-lg text-muted-foreground max-w-2xl">

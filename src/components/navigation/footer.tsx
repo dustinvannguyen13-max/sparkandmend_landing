@@ -14,6 +14,7 @@ const Footer = () => {
             <div className="flex flex-col items-start justify-start md:max-w-[200px]">
               <div className="flex items-start">
                 <Icons.logo className="w-7 h-7" />
+                <span className="mt-1 "><strong>SPARK & MEND</strong></span>
               </div>
               <p className="text-muted-foreground mt-4 text-sm text-start">
                 Reliable cleaning for homes, offices, and rentals in Plymouth.
@@ -136,15 +137,15 @@ const Footer = () => {
               <ul className="mt-4 text-sm text-muted-foreground">
                 <li>
                   <Link
-                    href="/about"
+                    href="/about/why-us"
                     className="hover:text-foreground transition-all duration-300"
                   >
-                    About Spark & Mend
+                    Why Us
                   </Link>
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="/team"
+                    href="/about/team"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Meet the Team
@@ -175,7 +176,7 @@ const Footer = () => {
               <ul className="mt-4 text-sm text-muted-foreground">
                 <li className="mt-2">
                   <Link
-                    href="https://facebook.com"
+                    href="https://www.facebook.com/sparkandmend/"
                     className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                     target="_blank"
                     rel="noreferrer"
@@ -186,7 +187,7 @@ const Footer = () => {
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/spark_mend/"
                     className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                     target="_blank"
                     rel="noreferrer"
@@ -197,7 +198,7 @@ const Footer = () => {
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="https://www.tiktok.com"
+                    href="https://www.tiktok.com/@spark.mend"
                     className="flex items-center gap-2 hover:text-foreground transition-all duration-300"
                     target="_blank"
                     rel="noreferrer"
@@ -213,9 +214,15 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 border-t border-border/40 pt-4 md:pt-8 md:flex md:items-center md:justify-between w-full">
-          <AnimationContainer delay={0.6}>
+          <AnimationContainer delay={0.6} className="w-full md:flex md:items-center md:justify-between">
             <p className="text-sm text-muted-foreground mt-8 md:mt-0">
               &copy; {new Date().getFullYear()} Spark & Mend. All rights reserved.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2 md:mt-0">
+              Built by{" "}
+              <Link href="https://ghostseed.io" className="hover:text-foreground">
+                ghostseed.io
+              </Link>
             </p>
           </AnimationContainer>
         </div>

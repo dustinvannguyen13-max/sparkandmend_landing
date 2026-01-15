@@ -26,6 +26,10 @@ export interface QuoteInput {
   frequency: Frequency;
   oven: OvenOption;
   extras: ExtraOption[];
+  customExtras?: string;
+  customExtrasPrice?: number;
+  customExtrasSummary?: string;
+  customExtrasReason?: string;
 }
 
 export interface QuoteResult {
@@ -172,6 +176,10 @@ export const DEFAULT_QUOTE_INPUT: QuoteInput = {
   frequency: "weekly",
   oven: "none",
   extras: [],
+  customExtras: "",
+  customExtrasPrice: 0,
+  customExtrasSummary: "",
+  customExtrasReason: "",
 };
 
 const FREQUENCY_META: Record<
@@ -251,11 +259,12 @@ export const calculateQuote = (input: QuoteInput): QuoteResult => {
     (basePrice + bathroomAdd) * frequencyMeta.multiplier * PRICE_MULTIPLIER
   );
   const ovenAddon = OVEN_PRICING[input.oven] ?? 0;
+  const customExtrasPrice = Math.max(0, Number(input.customExtrasPrice ?? 0));
   const extrasTotal = extras.reduce(
     (total, extra) => total + EXTRA_PRICING[extra],
     0
   );
-  const totalPerVisit = perVisit + ovenAddon + extrasTotal;
+  const totalPerVisit = perVisit + ovenAddon + extrasTotal + customExtrasPrice;
 
   const visitsPerMonth = frequencyMeta.visitsPerMonth;
   const monthlyEstimate =
@@ -284,6 +293,18 @@ export const calculateQuote = (input: QuoteInput): QuoteResult => {
   extras.forEach((extra) => {
     addOns.push(`${EXTRA_LABELS[extra]} (+${formatCurrency(EXTRA_PRICING[extra])})`);
   });
+  const customExtrasSummary =
+    input.customExtrasSummary?.trim() || input.customExtras?.trim();
+  if (customExtrasSummary || customExtrasPrice > 0) {
+    const label = customExtrasSummary
+      ? `Custom requests: ${customExtrasSummary}`
+      : "Custom requests";
+    addOns.push(
+      customExtrasPrice > 0
+        ? `${label} (+${formatCurrency(customExtrasPrice)})`
+        : label
+    );
+  }
 
   return {
     serviceLabel: SERVICE_LABELS[input.service],
@@ -315,6 +336,9 @@ export const parseQuoteSearchParams = (
   const frequency = getParam(params, "frequency") as Frequency;
   const oven = getParam(params, "oven") as OvenOption;
   const extrasParam = getParam(params, "extras");
+  const customExtrasSummary = getParam(params, "customExtrasSummary");
+  const customExtras = customExtrasSummary || getParam(params, "customExtras");
+  const customExtrasPrice = Number(getParam(params, "customExtrasPrice")) || 0;
   const extras = extrasParam
     ? extrasParam.split(",").filter((extra): extra is ExtraOption => extra in EXTRA_PRICING)
     : [];
@@ -330,6 +354,9 @@ export const parseQuoteSearchParams = (
     frequency: FREQUENCY_META[frequency] ? frequency : DEFAULT_QUOTE_INPUT.frequency,
     oven: oven && oven in OVEN_PRICING ? oven : DEFAULT_QUOTE_INPUT.oven,
     extras,
+    customExtras,
+    customExtrasPrice,
+    customExtrasSummary: customExtrasSummary || undefined,
   };
 };
 

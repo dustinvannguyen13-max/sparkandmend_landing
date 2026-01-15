@@ -4,7 +4,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { cn } from "@/utils";
 import {
     ArrowRightIcon,
-    Building2Icon,
+    BriefcaseBusinessIcon,
     CalendarDaysIcon,
     HomeIcon,
     SprayCanIcon,
@@ -69,11 +69,12 @@ export const CARDS = [
         ),
     },
     {
-        Icon: Building2Icon,
-        name: "Commercial and office",
-        description: "Reliable, discreet cleaning for workspaces and shared areas.",
-        href: "/commercial-cleaning",
-        cta: "View details",
+        Icon: BriefcaseBusinessIcon,
+        name: "Define & Book",
+        description:
+            "Define your requirements and our quote calculator instantly creates a fixed quote for workspaces and shared areas.",
+        href: "/get-a-quote",
+        cta: "Get an instant quote",
         className: "col-span-3 lg:col-span-2 max-w-full overflow-hidden",
         background: (
             <Integrations className="absolute right-2 pl-28 md:pl-0 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />

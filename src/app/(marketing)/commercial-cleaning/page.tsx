@@ -5,6 +5,9 @@ import CTAStrip from "@/components/ui/cta-strip";
 import FAQAccordion from "@/components/ui/faq-accordion";
 import { AnimateIcon } from "@/components/ui/animate-icon";
 import { BubbleBackground } from "@/components/ui/bubble-background";
+import { CheckListItem } from "@/components/ui/check-list";
+import { HeartMaskedImage } from "@/components/ui/heart-masked-image";
+import { HighlightText } from "@/components/ui/highlight-text";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
@@ -20,7 +23,7 @@ import { Timer } from "@/registry/icons/timer";
 export const metadata = generateMetadata({
   title: "Commercial Cleaning | Spark & Mend",
   description:
-    "Commercial cleaning in Plymouth for offices and small businesses. Reliable, professional, consistent cleaning with clear scope. Get an instant quote in about 60 seconds.",
+    "Commercial cleaning in Plymouth for offices and small businesses. Reliable, professional, consistent cleaning with clear scope. Get a fixed instant quote in about 60 seconds and book instantly via our quote calculator.",
 });
 
 const HERO_IMAGE =
@@ -157,7 +160,7 @@ const faqs = [
   {
     question: "How long does it take?",
     answer:
-      "It depends on the size and condition of your space. Your instant quote gives a clear estimate, and we confirm timings before booking.",
+      "It depends on the size and condition of your space. Your fixed instant quote gives a clear estimate, and we confirm timings before booking.",
   },
   {
     question: "Do we need to be on site?",
@@ -228,10 +231,11 @@ const CommercialCleanPage = () => {
         <AnimationContainer delay={0.1} className="relative z-10">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="text-center lg:text-left">
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                Commercial Cleaning
-              </p>
-              <h1 className="mt-4 text-3xl md:text-5xl font-semibold font-heading text-foreground">
+              <HighlightText
+                text="Commercial Cleaning"
+                className="block text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground"
+              />
+              <h1 className="mt-4 text-3xl md:text-5xl font-semibold font-heading text-foreground break-words text-balance">
                 Commercial Cleaning - reliable, professional, consistent
               </h1>
               <p className="mt-4 text-base md:text-lg text-muted-foreground">
@@ -240,10 +244,10 @@ const CommercialCleanPage = () => {
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
-                Instant quote takes about 60 seconds.
+                Fixed instant quote takes about 60 seconds.
               </p>
               <p className="text-sm text-muted-foreground">
-                Fast quote. Clear scope. No pressure.
+                Define your requirements in the calculator and book instantly.
               </p>
               <ContactDetails />
             </div>
@@ -315,23 +319,19 @@ const CommercialCleanPage = () => {
                   <h3 className="text-lg font-semibold text-foreground">
                     {group.title}
                   </h3>
-                  <ul className="mt-3 list-disc pl-5 text-sm text-muted-foreground space-y-2">
+                  <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                     {group.items.map((item) => (
-                      <li key={item}>{item}</li>
+                      <CheckListItem key={item}>{item}</CheckListItem>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
-            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_20px_60px_-50px_hsl(var(--primary)/0.45)]">
-              <Image
-                src={INCLUDE_IMAGE}
-                alt="Fresh, professional workspaces with clean finishes"
-                width={1200}
-                height={900}
-                className="h-[240px] w-full rounded-[22px] object-cover sm:h-[320px] lg:h-[420px]"
-              />
-            </div>
+            <HeartMaskedImage
+              src={INCLUDE_IMAGE}
+              alt="Fresh, professional workspaces with clean finishes"
+              sizeClassName="max-w-[320px] sm:max-w-[380px] lg:max-w-[420px]"
+            />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
@@ -353,9 +353,13 @@ const CommercialCleanPage = () => {
           />
           <ul className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
             {businessTypes.map((item) => (
-              <li key={item} className="rounded-xl border border-border/60 bg-card/80 px-4 py-3">
+              <CheckListItem
+                key={item}
+                className="rounded-xl border border-border/60 bg-card/80 px-4 py-3"
+                iconClassName="mt-0 text-primary"
+              >
                 {item}
-              </li>
+              </CheckListItem>
             ))}
           </ul>
         </AnimationContainer>
@@ -369,9 +373,9 @@ const CommercialCleanPage = () => {
             description="A consistent, professional finish for client-facing spaces."
             align="left"
           />
-          <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
+          <ul className="mt-6 space-y-2 text-muted-foreground">
             {whoFor.map((item) => (
-              <li key={item}>{item}</li>
+              <CheckListItem key={item}>{item}</CheckListItem>
             ))}
           </ul>
         </AnimationContainer>
@@ -382,26 +386,53 @@ const CommercialCleanPage = () => {
           <SectionHeader
             eyebrow="Process"
             title="How it works"
-            description="No back-and-forth. Just a straightforward booking."
+            description="Fixed instant quote via the calculator, then book instantly."
           />
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
             <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <p className="text-sm font-semibold text-foreground">1)</p>
+              <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/20">
+                <Image
+                  src={HERO_IMAGE}
+                  alt="Spark & Mend cleaning scene"
+                  width={1200}
+                  height={900}
+                  className="h-28 w-full object-cover sm:h-32"
+                />
+              </div>
+              <p className="mt-4 text-sm font-semibold text-foreground">1)</p>
               <p className="mt-2 text-muted-foreground">
                 <Link href="/get-a-quote" className="text-foreground underline">
-                  Get an instant quote
+                  Get a fixed instant quote
                 </Link>{" "}
-                in about 60 seconds.
+                in about 60 seconds with the calculator.
               </p>
             </li>
             <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <p className="text-sm font-semibold text-foreground">2)</p>
+              <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/20">
+                <Image
+                  src={INCLUDE_IMAGE}
+                  alt="Spark & Mend tidy workspace"
+                  width={1200}
+                  height={900}
+                  className="h-28 w-full object-cover sm:h-32"
+                />
+              </div>
+              <p className="mt-4 text-sm font-semibold text-foreground">2)</p>
               <p className="mt-2 text-muted-foreground">
-                Choose a slot and any add-ons you want.
+                Choose a slot and book instantly, with any add-ons you want.
               </p>
             </li>
             <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <p className="text-sm font-semibold text-foreground">3)</p>
+              <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/20">
+                <Image
+                  src={RESULTS_IMAGE}
+                  alt="Spark & Mend clean interior"
+                  width={1200}
+                  height={900}
+                  className="h-28 w-full object-cover sm:h-32"
+                />
+              </div>
+              <p className="mt-4 text-sm font-semibold text-foreground">3)</p>
               <p className="mt-2 text-muted-foreground">
                 We arrive and clean to a clear standard.
               </p>
@@ -420,9 +451,9 @@ const CommercialCleanPage = () => {
                 description="A professional finish across the areas that matter most."
                 align="left"
               />
-              <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
+              <ul className="mt-6 space-y-2 text-muted-foreground">
                 {results.map((item) => (
-                  <li key={item}>{item}</li>
+                  <CheckListItem key={item}>{item}</CheckListItem>
                 ))}
               </ul>
             </div>
@@ -460,7 +491,7 @@ const CommercialCleanPage = () => {
       <Section>
         <CTAStrip
           title="Ready to keep your workspace client-ready?"
-          description="Get your instant quote, choose a slot, and keep the workplace tidy and professional."
+          description="Get a fixed instant quote, book instantly, and keep the workplace tidy and professional."
           primaryHref="/get-a-quote"
           primaryLabel="Get an Instant Quote"
           secondaryHref={CONTACT_PHONE_LINK}

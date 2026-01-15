@@ -45,7 +45,7 @@ const HomePage = async () => {
                 <ArrowRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
               </span>
             </button>
-            <h1 className="text-foreground text-center py-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
+            <h1 className="text-foreground text-center py-6 text-5xl font-medium tracking-normal text-balance break-words sm:text-6xl md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
               Spark &amp; Mend{" "}
               <span className="text-transparent mx-2 bg-gradient-to-r from-[#714b4b] to-[#efe6d9] bg-clip-text inline-bloc">
                 cleaning
@@ -66,7 +66,7 @@ const HomePage = async () => {
               Reliable home, office, and end-of-tenancy cleaning across Plymouth.
               <br className="hidden md:block" />
               <span className="hidden md:block">
-                Local team, clear checklists, flexible scheduling, and fast quotes.
+                Define your requirements in our quote calculator for a fixed instant quote and instant booking.
               </span>
             </p>
             <div className="flex items-center justify-center whitespace-nowrap gap-4 z-50">
@@ -158,7 +158,7 @@ const HomePage = async () => {
               A clean space in 3 simple steps
             </h2>
             <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Get a quote, choose a time, and let us handle the rest.
+              Get a fixed instant quote with the calculator, book instantly, and let us handle the rest.
             </p>
           </div>
         </AnimationContainer>

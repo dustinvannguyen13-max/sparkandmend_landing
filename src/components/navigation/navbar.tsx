@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn, NAV_LINKS } from "@/utils";
 import { LucideIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import MaxWidthWrapper from "../global/max-width-wrapper";
@@ -40,6 +41,29 @@ const SERVICE_CARD_BACKGROUNDS: Record<string, string> = {
     "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--primary)/0.22),hsl(var(--secondary)/0.12)_55%,transparent)]",
   "Commercial Cleaning":
     "bg-[radial-gradient(120%_120%_at_0%_0%,hsl(var(--secondary)/0.22),transparent_60%)]",
+};
+
+const SERVICE_CARD_IMAGES: Record<string, { src: string; alt: string }> = {
+  "All Services": {
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/clean-sink.jpg",
+    alt: "Clean sink and fixtures",
+  },
+  "Basic Clean": {
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/sofa-clean.jpg",
+    alt: "Freshly cleaned sofa",
+  },
+  "Intermediate Clean": {
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/carpet-stain-removed-clean.jpg",
+    alt: "Carpet stain removed after cleaning",
+  },
+  "Advanced Clean": {
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-cleaned.jpg",
+    alt: "Oven after a deep clean",
+  },
+  "Commercial Cleaning": {
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-1.jpg",
+    alt: "Commercial kitchen cleaned surfaces",
+  },
 };
 
 const Navbar = () => {
@@ -113,16 +137,34 @@ const Navbar = () => {
                                   <Link
                                     href={activeService?.href ?? DEFAULT_SERVICE_CARD.href}
                                     className={cn(
-                                      "flex h-full w-full select-none flex-col justify-end rounded-xl border border-border/60 bg-card/90 p-4 no-underline outline-none transition-all focus:shadow-md",
+                                      "relative flex h-full w-full select-none flex-col justify-end overflow-hidden rounded-xl border border-border/60 bg-card/90 p-4 no-underline outline-none transition-all focus:shadow-md",
                                       SERVICE_CARD_BACKGROUNDS[
                                         activeService?.title ?? DEFAULT_SERVICE_CARD.title
                                       ] ?? SERVICE_CARD_BACKGROUNDS["All Services"]
                                     )}
                                   >
-                                    <h6 className="mb-2 mt-4 text-lg font-semibold">
+                                    <div className="absolute inset-0">
+                                      <Image
+                                        src={
+                                          SERVICE_CARD_IMAGES[
+                                            activeService?.title ?? DEFAULT_SERVICE_CARD.title
+                                          ]?.src ?? SERVICE_CARD_IMAGES["All Services"].src
+                                        }
+                                        alt={
+                                          SERVICE_CARD_IMAGES[
+                                            activeService?.title ?? DEFAULT_SERVICE_CARD.title
+                                          ]?.alt ?? SERVICE_CARD_IMAGES["All Services"].alt
+                                        }
+                                        fill
+                                        sizes="240px"
+                                        className="object-cover"
+                                      />
+                                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
+                                    </div>
+                                    <h6 className="relative z-10 mb-2 mt-4 text-lg font-semibold">
                                       {activeService?.title ?? DEFAULT_SERVICE_CARD.title}
                                     </h6>
-                                    <p className="text-sm leading-tight text-muted-foreground">
+                                    <p className="relative z-10 text-sm leading-tight text-muted-foreground">
                                       {activeService?.tagline ?? DEFAULT_SERVICE_CARD.tagline}
                                     </p>
                                   </Link>

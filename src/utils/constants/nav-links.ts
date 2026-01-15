@@ -2,9 +2,11 @@ import {
     Building2Icon,
     ClipboardCheckIcon,
     HomeIcon,
+    InfoIcon,
     ImageIcon,
     NewspaperIcon,
     SprayCanIcon,
+    UsersIcon,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -40,7 +42,21 @@ export const NAV_LINKS = [
     },
     {
         title: "About",
-        href: "/about",
+        href: "/about/why-us",
+        menu: [
+            {
+                title: "Why Us",
+                tagline: "What makes Spark & Mend calm, clear, and consistent.",
+                href: "/about/why-us",
+                icon: InfoIcon,
+            },
+            {
+                title: "Team",
+                tagline: "Meet the people behind every clean.",
+                href: "/about/team",
+                icon: UsersIcon,
+            },
+        ],
     },
     {
         title: "Contact",

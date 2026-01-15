@@ -2,6 +2,7 @@ import Image from "next/image";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import QuoteCalculator from "@/components/quote/quote-calculator";
 import MagicBadge from "@/components/ui/magic-badge";
+import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 
@@ -25,13 +26,18 @@ const GetAQuotePage = () => {
               <MagicBadge title="Instant Quote" />
               <SectionHeader
                 title="Get an instant cleaning quote in minutes"
-                description="Pick a service, tell us about your property, and we will calculate a personalised estimate right away."
+                description="Pick a service, define your requirements, and get a fixed instant quote. Book instantly via the calculator."
                 align="left"
                 className="mt-6"
               />
               <p className="mt-4 text-sm text-muted-foreground">
-                Instant quote takes about 60 seconds.
+                Fixed instant quote takes about 60 seconds.
               </p>
+              <div className="mt-6 flex justify-center lg:justify-start">
+                <PrimaryButton asChild>
+                  <a href="#instant-quote-form">Jump to the quote form</a>
+                </PrimaryButton>
+              </div>
             </div>
             <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
@@ -46,7 +52,7 @@ const GetAQuotePage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section>
+      <Section id="instant-quote-form" className="scroll-mt-24">
         <AnimationContainer delay={0.2}>
           <QuoteCalculator />
         </AnimationContainer>

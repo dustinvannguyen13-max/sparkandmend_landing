@@ -82,14 +82,29 @@
 }
 
 ::selection {
-  background-color: hsl(var(--brand-light) / 0.35);
-  color: hsl(var(--foreground));
+  background-color: hsl(var(--primary));
+  color: hsl(var(--brand-light));
+}
+
+::-moz-selection {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--brand-light));
 }
 
 html,
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
   text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 ::-webkit-scrollbar {

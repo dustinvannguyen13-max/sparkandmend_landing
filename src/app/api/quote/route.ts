@@ -47,6 +47,13 @@ const formatEmailBody = (
     contact.postcode ? `Postcode: ${contact.postcode}` : null,
     contact.preferredDate ? `Preferred date: ${contact.preferredDate}` : null,
     contact.notes ? `Notes: ${contact.notes}` : null,
+    input.customExtras ? `Custom requests: ${input.customExtras}` : null,
+    input.customExtrasSummary
+      ? `Custom extras summary: ${input.customExtrasSummary}`
+      : null,
+    input.customExtrasPrice
+      ? `Custom extras estimate: £${Number(input.customExtrasPrice).toFixed(0)}`
+      : null,
   ]
     .filter(Boolean)
     .join("\n");
