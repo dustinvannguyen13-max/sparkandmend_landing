@@ -230,7 +230,7 @@ function MotionCarousel({ slides, options }: MotionCarouselProps) {
               <Button
                 size="icon"
                 variant="outline"
-                className="bg-background/80"
+                className="hidden md:flex bg-background/80"
                 onClick={zoomOut}
                 disabled={zoom <= 1}
                 aria-label="Zoom out"
@@ -240,7 +240,7 @@ function MotionCarousel({ slides, options }: MotionCarouselProps) {
               <Button
                 size="icon"
                 variant="outline"
-                className="bg-background/80"
+                className="hidden md:flex bg-background/80"
                 onClick={zoomIn}
                 disabled={zoom >= 2.5}
                 aria-label="Zoom in"

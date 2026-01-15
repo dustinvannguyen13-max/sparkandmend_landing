@@ -15,9 +15,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn, NAV_LINKS } from "@/utils";
-import { Facebook, Instagram, LucideIcon, Menu, Music2, X } from "lucide-react";
+import { Facebook, Instagram, LucideIcon, Menu, Music2 } from "lucide-react";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Icons } from "@/components/global/icons";
 
 const CLOSE_NAV_EVENT = "spark-mend-close-nav";
 
@@ -42,16 +43,18 @@ const MobileNavbar = () => {
             <Menu className="w-5 h-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-screen">
-          <SheetClose
-            asChild
-            className="absolute top-3 right-5 bg-background z-20 flex items-center justify-center"
-          >
-            <Button size="icon" variant="ghost" className="text-foreground">
-              <X className="w-5 h-5" />
-            </Button>
-          </SheetClose>
-          <div className="flex flex-col items-start w-full py-2 mt-10">
+        <SheetContent className="relative w-screen">
+          <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between border-b border-border/50 bg-background/95 px-6 py-4 backdrop-blur">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em]"
+              onClick={handleClose}
+            >
+              <Icons.logo className="w-7 h-7 rounded-full" />
+              Spark &amp; Mend
+            </Link>
+          </div>
+          <div className="flex flex-col items-start w-full py-2 mt-10 pt-4">
             <div className="grid w-full grid-cols-2 gap-2">
               <>
                 <Button

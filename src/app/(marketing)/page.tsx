@@ -134,7 +134,7 @@ const HomePage = async () => {
                     className="object-contain"
                   />
                 </div>
-                <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground whitespace-nowrap">
                   Certified and Insured with AXA UK
                 </p>
              </div>
