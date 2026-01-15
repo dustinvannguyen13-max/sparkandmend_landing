@@ -157,9 +157,9 @@ const Navbar = () => {
                                         }
                                         fill
                                         sizes="240px"
-                                        className="object-cover filter brightness-70 contrast-110 saturate-125 transition duration-700"
+                                        className="object-cover filter brightness-80 contrast-105 saturate-110 transition duration-700"
                                       />
-                                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
+                                      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/90 to-transparent" />
                                     </div>
                                     <h6 className="relative z-10 mb-2 mt-4 text-lg font-semibold">
                                       {activeService?.title ?? DEFAULT_SERVICE_CARD.title}

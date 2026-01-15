@@ -22,6 +22,10 @@ import { RotatingText, RotatingTextContainer } from "@/components/ui/rotating-te
 import { StarsBackground } from "@/components/ui/stars-background";
 import { COMPANIES, PROCESS, REVIEWS } from "@/utils";
 import { ArrowRight, Star } from "lucide-react";
+import Image from "next/image";
+
+const AXA_BADGE =
+  "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/axa.png";
 
 const HomePage = async () => {
   return (
@@ -120,7 +124,21 @@ const HomePage = async () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+                <div className="mt-6 flex flex-col items-center gap-2">
+                  <div className="relative h-14 w-28">
+                    <Image
+                      src={AXA_BADGE}
+                      alt="AXA UK badge"
+                      fill
+                      sizes="112px"
+                    className="object-contain"
+                  />
+                </div>
+                <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                  Certified and Insured with AXA UK
+                </p>
+             </div>
+            </div>
             </div>
           </div>
         </AnimationContainer>
@@ -286,6 +304,32 @@ const HomePage = async () => {
             ))}
           </div>
         </div>
+      </MaxWidthWrapper>
+
+      <MaxWidthWrapper className="pt-6">
+        <AnimationContainer delay={0.1}>
+          <div className="max-w-5xl mx-auto rounded-2xl border border-border/60 bg-card/90 p-6 shadow-[0_30px_80px_-55px_hsl(var(--primary)/0.45)]">
+            <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
+              <div className="relative h-20 w-32 flex-shrink-0">
+                <Image
+                  src="https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/axa.png"
+                  alt="AXA UK badge"
+                  fill
+                  sizes="100px"
+                  className="object-contain"
+                />
+              </div>
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                  Trusted by Plymouth homes and local businesses
+                </p>
+                <p className="text-lg font-semibold text-foreground">
+                  Certified and Insured with AXA UK
+                </p>
+              </div>
+            </div>
+          </div>
+        </AnimationContainer>
       </MaxWidthWrapper>
 
       {/* CTA Section */}

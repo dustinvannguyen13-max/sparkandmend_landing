@@ -75,33 +75,35 @@ export const FEATURES = [
 ] as const;
 
 export const REVIEWS = [
-    {
-        name: "Sarah Bennett",
-        username: "@sarahb",
-        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+     {
+        name: "Lex Alexander",
+        username: "@lex4ndr42",
+        avatar: "https://randomuser.me/api/portraits/men/5.jpg",
         rating: 5,
-        review: "Weekly cleans keep our flat spotless and the team is always on time."
+        review: "So clean!!! Finally found cleaners we trust. Reliable and respectful of the space."
+    },
+    
+    {
+        name: "The Pink Parlour",
+        username: "@xshi.louisex",
+        avatar: "https://randomuser.me/api/portraits/women/5.jpg",
+        rating: 5,
+        review: "Love it, thank you so much😍😍 Would highly recommend! 👌"
     },
     {
-        name: "Tom Hughes",
-        username: "@tomhughes",
+        name: "Tom H",
+        // username: "@tomhughes",
         avatar: "https://randomuser.me/api/portraits/women/1.jpg",
         rating: 5,
-        review: "Booked an end-of-tenancy clean in Plymouth and the place looked brand new."
+        review: "Booked an end-of-tenancy clean in Plymouth and the place looked brand spanking new."
     },
     {
-        name: "Leah Carter",
-        username: "@leahc",
-        avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-        rating: 4,
-        review: "Great attention to detail and easy communication about scheduling."
-    },
-    {
-        name: "Mark Ellis",
-        username: "@marke",
+        name: "Jada",
+        username: "@jadan_soan",
         avatar: "https://randomuser.me/api/portraits/women/2.jpg",
         rating: 5,
-        review: "Our office stays fresh and tidy without any disruption to the team."
+        review:
+            "Spark and Mend were professional from quote to clean. We had a full deep clean booked with a few add-ons, and the team were punctual, friendly, and really thorough. They worked fast, left everything spotless, and made the whole process easy. We’re very pleased with the results and would absolutely recommend them to anyone looking for a reliable cleaning service."
     },
     {
         name: "Priya Patel",
@@ -111,31 +113,32 @@ export const REVIEWS = [
         review: "The deep clean was thorough, especially the kitchen and bathrooms."
     },
     {
+        name: "Sarah B",
+        // username: "@sarahb",
+        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+        rating: 5,
+        review: "Weekly cleans keep our flat spotless and the team is always on time."
+    },
+    {
         name: "Ben Walker",
-        username: "@benw",
+        // username: "@benw",
         avatar: "https://randomuser.me/api/portraits/women/3.jpg",
         rating: 4,
-        review: "Consistent results and a clear checklist every visit."
+        review: "Tino is very helpful and has a good eye for details. Brings consistent results and a clear checklist every visit."
     },
     {
         name: "Hannah Price",
-        username: "@hannahp",
+        // username: "@hannahp",
         avatar: "https://randomuser.me/api/portraits/men/4.jpg",
         rating: 5,
-        review: "Finally found cleaners we trust. Reliable and respectful of the space."
+        review: "Finally found cleaners we trust. Reliable, respectful, and always on time."
     },
     {
-        name: "Kyle Morgan",
-        username: "@kylem",
+        name: "Mr. Williams",
+        // username: "@kylem",
         avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-        rating: 4,
-        review: "Flexible booking and fast responses to questions."
-    },
-    {
-        name: "Chloe Adams",
-        username: "@chloea",
-        avatar: "https://randomuser.me/api/portraits/men/5.jpg",
         rating: 5,
-        review: "Post-renovation clean was handled with care and the finish was brilliant."
+        review: "Quick booking via the platform, confirmed a slot within 2 days and fast responses to questions. Very pleased with the results, would highly recommend."
     },
+   
 ] as const;

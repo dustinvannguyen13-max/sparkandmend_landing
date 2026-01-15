@@ -19,9 +19,13 @@ const Footer = () => {
               <p className="text-muted-foreground mt-4 text-sm text-start">
                 Reliable cleaning for homes, offices, and rentals in Plymouth.
               </p>
-              <span className="mt-4 text-muted-foreground text-sm">
-                Plymouth, UK
-              </span>
+              <div className="mt-4 text-[11px] text-muted-foreground space-y-0.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground">
+                  SPARK AND MEND LTD
+                </p>
+                <p>Company number 16553723</p>
+                <p>25 Belgrave Road, Plymouth, England, PL4 7DP</p>
+              </div>
             </div>
           </AnimationContainer>
 
@@ -170,7 +174,7 @@ const Footer = () => {
               </ul>
             </div>
           </AnimationContainer>
-            <AnimationContainer delay={0.6}>
+          <AnimationContainer delay={0.6}>
             <div className="flex flex-col">
               <h3 className="text-base font-medium text-foreground">Socials</h3>
               <ul className="mt-4 text-sm text-muted-foreground">

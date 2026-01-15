@@ -3,6 +3,7 @@ import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import CTAStrip from "@/components/ui/cta-strip";
 import { CheckListItem } from "@/components/ui/check-list";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
@@ -25,23 +26,10 @@ const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
 
 const team = [
-  {
-    name: "Lenny B",
-    role: "Director / Cleaning Co-Lead",
-    image:
-      "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/lenny.png",
-    imageAlt: "Spark & Mend cleaning detail",
-    traits: [
-      "Detail-focused and methodical",
-      "Calm and friendly on site",
-      "Reliable and punctual",
-      "Clear communicator",
-    ],
-    why: "Lenny likes seeing the before-and-after difference a proper clean makes for busy households.",
-  },
+  
   {
     name: "Tino G",
-    role: "Director / Cleaning Co-Lead",
+    role: "Director / Cleaning Lead",
     image:
       "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/tino.png",
     imageAlt: "Spark & Mend tidy workspace",
@@ -53,21 +41,21 @@ const team = [
     ],
     why: "Tino enjoys helping people feel more relaxed in their space without the fuss.",
   },
+  {
+    name: "Lenny B",
+    role: "Sales & Marketing",
+    image:
+      "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/lenny.png",
+    imageAlt: "Spark & Mend cleaning detail",
+    traits: [
+      "Detail-focused and methodical",
+      "Calm and friendly on site",
+      "Reliable and punctual",
+      "Clear communicator",
+    ],
+    why: "Lenny likes seeing the before-and-after difference a proper clean makes for busy households.",
+  },
 ];
-
-const ContactDetails = () => (
-  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground lg:justify-start">
-    <Link href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">
-      Email: {CONTACT_EMAIL}
-    </Link>
-    <Link href={CONTACT_PHONE_LINK} className="hover:text-foreground">
-      Call: {CONTACT_PHONE}
-    </Link>
-    <Link href={CONTACT_WHATSAPP_LINK} className="hover:text-foreground">
-      WhatsApp: {CONTACT_PHONE}
-    </Link>
-  </div>
-);
 
 const TeamPage = () => {
   return (
@@ -98,7 +86,13 @@ const TeamPage = () => {
               <p className="text-sm text-muted-foreground">
                 Define your requirements in the calculator and book instantly.
               </p>
-              <ContactDetails />
+              <ContactDetails
+                email={CONTACT_EMAIL}
+                phoneLabel={CONTACT_PHONE}
+                phoneHref={CONTACT_PHONE_LINK}
+                whatsappLabel={CONTACT_PHONE}
+                whatsappHref={CONTACT_WHATSAPP_LINK}
+              />
             </div>
             <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
@@ -132,7 +126,7 @@ const TeamPage = () => {
                     alt={member.imageAlt}
                     width={1200}
                     height={900}
-                    className="h-52 w-full object-cover sm:h-56"
+                    className="h-80 w-full object-cover object-top transition duration-500 hover:scale-[1.02] sm:h-[360px] lg:h-[420px]"
                   />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-foreground">
@@ -160,7 +154,13 @@ const TeamPage = () => {
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />
-        <ContactDetails />
+        <ContactDetails
+          email={CONTACT_EMAIL}
+          phoneLabel={CONTACT_PHONE}
+          phoneHref={CONTACT_PHONE_LINK}
+          whatsappLabel={CONTACT_PHONE}
+          whatsappHref={CONTACT_WHATSAPP_LINK}
+        />
       </Section>
     </MaxWidthWrapper>
   );

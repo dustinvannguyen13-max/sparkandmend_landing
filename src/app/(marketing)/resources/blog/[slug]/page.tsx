@@ -26,6 +26,12 @@ type BlogContentBlock =
       text: string;
       cta_label?: string;
       cta_href?: string;
+    }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+      caption?: string;
     };
 
 type BlogPost = {
@@ -88,6 +94,28 @@ const renderBlock = (block: BlogContentBlock, index: number) => {
             <li key={item}>{item}</li>
           ))}
         </ol>
+      );
+    case "image":
+      return (
+        <figure
+          key={`block-${index}`}
+          className="overflow-hidden rounded-2xl border border-border/60 bg-card/90 shadow-[0_20px_60px_-40px_hsl(var(--primary)/0.25)]"
+        >
+          <div className="relative h-64 w-full">
+            <Image
+              src={block.src}
+              alt={block.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+          {block.caption && (
+            <figcaption className="px-4 py-3 text-sm text-muted-foreground">
+              {block.caption}
+            </figcaption>
+          )}
+        </figure>
       );
     case "callout":
       return (
@@ -191,10 +219,30 @@ const BlogPage = ({ params }: Props) => {
         </div>
       </Section>
 
-      <Section>
-        <article className="mx-auto flex max-w-3xl flex-col gap-6 leading-relaxed">
-          {content.map((block, index) => renderBlock(block, index))}
-        </article>
+      <Section className="pt-10">
+        <div className="mx-auto w-full max-w-5xl space-y-6">
+          <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-6 shadow-[0_40px_90px_-60px_hsl(var(--primary)/0.45)]">
+            <article className="flex flex-col gap-6 text-lg leading-relaxed text-muted-foreground">
+              {content.map((block, index) => renderBlock(block, index))}
+            </article>
+          </div>
+          <div className="grid gap-4 rounded-3xl border border-border/60 bg-background/80 p-6 text-sm text-muted-foreground shadow-[0_25px_60px_-45px_hsl(var(--primary)/0.35)] md:grid-cols-[1fr_160px]">
+            <div>
+              <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Stay in the loop</p>
+              <p className="mt-2 text-sm text-foreground">
+                Bookmark this guide and use the quote calculator to lock in your preferred clean. We follow up within 24 hours.
+              </p>
+            </div>
+            <div className="flex flex-col items-start justify-end gap-3 pt-4 md:pt-0">
+              <PrimaryButton asChild size="sm">
+                <Link href="/resources/blog">View all articles</Link>
+              </PrimaryButton>
+              <PrimaryButton asChild size="sm">
+                <Link href="/get-a-quote">Get your quote</Link>
+              </PrimaryButton>
+            </div>
+          </div>
+        </div>
       </Section>
     </MaxWidthWrapper>
   );

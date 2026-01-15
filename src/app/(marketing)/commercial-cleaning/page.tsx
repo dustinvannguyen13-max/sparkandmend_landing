@@ -5,13 +5,22 @@ import CTAStrip from "@/components/ui/cta-strip";
 import FAQAccordion from "@/components/ui/faq-accordion";
 import { AnimateIcon } from "@/components/ui/animate-icon";
 import { BubbleBackground } from "@/components/ui/bubble-background";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { CheckListItem } from "@/components/ui/check-list";
 import { HeartMaskedImage } from "@/components/ui/heart-masked-image";
 import { HighlightText } from "@/components/ui/highlight-text";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
-import { generateMetadata } from "@/utils";
+import { REVIEWS, generateMetadata } from "@/utils";
 import Link from "next/link";
 import { CheckCheck } from "@/registry/icons/check-check";
 import { ClipboardList } from "@/registry/icons/clipboard-list";
@@ -19,6 +28,7 @@ import { Key } from "@/registry/icons/key";
 import { MessageCircleQuestion } from "@/registry/icons/message-circle-question";
 import { MessageCircleX } from "@/registry/icons/message-circle-x";
 import { Timer } from "@/registry/icons/timer";
+import { Star } from "lucide-react";
 
 export const metadata = generateMetadata({
   title: "Commercial Cleaning | Spark & Mend",
@@ -32,11 +42,44 @@ const INCLUDE_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-2.jpg";
 const RESULTS_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-1.jpg";
+const STEP_IMAGES = [
+  "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-1.webp",
+  "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-2.webp",
+  "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-3.webp",
+];
+const STEP_DETAILS = [
+  {
+    image: STEP_IMAGES[0],
+    alt: "Calculator for instant quote",
+    numberLabel: "01",
+    description: (
+      <>
+        <Link href="/get-a-quote" className="text-foreground underline">
+          Get a fixed instant quote
+        </Link>{" "}
+        in about 60 seconds with the calculator.
+      </>
+    ),
+  },
+  {
+    image: STEP_IMAGES[1],
+    alt: "Calendar booking preview",
+    numberLabel: "02",
+    description: "Choose a slot and book instantly, with any add-ons you want.",
+  },
+  {
+    image: STEP_IMAGES[2],
+    alt: "Spark & Mend team cleaning",
+    numberLabel: "03",
+    description: "We arrive and clean to a clear standard.",
+  },
+];
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
+const AXA_BADGE = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/axa.png";
 const sectionBase =
   "relative overflow-hidden rounded-[32px] border border-border/50 px-6 py-10 md:px-10 md:py-12 shadow-[0_30px_80px_-60px_hsl(var(--primary)/0.35)]";
 const heroSurface =
@@ -194,19 +237,7 @@ const faqs = [
   },
 ];
 
-const ContactDetails = () => (
-  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground lg:justify-start">
-    <Link href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">
-      Email: {CONTACT_EMAIL}
-    </Link>
-    <Link href={CONTACT_PHONE_LINK} className="hover:text-foreground">
-      Call: {CONTACT_PHONE}
-    </Link>
-    <Link href={CONTACT_WHATSAPP_LINK} className="hover:text-foreground">
-      WhatsApp: {CONTACT_PHONE}
-    </Link>
-  </div>
-);
+const commercialReviews = REVIEWS.slice(5, 8);
 
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
@@ -249,7 +280,13 @@ const CommercialCleanPage = () => {
               <p className="text-sm text-muted-foreground">
                 Define your requirements in the calculator and book instantly.
               </p>
-              <ContactDetails />
+              <ContactDetails
+                email={CONTACT_EMAIL}
+                phoneLabel={CONTACT_PHONE}
+                phoneHref={CONTACT_PHONE_LINK}
+                whatsappLabel={CONTACT_PHONE}
+                whatsappHref={CONTACT_WHATSAPP_LINK}
+              />
             </div>
             <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
@@ -276,7 +313,7 @@ const CommercialCleanPage = () => {
             sixth: "255,245,236",
           }}
         />
-        <AnimationContainer delay={0.15} className="relative z-10">
+        <AnimationContainer delay={0.2} className="relative z-10">
           <SectionHeader
             eyebrow="Reassurance"
             title="We get your concerns"
@@ -302,7 +339,7 @@ const CommercialCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceWarm}`}>
-        <AnimationContainer delay={0.2}>
+        <AnimationContainer delay={0.25}>
           <SectionHeader
             eyebrow="Scope"
             title="What this service includes"
@@ -343,8 +380,80 @@ const CommercialCleanPage = () => {
         </AnimationContainer>
       </Section>
 
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.35}>
+          <SectionHeader
+            eyebrow="Reviews"
+            title="Trusted by local businesses and households"
+            description="Fixed instant quotes, clear scope, and professionals you can rely on time after time."
+          />
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {commercialReviews.map((review) => (
+              <Card
+                key={review.name}
+                className="flex h-full flex-col border-none bg-card/85"
+              >
+                <CardHeader className="space-y-1">
+                  <CardTitle className="text-lg font-semibold text-foreground">
+                    {review.name}
+                  </CardTitle>
+                  {review.username && (
+                    <CardDescription>{review.username}</CardDescription>
+                  )}
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground">
+                  <p>{review.review}</p>
+                </CardContent>
+                <CardFooter className="gap-1">
+                  {Array.from({ length: review.rating }, (_, index) => (
+                    <Star
+                      key={`${review.name}-star-${index}`}
+                      className="h-4 w-4 text-yellow-500"
+                    />
+                  ))}
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+          <p className="mt-4 text-sm font-medium text-muted-foreground text-center">
+            5 stars on Google —{" "}
+            <Link
+              href="https://maps.app.goo.gl/tBSCyBVDtKXqqck36"
+              className="text-foreground underline"
+            >
+              Read reviews
+            </Link>
+            .
+          </p>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceClean}`}>
+        <AnimationContainer delay={0.4}>
+          <div className="flex flex-col items-center gap-4 rounded-2xl border border-border/60 bg-card/90 p-6 md:flex-row">
+            <div className="relative h-16 w-28">
+              <Image
+                src={AXA_BADGE}
+                alt="AXA UK badge"
+                fill
+                sizes="112px"
+                className="object-contain"
+              />
+            </div>
+            <div className="text-center md:text-left">
+              <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                Certified and Insured with AXA UK
+              </p>
+              <p className="text-lg font-semibold text-foreground">
+                Trusted by Plymouth homes and local businesses
+              </p>
+            </div>
+          </div>
+        </AnimationContainer>
+      </Section>
+
       <Section className={`${sectionBase} ${surfaceSecondary}`}>
-        <AnimationContainer delay={0.25}>
+        <AnimationContainer delay={0.3}>
           <SectionHeader
             eyebrow="Business types"
             title="What we clean"
@@ -366,7 +475,7 @@ const CommercialCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceSoft}`}>
-        <AnimationContainer delay={0.3}>
+        <AnimationContainer delay={0.35}>
           <SectionHeader
             eyebrow="Best for"
             title="Who it is for"
@@ -382,67 +491,40 @@ const CommercialCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceMuted}`}>
-        <AnimationContainer delay={0.35}>
+        <AnimationContainer delay={0.4}>
           <SectionHeader
             eyebrow="Process"
             title="How it works"
             description="Fixed instant quote via the calculator, then book instantly."
           />
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
-            <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/20">
-                <Image
-                  src={HERO_IMAGE}
-                  alt="Spark & Mend cleaning scene"
-                  width={1200}
-                  height={900}
-                  className="h-28 w-full object-cover sm:h-32"
-                />
-              </div>
-              <p className="mt-4 text-sm font-semibold text-foreground">1)</p>
-              <p className="mt-2 text-muted-foreground">
-                <Link href="/get-a-quote" className="text-foreground underline">
-                  Get a fixed instant quote
-                </Link>{" "}
-                in about 60 seconds with the calculator.
-              </p>
-            </li>
-            <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/20">
-                <Image
-                  src={INCLUDE_IMAGE}
-                  alt="Spark & Mend tidy workspace"
-                  width={1200}
-                  height={900}
-                  className="h-28 w-full object-cover sm:h-32"
-                />
-              </div>
-              <p className="mt-4 text-sm font-semibold text-foreground">2)</p>
-              <p className="mt-2 text-muted-foreground">
-                Choose a slot and book instantly, with any add-ons you want.
-              </p>
-            </li>
-            <li className="rounded-2xl border border-border/60 bg-card/90 p-5">
-              <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/20">
-                <Image
-                  src={RESULTS_IMAGE}
-                  alt="Spark & Mend clean interior"
-                  width={1200}
-                  height={900}
-                  className="h-28 w-full object-cover sm:h-32"
-                />
-              </div>
-              <p className="mt-4 text-sm font-semibold text-foreground">3)</p>
-              <p className="mt-2 text-muted-foreground">
-                We arrive and clean to a clear standard.
-              </p>
-            </li>
+            {STEP_DETAILS.map((step) => (
+              <li
+                key={step.numberLabel}
+                className="flex min-h-[320px] flex-col gap-4 rounded-2xl border border-border/60 bg-card/90 p-5"
+              >
+                <div className="relative h-[220px] overflow-hidden rounded-xl border border-border/50 bg-muted/20">
+                  <Image
+                    src={step.image}
+                    alt={step.alt}
+                    width={400}
+                    height={400}
+                    className="h-full w-full object-cover scale-[1.05] object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/30 to-transparent" />
+                </div>
+                <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary/80 bg-primary/95 text-[13px] font-semibold uppercase tracking-[0.4em] text-primary-foreground shadow-[0_20px_40px_-25px_rgba(9,72,79,0.65)]">
+                  {step.numberLabel}
+                </span>
+                <p className="text-sm text-muted-foreground">{step.description}</p>
+              </li>
+            ))}
           </ol>
         </AnimationContainer>
       </Section>
 
       <Section className={`${sectionBase} ${surfaceClean}`}>
-        <AnimationContainer delay={0.4}>
+        <AnimationContainer delay={0.45}>
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <SectionHeader
@@ -471,7 +553,7 @@ const CommercialCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceNeutral}`}>
-        <AnimationContainer delay={0.45}>
+        <AnimationContainer delay={0.5}>
           <SectionHeader
             eyebrow="FAQs"
             title="Answers before you book"
@@ -497,7 +579,13 @@ const CommercialCleanPage = () => {
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />
-        <ContactDetails />
+              <ContactDetails
+                email={CONTACT_EMAIL}
+                phoneLabel={CONTACT_PHONE}
+                phoneHref={CONTACT_PHONE_LINK}
+                whatsappLabel={CONTACT_PHONE}
+                whatsappHref={CONTACT_WHATSAPP_LINK}
+              />
       </Section>
     </MaxWidthWrapper>
   );

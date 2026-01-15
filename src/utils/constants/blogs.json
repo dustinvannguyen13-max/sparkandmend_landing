@@ -3,14 +3,18 @@
     "title": "A Simple Weekly Cleaning Checklist for Busy Homes",
     "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
     "author_name": "Spark & Mend Team",
-    "date_published": "2024-10-05",
+    "date_published": "2025-01-10",
     "reading_time": "6 min read",
     "category": "Cleaning Tips",
-    "tags": ["weekly cleaning", "cleaning checklist", "Plymouth"],
+    "tags": [
+      "weekly cleaning",
+      "cleaning checklist",
+      "Plymouth"
+    ],
     "description": "A practical weekly checklist to keep your home tidy between visits.",
     "meta_title": "Weekly Cleaning Checklist for Busy Homes | Spark & Mend",
     "meta_description": "A practical weekly cleaning checklist for busy homes in Plymouth. Room-by-room tasks, quick resets, and tips to keep your space tidy between visits.",
-    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/sofa-clean.jpg",
     "slug": "weekly-cleaning-checklist-for-busy-homes",
     "content": [
       {
@@ -131,6 +135,12 @@
         "text": "If you are constantly playing catch-up, a deeper clean can reset the space and make weekly upkeep easier."
       },
       {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/home-carpet-stain.jpg",
+        "alt": "Carpet before and after stain removal",
+        "caption": "A quick stain removal keeps carpets looking sharp between visits."
+      },
+      {
         "type": "ul",
         "items": [
           "Before guests or after a busy stretch",
@@ -152,19 +162,29 @@
     "title": "Deep Clean vs Regular Clean: What to Expect",
     "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
     "author_name": "Spark & Mend Team",
-    "date_published": "2024-09-28",
+    "date_published": "2025-01-05",
     "reading_time": "7 min read",
     "category": "Cleaning Advice",
-    "tags": ["deep clean", "regular cleaning", "Plymouth cleaning"],
+    "tags": [
+      "deep clean",
+      "regular cleaning",
+      "Plymouth cleaning"
+    ],
     "description": "Understand the difference and when a deeper clean makes sense.",
     "meta_title": "Deep Clean vs Regular Clean | Spark & Mend",
     "meta_description": "Deep clean vs regular clean explained. Learn what each covers, how often to book, and how to choose the right clean for your Plymouth home.",
-    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-cleaned.jpg",
     "slug": "deep-clean-vs-regular-clean-what-to-expect",
     "content": [
       {
         "type": "p",
         "text": "Most people ask what the difference really is. A regular clean keeps things tidy. A deep clean tackles build-up and the details you do not hit every week."
+      },
+      {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-3.jpg",
+        "alt": "Commercial kitchen surfaces freshly cleaned",
+        "caption": "Our teams wipe down both surfaces and high-touch points."
       },
       {
         "type": "p",
@@ -253,19 +273,29 @@
     "title": "End-of-Tenancy Cleaning: A Landlord-Ready Checklist",
     "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w",
     "author_name": "Spark & Mend Team",
-    "date_published": "2024-09-20",
+    "date_published": "2024-12-18",
     "reading_time": "8 min read",
     "category": "Rentals",
-    "tags": ["end of tenancy", "move out cleaning", "Plymouth rentals"],
+    "tags": [
+      "end of tenancy",
+      "move out cleaning",
+      "Plymouth rentals"
+    ],
     "description": "A complete checklist for move-out cleans that help present your property well.",
     "meta_title": "End-of-Tenancy Cleaning Checklist | Spark & Mend",
     "meta_description": "A landlord-ready end-of-tenancy cleaning checklist for Plymouth rentals. Room-by-room tasks and common misses to look out for before handover.",
-    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/end-of-tenancy-clean.jpg",
     "slug": "end-of-tenancy-cleaning-checklist",
     "content": [
       {
         "type": "p",
         "text": "Moving out is busy and the end-of-tenancy clean often gets left to the final day. A structured checklist helps you present the property well and avoid last-minute surprises."
+      },
+      {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/end-of-tenancy-clean.jpg",
+        "alt": "End-of-tenancy living room clean",
+        "caption": "A tidy lounge makes the handover feel effortless."
       },
       {
         "type": "p",
@@ -368,19 +398,29 @@
     "title": "Office Cleaning Tips for Healthier Workdays",
     "author_image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
     "author_name": "Spark & Mend Team",
-    "date_published": "2024-09-15",
+    "date_published": "2025-02-12",
     "reading_time": "6 min read",
     "category": "Commercial",
-    "tags": ["office cleaning", "workspaces", "Plymouth"],
+    "tags": [
+      "office cleaning",
+      "workspaces",
+      "Plymouth"
+    ],
     "description": "Simple habits and schedules to keep shared workspaces fresh.",
     "meta_title": "Office Cleaning Tips for Healthier Workdays | Spark & Mend",
     "meta_description": "Practical office cleaning tips for Plymouth workspaces. Daily resets, weekly rota ideas, and shared kitchen basics to keep teams feeling fresh.",
-    "image": "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-1.jpg",
     "slug": "office-cleaning-tips-for-healthier-workdays",
     "content": [
       {
         "type": "p",
         "text": "Shared workspaces pick up dirt fast. A small daily routine keeps the office feeling fresh and reduces the big clean at the end of the week."
+      },
+      {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-2.jpg",
+        "alt": "Commercial cleaning in progress",
+        "caption": "Kitchens and shared areas need daily attention."
       },
       {
         "type": "p",
@@ -447,6 +487,213 @@
         "type": "callout",
         "title": "Want a fixed instant quote?",
         "text": "Use the quote calculator to define your requirements and book instantly with a fixed instant quote.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  },
+  {
+    "title": "Plymouth Cleaning Routine for Busy Families",
+    "author_image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/home-clean.jpg",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2026-01-05",
+    "reading_time": "5 min read",
+    "category": "Local Guides",
+    "tags": [
+      "Plymouth",
+      "family cleaning",
+      "routine"
+    ],
+    "description": "A straightforward cleaning routine to keep Plymouth homes calm between professional visits.",
+    "meta_title": "Plymouth Cleaning Routine for Busy Families | Spark & Mend",
+    "meta_description": "A fast, reliable routine for Plymouth families. Room-by-room tips to keep your home tidy between visits.",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/clean-sink.jpg",
+    "slug": "plymouth-cleaning-routine-for-busy-families",
+    "content": [
+      {
+        "type": "p",
+        "text": "A short routine keeps Plymouth homes feeling settled even on the busiest weeks. Spend 20 minutes each evening to reset main spaces."
+      },
+      {
+        "type": "h2",
+        "text": "Ten-minute living room tidy"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Return toys and items to their stations",
+          "Wipe visible surfaces and coffee tables",
+          "Sweep the entryway to keep footprints at bay"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/home-carpet-stain.jpg",
+        "alt": "Plymouth living room tidy after a quick reset",
+        "caption": "Daily resets keep the main spaces calm between deeper visits."
+      },
+      {
+        "type": "h2",
+        "text": "Kitchen care"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Load or empty the dishwasher and wipe counters",
+          "Clean the sink and taps with all-purpose cleaner",
+          "Take out rubbish and recycling before bed"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Finish with a diffuser or favorite spray so the kitchen smells inviting."
+      },
+      {
+        "type": "h2",
+        "text": "Bedrooms and bathrooms"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Straighten bedding and fluff cushions",
+          "Wipe mirrors or chrome quickly",
+          "Give floors a fast sweep or vacuum"
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Need a deeper reset?",
+        "text": "Use our calculator to add an Advanced or Intermediate clean for consistent weekly support.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  },
+  {
+    "title": "How to Keep Plymouth Offices Fresh Between Cleans",
+    "author_image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-2.jpg",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2026-01-05",
+    "reading_time": "6 min read",
+    "category": "Commercial",
+    "tags": [
+      "Plymouth",
+      "office cleaning",
+      "maintenance"
+    ],
+    "description": "Practical upkeep for Plymouth offices that bridges the gap between pro visits.",
+    "meta_title": "How to Keep Plymouth Offices Fresh Between Cleans | Spark & Mend",
+    "meta_description": "A maintenance guide for Plymouth offices with daily tasks and weekly focuses that complement the professional clean.",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-4.jpg",
+    "slug": "plymouth-office-cleaning-between-cleans",
+    "content": [
+      {
+        "type": "p",
+        "text": "Shared workplaces look sharper when a few habits become routine. These quick wins keep your Plymouth office client-ready."
+      },
+      {
+        "type": "h2",
+        "text": "Daily desk and kitchen reset"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Wipe handles, keyboards, and shared surfaces",
+          "Empty bins and replace liners in kitchen zones",
+          "Wipe counters after lunch service"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-3.jpg",
+        "alt": "Plymouth office kitchen after a tidy-up",
+        "caption": "A quick wipe can make a huge difference before the pro team arrives."
+      },
+      {
+        "type": "h2",
+        "text": "Weekly touch-points"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Dust meeting room tables and tech surfaces",
+          "Spot clean floors and refresh glass panels",
+          "Check restrooms for soap, towels, and bins"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Share these priorities with our crew and we can focus the schedule where you need it most."
+      },
+      {
+        "type": "callout",
+        "title": "Book a fixed instant quote",
+        "text": "Define your requirements so we can keep your team and visitors confident.",
+        "cta_label": "Get an Instant Quote",
+        "cta_href": "/get-a-quote"
+      }
+    ]
+  },
+  {
+    "title": "Deep Oven Cleaning Tips That Actually Work",
+    "author_image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-cleaned.jpg",
+    "author_name": "Spark & Mend Team",
+    "date_published": "2026-01-05",
+    "reading_time": "7 min read",
+    "category": "Cleaning Tips",
+    "tags": [
+      "oven cleaning",
+      "deep clean",
+      "complex"
+    ],
+    "description": "Step-by-step oven cleaning for stubborn grime before our professional visit.",
+    "meta_title": "Deep Oven Cleaning Tips | Spark & Mend",
+    "meta_description": "A tactical guide for deep oven cleaning that preserves your appliance and preps for a pro visit.",
+    "image": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-dirty.jpg",
+    "slug": "deep-oven-cleaning-tips",
+    "content": [
+      {
+        "type": "p",
+        "text": "Oven grime can turn into a complicated mess. These steps prep the surface while respecting the appliance."
+      },
+      {
+        "type": "h2",
+        "text": "Prep and protect"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Remove racks and spray them with a safe degreaser",
+          "Apply a baking soda paste to the interior walls",
+          "Avoid harsh chemicals on heating elements"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-dirty-before.jpg",
+        "alt": "Baking soda paste on oven walls",
+        "caption": "A paste softens hardened stains without scrubbing metal."
+      },
+      {
+        "type": "h2",
+        "text": "Lift, rinse, and shine"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Scrub gently once stains lift and use vinegar spray for final lift",
+          "Rinse racks thoroughly and dry them before replacing",
+          "Wipe door glass and seals to keep fumes low"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Leave the oven door open for a few minutes after rinsing so it dries completely."
+      },
+      {
+        "type": "callout",
+        "title": "Let us do the heavy lifting",
+        "text": "Add an oven clean to your advanced or commercial quote for a spotless finish.",
         "cta_label": "Get an Instant Quote",
         "cta_href": "/get-a-quote"
       }

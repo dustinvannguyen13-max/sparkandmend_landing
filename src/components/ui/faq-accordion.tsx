@@ -37,8 +37,8 @@ const FAQAccordion = ({ items, className }: FAQAccordionProps) => {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             )}
           >
-            <span>{item.question}</span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground transition-all group-data-[open]:bg-primary group-data-[open]:text-primary-foreground">
+            <span className="bg-transparent text-foreground">{item.question}</span>
+            <span className="flex h-8 min-w-[32px] items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground transition-all group-data-[open]:bg-primary group-data-[open]:text-primary-foreground flex-shrink-0">
               <ChevronDown className="h-4 w-4 transition-transform duration-300 group-data-[open]:rotate-180" />
             </span>
           </AccordionButton>

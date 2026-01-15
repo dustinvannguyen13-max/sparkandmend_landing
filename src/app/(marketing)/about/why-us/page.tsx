@@ -3,6 +3,7 @@ import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import CTAStrip from "@/components/ui/cta-strip";
 import { CheckListItem } from "@/components/ui/check-list";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
@@ -44,20 +45,6 @@ const values = [
   "No drama, no pressure",
 ];
 
-const ContactDetails = () => (
-  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground lg:justify-start">
-    <Link href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">
-      Email: {CONTACT_EMAIL}
-    </Link>
-    <Link href={CONTACT_PHONE_LINK} className="hover:text-foreground">
-      Call: {CONTACT_PHONE}
-    </Link>
-    <Link href={CONTACT_WHATSAPP_LINK} className="hover:text-foreground">
-      WhatsApp: {CONTACT_PHONE}
-    </Link>
-  </div>
-);
-
 const WhyUsPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
@@ -87,7 +74,13 @@ const WhyUsPage = () => {
               <p className="text-sm text-muted-foreground">
                 Define your requirements in the calculator and book instantly.
               </p>
-              <ContactDetails />
+              <ContactDetails
+                email={CONTACT_EMAIL}
+                phoneLabel={CONTACT_PHONE}
+                phoneHref={CONTACT_PHONE_LINK}
+                whatsappLabel={CONTACT_PHONE}
+                whatsappHref={CONTACT_WHATSAPP_LINK}
+              />
             </div>
             <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
@@ -176,7 +169,13 @@ const WhyUsPage = () => {
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />
-        <ContactDetails />
+        <ContactDetails
+          email={CONTACT_EMAIL}
+          phoneLabel={CONTACT_PHONE}
+          phoneHref={CONTACT_PHONE_LINK}
+          whatsappLabel={CONTACT_PHONE}
+          whatsappHref={CONTACT_WHATSAPP_LINK}
+        />
       </Section>
     </MaxWidthWrapper>
   );
