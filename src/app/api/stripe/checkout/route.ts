@@ -49,8 +49,10 @@ const buildBookingPayload = ({
   contact_email: contact.email ?? "",
   contact_phone: contact.phone ?? "",
   contact_postcode: contact.postcode ?? "",
+  contact_address: contact.address ?? "",
   contact_method: contact.preferredContact ?? "",
   preferred_date: contact.preferredDate ?? null,
+  preferred_time: contact.preferredTime ?? null,
   notes: contact.notes ?? "",
   status: "pending",
 });
@@ -157,7 +159,9 @@ export async function POST(request: Request) {
         email?: string;
         phone?: string;
         postcode?: string;
+        address?: string;
         preferredDate?: string;
+        preferredTime?: string;
         preferredContact?: string;
         notes?: string;
       };

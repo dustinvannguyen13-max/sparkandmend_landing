@@ -17,6 +17,8 @@ import {
 import { LampContainer } from "@/components/ui/lamp";
 import MagicBadge from "@/components/ui/magic-badge";
 import MagicCard from "@/components/ui/magic-card";
+import { AnimateIcon } from "@/components/ui/animate-icon";
+import { BrushCleaning } from "@/components/ui/brush-cleaning";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { RotatingText, RotatingTextContainer } from "@/components/ui/rotating-text";
 import { StarsBackground } from "@/components/ui/stars-background";
@@ -45,8 +47,10 @@ const HomePage = async () => {
               <span className="backdrop absolute inset-[1px] rounded-full bg-primary transition-colors duration-200 group-hover:bg-primary/90" />
               <span className="h-full w-full blur-md absolute bottom-0 inset-x-0 bg-gradient-to-tr from-primary/20"></span>
               <span className="z-10 py-0.5 text-sm text-primary-foreground flex items-center justify-center gap-1">
-                ✨ Local Plymouth cleaners you can rely on
-                <ArrowRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+                ✨ Instant quote, instant booking in Plymouth
+                <AnimateIcon animateOnHover>
+                  <BrushCleaning className="ml-1 size-4" />
+                </AnimateIcon>
               </span>
             </button>
             <h1 className="text-foreground text-center py-6 text-5xl font-medium tracking-normal text-balance break-words sm:text-6xl md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
@@ -124,21 +128,7 @@ const HomePage = async () => {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 flex flex-col items-center gap-2">
-                  <div className="relative h-14 w-28">
-                    <Image
-                      src={AXA_BADGE}
-                      alt="AXA UK badge"
-                      fill
-                      sizes="112px"
-                    className="object-contain"
-                  />
-                </div>
-                <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground whitespace-nowrap">
-                  Certified and Insured with AXA UK
-                </p>
-             </div>
-            </div>
+              </div>
             </div>
           </div>
         </AnimationContainer>

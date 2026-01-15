@@ -69,6 +69,7 @@ const SERVICE_CARD_IMAGES: Record<string, { src: string; alt: string }> = {
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
   const [activeService, setActiveService] = useState<NavMenuItem | null>(null);
+  const [ctaHover, setCtaHover] = useState(false);
 
   const handleScroll = () => {
     if (window.scrollY > 8) {
@@ -219,9 +220,16 @@ const Navbar = () => {
                 <Link href="tel:07452824799">Call 07452 824799</Link>
               </Button>
               <PrimaryButton size="sm" asChild>
-                <Link href="/get-a-quote" className="flex items-center gap-2 group">
+                <Link
+                  href="/get-a-quote"
+                  className="flex items-center gap-2"
+                  onMouseEnter={() => setCtaHover(true)}
+                  onMouseLeave={() => setCtaHover(false)}
+                  onFocus={() => setCtaHover(true)}
+                  onBlur={() => setCtaHover(false)}
+                >
                   Get an Instant Quote
-                  <BrushCleaning className="size-3.5" animateOnHover />
+                  <BrushCleaning className="size-3.5" animate={ctaHover} />
                 </Link>
               </PrimaryButton>
             </div>

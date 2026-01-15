@@ -42,9 +42,17 @@ const formatPreferredDate = (value?: string) => {
   return `${day}/${month}/${year}`;
 };
 
+const formatPreferredTime = (value?: string) => {
+  if (!value) return undefined;
+  const [hour, minute] = value.split(":");
+  if (!hour || !minute) return undefined;
+  return `${hour}:${minute}`;
+};
+
 const buildCalendarLink = (
   preferredDate: string | undefined,
-  details: string
+  details: string,
+  location: string
 ) => {
   if (!preferredDate) return undefined;
   const start = preferredDate.replace(/-/g, "");
@@ -57,7 +65,7 @@ const buildCalendarLink = (
     "Spark & Mend cleaning visit"
   )}&dates=${start}/${end}&details=${encodeURIComponent(
     details
-  )}&location=${encodeURIComponent("Plymouth, UK")}&add=${encodeURIComponent(
+  )}&location=${encodeURIComponent(location)}&add=${encodeURIComponent(
     "sparkandmend@gmail.com"
   )}`;
 };
@@ -66,26 +74,35 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
   const input = parseQuoteSearchParams(searchParams);
   const quote = calculateQuote(input);
   const preferredDate = getParam(searchParams, "preferredDate");
+  const preferredTime = getParam(searchParams, "preferredTime");
   const contactMethod = getParam(searchParams, "contactMethod");
   const contactMethodLabel = contactMethod
     ? CONTACT_METHOD_LABELS[contactMethod] || "your preferred method"
     : undefined;
   const preferredDateLabel = formatPreferredDate(preferredDate);
+  const preferredTimeLabel = formatPreferredTime(preferredTime);
   const submissionStatus = Array.isArray(searchParams.submitted)
     ? searchParams.submitted[0]
     : searchParams.submitted;
   const showSubmissionWarning = submissionStatus === "0";
+  const contactAddress = getParam(searchParams, "contactAddress");
   const calendarDetails = [
     `Quote: ${formatCurrency(quote.perVisitPrice)} per visit`,
     `Service: ${quote.serviceLabel}`,
     `Property: ${quote.propertySummary}`,
     `Schedule: ${quote.frequencyLabel}`,
     quote.addOns.length > 0 ? `Add-ons: ${quote.addOns.join(", ")}` : null,
+    preferredTimeLabel ? `Preferred time: ${preferredTimeLabel}` : null,
     contactMethodLabel ? `Preferred contact: ${contactMethodLabel}` : null,
+    contactAddress ? `Address: ${contactAddress}` : null,
   ]
     .filter(Boolean)
     .join("\n");
-  const calendarUrl = buildCalendarLink(preferredDate, calendarDetails);
+  const calendarUrl = buildCalendarLink(
+    preferredDate,
+    calendarDetails,
+    contactAddress || "Plymouth, UK"
+  );
   const whatsappMessage = [
     "Hi Spark & Mend, I would like to book a clean.",
     `Service: ${quote.serviceLabel}`,
@@ -93,6 +110,8 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
     `Schedule: ${quote.frequencyLabel}`,
     quote.addOns.length > 0 ? `Add-ons: ${quote.addOns.join(", ")}` : null,
     preferredDateLabel ? `Preferred start date: ${preferredDateLabel}` : null,
+    preferredTimeLabel ? `Preferred start time: ${preferredTimeLabel}` : null,
+    contactAddress ? `Address: ${contactAddress}` : null,
     `Quote: ${formatCurrency(quote.perVisitPrice)} per visit`,
   ]
     .filter(Boolean)
@@ -111,7 +130,9 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
     email: contactEmail,
     phone: contactPhone,
     postcode: contactPostcode,
+    address: contactAddress,
     preferredDate,
+    preferredTime,
     preferredContact: contactMethod,
     notes,
   };
@@ -175,6 +196,20 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                         Preferred start date:
                       </span>{" "}
                       {preferredDateLabel}
+                    </p>
+                  )}
+                  {preferredTimeLabel && (
+                    <p>
+                      <span className="font-medium text-foreground">
+                        Preferred start time:
+                      </span>{" "}
+                      {preferredTimeLabel}
+                    </p>
+                  )}
+                  {contactAddress && (
+                    <p>
+                      <span className="font-medium text-foreground">Address:</span>{" "}
+                      {contactAddress}
                     </p>
                   )}
                   {contactMethodLabel && (

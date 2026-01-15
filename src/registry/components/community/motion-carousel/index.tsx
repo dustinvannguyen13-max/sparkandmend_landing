@@ -8,7 +8,13 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/utils";
 
 type Slide =
@@ -214,7 +220,13 @@ function MotionCarousel({ slides, options }: MotionCarouselProps) {
           }
         }}
       >
-        <DialogContent className="max-w-[96vw] h-[90vh] w-full border-0 bg-transparent p-0 shadow-none [&>button]:hidden">
+      <DialogContent className="max-w-[96vw] h-[90vh] w-full border-0 bg-transparent p-0 shadow-none [&>button]:hidden">
+        <DialogTitle className="sr-only">
+          {lightbox?.label ? `${lightbox.label} full screen view` : "Full screen image"}
+        </DialogTitle>
+        <DialogDescription className="sr-only">
+          {lightbox?.alt ?? "Detailed view of selected clean"}
+        </DialogDescription>
           <div className="relative h-full w-full overflow-hidden rounded-2xl border border-border/60 bg-background/95">
             <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
               <DialogClose asChild>

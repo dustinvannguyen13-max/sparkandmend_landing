@@ -15,11 +15,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn, NAV_LINKS } from "@/utils";
-import { Facebook, Instagram, LucideIcon, Menu, Music2 } from "lucide-react";
+import { Facebook, Instagram, LucideIcon, Menu, Music2, X } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Icons } from "@/components/global/icons";
-
 const CLOSE_NAV_EVENT = "spark-mend-close-nav";
 
 const MobileNavbar = () => {
@@ -31,30 +30,47 @@ const MobileNavbar = () => {
     return () => window.removeEventListener(CLOSE_NAV_EVENT, handler);
   }, []);
 
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   const handleClose = () => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOpen]);
+
   return (
     <div className="flex lg:hidden items-center justify-end">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button size="icon" variant="ghost">
-            <Menu className="w-5 h-5" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent className="relative w-screen">
-          <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between border-b border-border/50 bg-background/95 px-6 py-4 backdrop-blur">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em]"
-              onClick={handleClose}
-            >
+        {!isOpen && (
+          <SheetTrigger asChild>
+            <Button size="icon" variant="ghost">
+              <Menu className="w-5 h-5" />
+            </Button>
+          </SheetTrigger>
+        )}
+        <SheetContent className="w-screen" hideClose>
+          <div className="sticky top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-border/60 bg-background/95 px-4 py-3 backdrop-blur">
+            <Link href="/" onClick={handleClose} className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em]">
               <Icons.logo className="w-7 h-7 rounded-full" />
               Spark &amp; Mend
             </Link>
+            <SheetClose asChild>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="rounded-full border border-border/70 bg-background/80 text-foreground"
+                aria-label="Close menu"
+                ref={closeButtonRef}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </SheetClose>
           </div>
-          <div className="flex flex-col items-start w-full py-2 mt-10 pt-4">
+          <div className="flex flex-col items-start w-full px-6 py-6 space-y-6">
             <div className="grid w-full grid-cols-2 gap-2">
               <>
                 <Button

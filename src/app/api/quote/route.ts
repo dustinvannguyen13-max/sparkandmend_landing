@@ -7,7 +7,9 @@ interface QuoteContact {
   phone: string;
   preferredContact?: string;
   postcode?: string;
+  address?: string;
   preferredDate?: string;
+  preferredTime?: string;
   notes?: string;
 }
 
@@ -45,7 +47,9 @@ const formatEmailBody = (
       ? `Preferred contact: ${contact.preferredContact}`
       : null,
     contact.postcode ? `Postcode: ${contact.postcode}` : null,
+    contact.address ? `Address: ${contact.address}` : null,
     contact.preferredDate ? `Preferred date: ${contact.preferredDate}` : null,
+    contact.preferredTime ? `Preferred time: ${contact.preferredTime}` : null,
     contact.notes ? `Notes: ${contact.notes}` : null,
     input.customExtras ? `Custom requests: ${input.customExtras}` : null,
     input.customExtrasSummary

@@ -126,10 +126,6 @@ const WhyUsPage = () => {
               description="We kept hearing the same stories: inconsistent standards, unclear pricing, and awkward experiences. People told us they want clean homes but are too busy to keep on top of it themselves, so we built a service that lets them focus on life while we handle the cleaning."
               align="left"
             />
-            <p className="mt-2 text-sm text-muted-foreground lg:text-base">
-              We clean so you can use the hours that open up for family, work, or rest.
-              It is about giving you leverage over your time—sparkling spaces without sacrificing what matters.
-            </p>
             <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_20px_60px_-50px_hsl(var(--primary)/0.45)]">
               <Image
                 src={ORIGIN_IMAGE}
@@ -139,6 +135,10 @@ const WhyUsPage = () => {
                 className="h-[240px] w-full rounded-[22px] object-cover sm:h-[320px]"
               />
             </div>
+            <p className="mt-2 text-sm text-muted-foreground lg:text-base">
+              We clean so you can use the hours that open up for family, work, or rest.
+              It is about giving you leverage over your time—sparkling spaces without sacrificing what matters.
+            </p>
           </div>
         </AnimationContainer>
       </Section>

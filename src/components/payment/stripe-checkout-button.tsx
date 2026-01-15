@@ -9,7 +9,9 @@ interface ContactPayload {
   email?: string;
   phone?: string;
   postcode?: string;
+  address?: string;
   preferredDate?: string;
+  preferredTime?: string;
   preferredContact?: string;
   notes?: string;
 }
@@ -56,7 +58,9 @@ const StripeCheckoutButton = ({
             email: contact.email,
             phone: contact.phone,
             postcode: contact.postcode,
+            address: contact.address,
             preferredDate: contact.preferredDate,
+            preferredTime: contact.preferredTime,
             preferredContact: contact.preferredContact,
             notes: contact.notes,
           },

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown, SparklesIcon } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -24,13 +24,14 @@ import {
   PreviewCardTrigger,
 } from "@/components/ui/preview-card";
 import { AnimateIcon } from "@/components/ui/animate-icon";
+import { Sparkles } from "@/components/ui/sparkles";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/utils";
 import {
@@ -50,6 +51,7 @@ import {
 } from "@/utils/quote";
 
 const STEPS = ["Service", "Property", "Schedule", "Extras", "Details"];
+const STORAGE_KEY = "spark-mend-quote";
 
 const SERVICE_OPTIONS: Array<{
   id: CleaningService;
@@ -204,17 +206,25 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     email: "",
     phone: "",
     postcode: "",
+    address: "",
     preferredDate: "",
+    preferredTime: "",
     preferredContact: "",
     notes: "",
   });
   const [customExtrasEnabled, setCustomExtrasEnabled] = useState(false);
   const [customExtrasLoading, setCustomExtrasLoading] = useState(false);
   const [customExtrasError, setCustomExtrasError] = useState<string | null>(null);
+  const [customExtrasHover, setCustomExtrasHover] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const formRef = useRef<HTMLDivElement>(null);
+  const hasMountedRef = useRef(false);
   const formatFallbackReason = (reason?: string) =>
     reason
       ? reason
@@ -247,6 +257,65 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   }, [form.service, form.frequency]);
 
   useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+    formRef.current?.scrollIntoView({
+      behavior: shouldReduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [step, shouldReduceMotion]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored) as {
+          form?: Partial<QuoteInput>;
+          contact?: Partial<typeof contact>;
+          customExtrasEnabled?: boolean;
+          step?: number;
+        };
+        if (parsed.form) {
+          setForm((prev) => ({ ...prev, ...parsed.form }));
+        }
+        if (parsed.contact) {
+          setContact((prev) => ({ ...prev, ...parsed.contact }));
+        }
+        if (typeof parsed.customExtrasEnabled === "boolean") {
+          setCustomExtrasEnabled(parsed.customExtrasEnabled);
+        }
+        if (typeof parsed.step === "number") {
+          setStep(Math.min(Math.max(parsed.step, 0), STEPS.length - 1));
+        }
+      }
+    } catch (error) {
+      console.warn("Unable to restore saved quote details.");
+    } finally {
+      setIsHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated || typeof window === "undefined") return;
+    const payload = {
+      form,
+      contact,
+      customExtrasEnabled,
+      step,
+      savedAt: new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (error) {
+      console.warn("Unable to save quote details.");
+    }
+  }, [form, contact, customExtrasEnabled, step, isHydrated]);
+
+  useEffect(() => {
+    if (!isHydrated) return;
     if (!customExtrasEnabled) {
       setCustomExtrasLoading(false);
       setCustomExtrasError(null);
@@ -348,7 +417,58 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [customExtrasEnabled, form.customExtras, form.propertyType, form.service]);
+  }, [customExtrasEnabled, form.customExtras, form.propertyType, form.service, isHydrated]);
+
+  const handleUseLocation = async () => {
+    if (typeof window === "undefined") return;
+    setLocationError(null);
+    if (!navigator.geolocation) {
+      setLocationError("Location is not supported by this browser.");
+      return;
+    }
+    setIsLocating(true);
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+        });
+      });
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+      if (apiKey) {
+        const url = new URL("https://maps.googleapis.com/maps/api/geocode/json");
+        url.searchParams.set("latlng", `${lat},${lng}`);
+        url.searchParams.set("key", apiKey);
+        const response = await fetch(url.toString());
+        const data = (await response.json()) as {
+          status?: string;
+          results?: Array<{ formatted_address?: string }>;
+        };
+        const address = data.results?.[0]?.formatted_address;
+        setContact((prev) => ({
+          ...prev,
+          address: address ?? `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
+        }));
+        if (!address) {
+          setLocationError("We could not find a full address, so we used coordinates.");
+        }
+      } else {
+        setContact((prev) => ({
+          ...prev,
+          address: `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
+        }));
+        setLocationError("Add a Google Maps API key to fetch a full address.");
+      }
+    } catch (error) {
+      setLocationError("We could not access your location. Please type it manually.");
+    } finally {
+      setIsLocating(false);
+    }
+  };
 
   const toggleExtra = (extraId: ExtraOption) => {
     setForm((prev) => {
@@ -478,11 +598,17 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     if (contact.postcode) {
       params.set("contactPostcode", contact.postcode);
     }
+    if (contact.address) {
+      params.set("contactAddress", contact.address);
+    }
     if (contact.notes) {
       params.set("notes", contact.notes);
     }
     if (contact.preferredDate) {
       params.set("preferredDate", contact.preferredDate);
+    }
+    if (contact.preferredTime) {
+      params.set("preferredTime", contact.preferredTime);
     }
     if (contact.preferredContact) {
       params.set("contactMethod", contact.preferredContact);
@@ -493,7 +619,10 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   };
 
   return (
-    <Card className="w-full border-border/70 bg-card/90">
+    <Card
+      ref={formRef}
+      className="w-full scroll-mt-24 border-border/70 bg-card/90"
+    >
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-primary">
           Instant Quote Calculator form
@@ -582,6 +711,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                                 propertyType: type as QuoteInput["propertyType"],
                               }))
                             }
+                            aria-pressed={form.propertyType === type}
                             className={cn(
                               "group relative min-h-[120px] overflow-hidden rounded-xl border p-4 text-left transition-all hover:-translate-y-[1px]",
                               form.propertyType === type
@@ -599,7 +729,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                             </div>
-                            <div className="relative z-10 flex items-center justify-between">
+                            <div className="relative z-10 flex items-center justify-between pr-12">
                               <span className="text-sm font-semibold uppercase tracking-wide text-white">
                                 {type}
                               </span>
@@ -612,109 +742,106 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                                 Most popular for {type === "house" ? "family homes" : "flats & apartments"}.
                               </span>
                             </div>
+                            <span
+                              className={cn(
+                                "absolute right-4 top-4 z-20 flex h-7 w-7 items-center justify-center rounded-full border-2 shadow-md transition-colors",
+                                form.propertyType === type
+                                  ? "border-white bg-white/95 text-primary"
+                                  : "border-white/80 bg-black/40 text-white/70"
+                              )}
+                              aria-hidden="true"
+                            >
+                              {form.propertyType === type ? (
+                                <Check className="h-4 w-4" />
+                              ) : (
+                                <span className="h-2.5 w-2.5 rounded-full bg-white/70 opacity-0 transition-opacity group-hover:opacity-100" />
+                              )}
+                            </span>
                           </button>
                         ))}
                       </div>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
+                    <div className="space-y-2">
                       <Label htmlFor="bedrooms-menu" className="text-sm font-medium text-foreground">
-                        Bedrooms
+                        Rooms to clean
                       </Label>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button
-                            id="bedrooms-menu"
-                            type="button"
-                            className={cn(
-                              "flex w-full items-center justify-between rounded-xl border bg-background/70 px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20",
-                              errors.bedrooms ? "border-destructive/70" : "border-input",
-                            )}
-                          >
-                            <span>
-                              {form.bedrooms} {form.bedrooms === 1 ? "bed" : "beds"}
-                            </span>
-                            <ChevronDown className="size-4 text-muted-foreground" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="start"
-                          className="w-[var(--radix-dropdown-menu-trigger-width)] rounded-xl border-border/60 bg-card/95 p-1.5"
+                      <Select
+                        value={String(form.bedrooms)}
+                        onValueChange={(value) =>
+                          setForm((prev) => ({
+                            ...prev,
+                            bedrooms: Number(value),
+                          }))
+                        }
+                      >
+                        <SelectTrigger
+                          id="bedrooms-menu"
+                          className={cn(
+                            "flex w-full items-center justify-between rounded-xl border bg-background/70 px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20",
+                            errors.bedrooms ? "border-destructive/70" : "border-input",
+                          )}
                         >
-                          <DropdownMenuRadioGroup
-                            value={String(form.bedrooms)}
-                            onValueChange={(value) =>
-                              setForm((prev) => ({
-                                ...prev,
-                                bedrooms: Number(value),
-                              }))
-                            }
-                          >
-                            {[1, 2, 3, 4, 5, 6].map((count) => (
-                              <DropdownMenuRadioItem
-                                key={count}
-                                value={String(count)}
-                                textValue={`${count} ${count === 1 ? "bed" : "beds"}`}
-                              >
-                                {count} {count === 1 ? "bed" : "beds"}
-                              </DropdownMenuRadioItem>
-                            ))}
-                          </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                        <SelectValue
+                          placeholder={`${form.bedrooms} ${form.bedrooms === 1 ? "room" : "rooms"}`}
+                          className="text-foreground"
+                        />
+                        </SelectTrigger>
+                        <SelectContent
+                          side="bottom"
+                          className="rounded-xl border border-border/60 bg-card/95 p-1"
+                        >
+                          {[1, 2, 3, 4, 5, 6].map((count) => (
+                            <SelectItem key={count} value={String(count)} className="text-sm">
+                              {count} {count === 1 ? "room" : "rooms"}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       {errors.bedrooms && (
                         <p className="text-xs text-destructive">{errors.bedrooms}</p>
                       )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="bathrooms-menu" className="text-sm font-medium text-foreground">
-                        Bathrooms
+                        Bathrooms to clean
                       </Label>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button
-                            id="bathrooms-menu"
-                            type="button"
-                            className={cn(
-                              "flex w-full items-center justify-between rounded-xl border bg-background/70 px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20",
-                              errors.bathrooms ? "border-destructive/70" : "border-input",
-                            )}
-                          >
-                            <span>
-                              {form.bathrooms} {form.bathrooms === 1 ? "bath" : "baths"}
-                            </span>
-                            <ChevronDown className="size-4 text-muted-foreground" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="start"
-                          className="w-[var(--radix-dropdown-menu-trigger-width)] rounded-xl border-border/60 bg-card/95 p-1.5"
+                      <Select
+                        value={String(form.bathrooms)}
+                        onValueChange={(value) =>
+                          setForm((prev) => ({
+                            ...prev,
+                            bathrooms: Number(value),
+                          }))
+                        }
+                      >
+                        <SelectTrigger
+                          id="bathrooms-menu"
+                          className={cn(
+                            "flex w-full items-center justify-between rounded-xl border bg-background/70 px-4 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20",
+                            errors.bathrooms ? "border-destructive/70" : "border-input",
+                          )}
                         >
-                          <DropdownMenuRadioGroup
-                            value={String(form.bathrooms)}
-                            onValueChange={(value) =>
-                              setForm((prev) => ({
-                                ...prev,
-                                bathrooms: Number(value),
-                              }))
-                            }
-                          >
-                            {[1, 2, 3, 4].map((count) => (
-                              <DropdownMenuRadioItem
-                                key={count}
-                                value={String(count)}
-                                textValue={`${count} ${count === 1 ? "bath" : "baths"}`}
-                              >
-                                {count} {count === 1 ? "bath" : "baths"}
-                              </DropdownMenuRadioItem>
-                            ))}
-                          </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                          <SelectValue
+                            placeholder={`${form.bathrooms} ${form.bathrooms === 1 ? "bath" : "baths"}`}
+                            className="text-foreground"
+                          />
+                        </SelectTrigger>
+                        <SelectContent
+                          side="bottom"
+                          className="rounded-xl border border-border/60 bg-card/95 p-1"
+                        >
+                          {[0, 1, 2, 3, 4].map((count) => (
+                            <SelectItem key={count} value={String(count)} className="text-sm">
+                              {count} {count === 1 ? "bath" : "baths"}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       {errors.bathrooms && (
                         <p className="text-xs text-destructive">{errors.bathrooms}</p>
                       )}
-                      </div>
+                    </div>
                     </div>
                   </>
                 ) : (
@@ -731,10 +858,11 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                             onClick={() =>
                               setForm((prev) => ({ ...prev, propertyType: option.id }))
                             }
+                            aria-pressed={form.propertyType === option.id}
                             className={cn(
-                              "group flex items-center gap-4 rounded-2xl border p-4 text-left text-sm transition-all hover:-translate-y-[1px]",
+                              "group relative flex items-center gap-4 rounded-2xl border-2 p-4 text-left text-sm transition-all hover:-translate-y-[1px]",
                               form.propertyType === option.id
-                                ? "border-primary/70 bg-primary/10"
+                                ? "border-primary/70 bg-primary/10 shadow-[0_15px_40px_-20px_hsl(var(--primary)/0.8)]"
                                 : "border-border/60 bg-card/80"
                             )}
                           >
@@ -755,6 +883,21 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                                 {option.hint}
                               </span>
                             </div>
+                            <span
+                              className={cn(
+                                "absolute right-4 top-4 z-20 flex h-7 w-7 items-center justify-center rounded-full border-2 shadow-sm transition-colors",
+                                form.propertyType === option.id
+                                  ? "border-primary bg-primary text-white"
+                                  : "border-border/60 bg-background/90 text-muted-foreground"
+                              )}
+                              aria-hidden="true"
+                            >
+                              {form.propertyType === option.id ? (
+                                <Check className="h-4 w-4" />
+                              ) : (
+                                <span className="h-2.5 w-2.5 rounded-full bg-muted-foreground/60 opacity-0 transition-opacity group-hover:opacity-100" />
+                              )}
+                            </span>
                           </button>
                         ))}
                       </div>
@@ -914,6 +1057,10 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                           ? "border-primary/70 bg-primary/10 md:col-span-2"
                           : "border-border/60 bg-card/80"
                       )}
+                      onMouseEnter={() => setCustomExtrasHover(true)}
+                      onMouseLeave={() => setCustomExtrasHover(false)}
+                      onFocusCapture={() => setCustomExtrasHover(true)}
+                      onBlurCapture={() => setCustomExtrasHover(false)}
                     >
                       <div className="flex items-start gap-3">
                         <Checkbox
@@ -931,9 +1078,10 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                             <span className="text-sm font-semibold text-foreground">
                               Custom requests
                             </span>
-                            <AnimateIcon animateOnHover>
-                              <SparklesIcon className="h-4 w-4 text-primary" />
-                            </AnimateIcon>
+                            <Sparkles
+                              className="h-4 w-4 text-primary"
+                              animate={customExtrasHover}
+                            />
                           </div>
                           <span className="block text-xs text-muted-foreground">
                             Tell us what extra help you need and we will estimate it.
@@ -967,7 +1115,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                             (form.customExtrasSummary || form.customExtrasPrice ? (
                               <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                                 <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                                  <SparklesIcon className="h-3 w-3 text-primary" />
+                                  <Sparkles className="h-3 w-3 text-primary" />
                                   {form.customExtrasSource
                                     ? `Estimate: ${form.customExtrasSource}`
                                     : "AI estimate"}
@@ -1001,7 +1149,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                                     </PreviewCardTrigger>
                                     <PreviewCardPanel>
                                       <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
-                                        <SparklesIcon className="h-4 w-4 text-primary" />
+                                        <Sparkles className="h-4 w-4 text-primary" />
                                         AI reasoning
                                       </div>
                                       <p className="mt-2 text-xs text-muted-foreground">
@@ -1107,6 +1255,32 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                   )}
                 </div>
                 <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <Label className="text-sm font-medium text-foreground">
+                      Address
+                    </Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleUseLocation}
+                      disabled={isLocating}
+                    >
+                      {isLocating ? "Locating..." : "Use my location"}
+                    </Button>
+                  </div>
+                  <Input
+                    value={contact.address}
+                    onChange={(event) =>
+                      setContact((prev) => ({ ...prev, address: event.target.value }))
+                    }
+                    placeholder="Flat 2, 25 Belgrave Road, Plymouth"
+                  />
+                  {locationError && (
+                    <p className="text-xs text-muted-foreground">{locationError}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
                   <Label className="text-sm font-medium text-foreground">Postcode</Label>
                   <Input
                     value={contact.postcode}
@@ -1125,6 +1299,18 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     value={contact.preferredDate}
                     onChange={(event) =>
                       setContact((prev) => ({ ...prev, preferredDate: event.target.value }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="text-sm font-medium text-foreground">
+                    Preferred start time
+                  </Label>
+                  <Input
+                    type="time"
+                    value={contact.preferredTime}
+                    onChange={(event) =>
+                      setContact((prev) => ({ ...prev, preferredTime: event.target.value }))
                     }
                   />
                 </div>
