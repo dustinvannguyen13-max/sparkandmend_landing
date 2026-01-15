@@ -25,9 +25,15 @@ const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
 const sectionBase =
-  "rounded-[32px] border border-border/60 px-6 py-10 md:px-10 md:py-12";
+  "relative overflow-hidden rounded-[32px] border border-border/50 px-6 py-10 md:px-10 md:py-12 shadow-[0_30px_80px_-60px_hsl(var(--primary)/0.35)]";
 const heroSurface =
-  "relative overflow-hidden rounded-[32px] border border-border/60 bg-card/80 px-6 pt-8 pb-10 md:px-10 md:pt-10 md:pb-12";
+  "relative overflow-hidden rounded-[36px] border border-border/50 bg-[radial-gradient(120%_120%_at_80%_0%,hsl(var(--background))_0%,hsl(var(--subtle))_45%,hsl(var(--background))_100%)] px-6 pt-10 pb-12 md:px-12 md:pt-12 md:pb-14 shadow-[0_45px_100px_-70px_hsl(var(--primary)/0.45)]";
+const surfacePrimary =
+  "bg-[linear-gradient(135deg,hsl(var(--primary)/0.08),hsl(var(--background))_70%)]";
+const surfaceWarm =
+  "bg-[linear-gradient(135deg,hsl(var(--tertiary))_0%,hsl(var(--background))_75%)]";
+const surfaceClean =
+  "bg-[linear-gradient(135deg,hsl(var(--accent))_0%,hsl(var(--background))_75%)]";
 
 const values = [
   "Clear communication",
@@ -82,7 +88,7 @@ const AboutPage = () => {
               </p>
               <ContactDetails />
             </div>
-            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
+            <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
                 src={HERO_IMAGE}
                 alt="Fresh, calm interior with clean finishes"
@@ -95,7 +101,7 @@ const AboutPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-subtle/80`}>
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
         <AnimationContainer delay={0.15}>
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <SectionHeader
@@ -117,7 +123,7 @@ const AboutPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-tertiary/80`}>
+      <Section className={`${sectionBase} ${surfaceWarm}`}>
         <AnimationContainer delay={0.2}>
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <SectionHeader
@@ -139,7 +145,7 @@ const AboutPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-muted/70`}>
+      <Section className={`${sectionBase} ${surfaceClean}`}>
         <AnimationContainer delay={0.25}>
           <SectionHeader
             eyebrow="Values"

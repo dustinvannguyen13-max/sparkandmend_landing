@@ -3,11 +3,19 @@ import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import { Button } from "@/components/ui/button";
 import CTAStrip from "@/components/ui/cta-strip";
 import FAQAccordion from "@/components/ui/faq-accordion";
+import { AnimateIcon } from "@/components/ui/animate-icon";
+import { BubbleBackground } from "@/components/ui/bubble-background";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { generateMetadata } from "@/utils";
 import Link from "next/link";
+import { CheckCheck } from "@/registry/icons/check-check";
+import { ClipboardList } from "@/registry/icons/clipboard-list";
+import { Key } from "@/registry/icons/key";
+import { MessageCircleQuestion } from "@/registry/icons/message-circle-question";
+import { MessageCircleX } from "@/registry/icons/message-circle-x";
+import { Timer } from "@/registry/icons/timer";
 
 export const metadata = generateMetadata({
   title: "Basic Clean | Spark & Mend",
@@ -19,22 +27,57 @@ const HERO_IMAGE =
   "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w";
 const INCLUDE_IMAGE =
   "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w";
+const RESULTS_IMAGE =
+  "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
 const CONTACT_WHATSAPP_LINK = "https://wa.me/447452824799";
 const sectionBase =
-  "rounded-[32px] border border-border/60 px-6 py-10 md:px-10 md:py-12";
+  "relative overflow-hidden rounded-[32px] border border-border/50 px-6 py-10 md:px-10 md:py-12 shadow-[0_30px_80px_-60px_hsl(var(--primary)/0.35)]";
 const heroSurface =
-  "relative overflow-hidden rounded-[32px] border border-border/60 bg-card/80 px-6 pt-8 pb-10 md:px-10 md:pt-10 md:pb-12";
+  "relative overflow-hidden rounded-[36px] border border-border/50 bg-[radial-gradient(120%_120%_at_80%_0%,hsl(var(--background))_0%,hsl(var(--subtle))_45%,hsl(var(--background))_100%)] px-6 pt-10 pb-12 md:px-12 md:pt-12 md:pb-14 shadow-[0_45px_100px_-70px_hsl(var(--primary)/0.45)]";
+const surfacePrimary =
+  "bg-[linear-gradient(135deg,hsl(var(--primary)/0.08),hsl(var(--background))_70%)]";
+const surfaceSecondary =
+  "bg-[linear-gradient(135deg,hsl(var(--secondary)/0.12),hsl(var(--background))_70%)]";
+const surfaceWarm =
+  "bg-[linear-gradient(135deg,hsl(var(--tertiary))_0%,hsl(var(--background))_75%)]";
+const surfaceSoft =
+  "bg-[linear-gradient(135deg,hsl(var(--subtle))_0%,hsl(var(--background))_75%)]";
+const surfaceMuted =
+  "bg-[linear-gradient(135deg,hsl(var(--muted))_0%,hsl(var(--background))_85%)]";
+const surfaceClean =
+  "bg-[linear-gradient(135deg,hsl(var(--accent))_0%,hsl(var(--background))_75%)]";
+const surfaceNeutral =
+  "bg-[linear-gradient(135deg,hsl(var(--card))_0%,hsl(var(--background))_85%)]";
 
 const concerns = [
-  "Worried they will rush it and miss the details",
-  "Not sure what is included",
-  "Had someone cancel last minute",
-  "Do not want awkward upsells or changing prices",
-  "Need it done properly, first time",
+  {
+    text: "Need it done properly, first time",
+    icon: ClipboardList,
+  },
+  {
+    text: "Worried they will rush it and miss the details",
+    icon: Timer,
+  },
+  {
+    text: "Not sure what is included",
+    icon: MessageCircleQuestion,
+  },
+  {
+    text: "Had someone cancel last minute",
+    icon: MessageCircleX,
+  },
+  {
+    text: "Do not want awkward upsells or changing prices",
+    icon: CheckCheck,
+  },
+  {
+    text: "Worried about trusting someone in your property",
+    icon: Key,
+  },
 ];
 
 const includeGroups = [
@@ -197,7 +240,7 @@ const BasicCleanPage = () => {
               </p>
               <ContactDetails />
             </div>
-            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
+            <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
                 src={HERO_IMAGE}
                 alt="Neatly cleaned kitchen and dining area"
@@ -210,24 +253,44 @@ const BasicCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-subtle/80`}>
-        <AnimationContainer delay={0.15}>
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <BubbleBackground
+          className="absolute inset-0 opacity-100"
+          colors={{
+            first: "9,72,79",
+            second: "114,75,75",
+            third: "240,230,218",
+            fourth: "120,170,175",
+            fifth: "198,166,150",
+            sixth: "255,245,236",
+          }}
+        />
+        <AnimationContainer delay={0.15} className="relative z-10">
           <SectionHeader
             eyebrow="Reassurance"
             title="We get your concerns"
             description="That is why we keep it simple and transparent."
           />
-          <ul className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
-            {concerns.map((item) => (
-              <li key={item} className="rounded-xl border border-border/60 bg-card/80 px-4 py-3">
-                {item}
+          <ul className="mt-6 grid gap-4 text-sm text-muted-foreground sm:grid-cols-2">
+            {concerns.map((item) => {
+              const Icon = item.icon;
+              return (
+              <li
+                key={item.text}
+                className="group flex items-start gap-3 rounded-xl border border-border/50 bg-card/60 px-4 py-3 backdrop-blur-md"
+              >
+                <AnimateIcon animateOnHover>
+                  <Icon size={16} className="mt-0.5 text-primary" />
+                </AnimateIcon>
+                <span>{item.text}</span>
               </li>
-            ))}
+            );
+            })}
           </ul>
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-tertiary/80`}>
+      <Section className={`${sectionBase} ${surfaceWarm}`}>
         <AnimationContainer delay={0.2}>
           <SectionHeader
             eyebrow="Scope"
@@ -273,7 +336,7 @@ const BasicCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-muted/70`}>
+      <Section className={`${sectionBase} ${surfaceSecondary}`}>
         <AnimationContainer delay={0.25}>
           <SectionHeader
             eyebrow="Comparison"
@@ -303,7 +366,7 @@ const BasicCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-subtle/70`}>
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
         <AnimationContainer delay={0.3}>
           <SectionHeader
             eyebrow="Best for"
@@ -319,7 +382,7 @@ const BasicCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-tertiary/70`}>
+      <Section className={`${sectionBase} ${surfaceMuted}`}>
         <AnimationContainer delay={0.35}>
           <SectionHeader
             eyebrow="Process"
@@ -352,23 +415,36 @@ const BasicCleanPage = () => {
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-card/80`}>
+      <Section className={`${sectionBase} ${surfaceClean}`}>
         <AnimationContainer delay={0.4}>
-          <SectionHeader
-            eyebrow="Results"
-            title="Results you will notice"
-            description="A lighter, fresher feel across the main areas."
-            align="left"
-          />
-          <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
-            {results.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <SectionHeader
+                eyebrow="Results"
+                title="Results you will notice"
+                description="A lighter, fresher feel across the main areas."
+                align="left"
+              />
+              <ul className="mt-6 list-disc pl-5 space-y-2 text-muted-foreground">
+                {results.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_24px_60px_-50px_hsl(var(--primary)/0.4)]">
+              <Image
+                src={RESULTS_IMAGE}
+                alt="Fresh, bright living area after a clean"
+                width={1200}
+                height={900}
+                className="h-[240px] w-full rounded-[22px] object-cover sm:h-[320px]"
+              />
+            </div>
+          </div>
         </AnimationContainer>
       </Section>
 
-      <Section className={`${sectionBase} bg-muted/70`}>
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
         <AnimationContainer delay={0.45}>
           <SectionHeader
             eyebrow="FAQs"

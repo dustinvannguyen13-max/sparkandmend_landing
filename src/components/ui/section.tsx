@@ -9,7 +9,10 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
 
 const Section = ({ as: Comp = "section", className, ...props }: SectionProps) => {
   return (
-    <Comp className={cn("py-14 md:py-20", className)} {...props} />
+    <Comp
+      className={cn("mt-10 py-14 first:mt-0 md:mt-14 md:py-20", className)}
+      {...props}
+    />
   );
 };
 

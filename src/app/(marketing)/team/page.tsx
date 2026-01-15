@@ -15,6 +15,8 @@ export const metadata = generateMetadata({
 
 const HERO_IMAGE =
   "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w";
+const heroSurface =
+  "relative overflow-hidden rounded-[36px] border border-border/50 bg-[radial-gradient(120%_120%_at_80%_0%,hsl(var(--background))_0%,hsl(var(--subtle))_45%,hsl(var(--background))_100%)] px-6 pt-10 pb-12 md:px-12 md:pt-12 md:pb-14 shadow-[0_45px_100px_-70px_hsl(var(--primary)/0.45)]";
 
 const CONTACT_EMAIL = "sparkandmend@gmail.com";
 const CONTACT_PHONE = "07452 824799";
@@ -63,9 +65,9 @@ const ContactDetails = () => (
 const TeamPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
-      <Section className="pt-6 relative overflow-hidden">
+      <Section className={heroSurface}>
         <StarsBackground
-          className="absolute inset-0 opacity-55"
+          className="absolute inset-0 opacity-60"
           starColor="#09484F"
           pointerEvents={false}
         />
@@ -91,7 +93,7 @@ const TeamPage = () => {
               </p>
               <ContactDetails />
             </div>
-            <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_28px_70px_-52px_hsl(var(--primary)/0.5)]">
+            <div className="relative overflow-hidden rounded-[28px] border border-border/50 bg-card/75 p-2 shadow-[0_30px_70px_-55px_hsl(var(--primary)/0.45)]">
               <Image
                 src={HERO_IMAGE}
                 alt="Clean, organised workspace with tidy finishes"

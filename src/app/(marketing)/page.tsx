@@ -19,6 +19,7 @@ import MagicBadge from "@/components/ui/magic-badge";
 import MagicCard from "@/components/ui/magic-card";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { RotatingText, RotatingTextContainer } from "@/components/ui/rotating-text";
+import { StarsBackground } from "@/components/ui/stars-background";
 import { COMPANIES, PROCESS, REVIEWS } from "@/utils";
 import { ArrowRight, Star } from "lucide-react";
 
@@ -26,7 +27,12 @@ const HomePage = async () => {
   return (
     <div className="overflow-x-hidden scrollbar-hide size-full">
       <MaxWidthWrapper>
-        <div className="flex flex-col items-center justify-center w-full text-center bg-gradient-to-t from-background">
+        <div className="relative flex flex-col items-center justify-center w-full text-center bg-gradient-to-t from-background">
+          <StarsBackground
+            className="absolute inset-0 opacity-35"
+            starColor="#09484F"
+            pointerEvents={false}
+          />
           <AnimationContainer className="flex flex-col items-center justify-center w-full text-center">
             <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(var(--brand-dark))_inset] transition-colors duration-200">
               <span>

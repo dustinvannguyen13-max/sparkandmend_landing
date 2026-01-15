@@ -2,6 +2,7 @@ import { MaxWidthWrapper } from "@/components";
 import CTAStrip from "@/components/ui/cta-strip";
 import { MotionCarousel } from "@/components/ui/motion-carousel";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { StarsBackground } from "@/components/ui/stars-background";
 
 const PLACEHOLDER_SLIDES = [
   {
@@ -48,15 +49,25 @@ const GALLERY_SECTIONS = [
   },
 ];
 
+const heroSurface =
+  "relative overflow-hidden rounded-[36px] border border-border/50 bg-[radial-gradient(120%_120%_at_80%_0%,hsl(var(--background))_0%,hsl(var(--subtle))_45%,hsl(var(--background))_100%)] px-6 pt-10 pb-12 md:px-12 md:pt-12 md:pb-14 shadow-[0_45px_100px_-70px_hsl(var(--primary)/0.45)]";
+
 const GalleryPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
-      <Section className="pt-6">
-        <SectionHeader
-          eyebrow="Gallery"
-          title="A look at recent Spark & Mend cleans"
-          description="Browse real-world examples of the finishes we deliver across Plymouth."
+      <Section className={heroSurface}>
+        <StarsBackground
+          className="absolute inset-0 opacity-55"
+          starColor="#09484F"
+          pointerEvents={false}
         />
+        <div className="relative z-10">
+          <SectionHeader
+            eyebrow="Gallery"
+            title="A look at recent Spark & Mend cleans"
+            description="Browse real-world examples of the finishes we deliver across Plymouth."
+          />
+        </div>
       </Section>
 
       <Section>
