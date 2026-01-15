@@ -157,7 +157,7 @@ const Navbar = () => {
                                         }
                                         fill
                                         sizes="240px"
-                                        className="object-cover"
+                                        className="object-cover filter brightness-70 contrast-110 saturate-125 transition duration-700"
                                       />
                                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
                                     </div>

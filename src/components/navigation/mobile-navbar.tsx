@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn, NAV_LINKS } from "@/utils";
-import { LucideIcon, Menu, X } from "lucide-react";
+import { Facebook, Instagram, LucideIcon, Menu, Music2, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -52,14 +52,18 @@ const MobileNavbar = () => {
                   className="h-auto w-full px-3 py-2 text-[11px] leading-snug whitespace-normal"
                   asChild
                 >
-                  <Link href="tel:07452824799">Call 07452 824799</Link>
+                  <Link href="tel:07452824799" onClick={handleClose}>
+                    Call 07452 824799
+                  </Link>
                 </Button>
                 <PrimaryButton
                   className="h-auto w-full px-3 py-2 text-[11px] leading-snug whitespace-normal"
                   size="sm"
                   asChild
                 >
-                  <Link href="/get-a-quote">Get an Instant Quote</Link>
+                  <Link href="/get-a-quote" onClick={handleClose}>
+                    Get an Instant Quote
+                  </Link>
                 </PrimaryButton>
               </>
             </div>
@@ -102,6 +106,42 @@ const MobileNavbar = () => {
                 ))}
               </Accordion>
             </ul>
+            <div className="mt-8 border-t border-border/60 pt-6 w-full">
+              <h3 className="text-[11px] font-semibold uppercase tracking-[0.4em] text-muted-foreground">
+                Follow us
+              </h3>
+              <div className="mt-3 grid gap-2">
+                {[
+                  {
+                    href: "https://www.facebook.com/sparkandmend/",
+                    label: "Facebook",
+                    icon: Facebook,
+                  },
+                  {
+                    href: "https://www.instagram.com/spark_mend/",
+                    label: "Instagram",
+                    icon: Instagram,
+                  },
+                  {
+                    href: "https://www.tiktok.com/@spark.mend",
+                    label: "TikTok",
+                    icon: Music2,
+                  },
+                ].map((social) => (
+                  <Link
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={handleClose}
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+                  >
+                    <social.icon className="h-4 w-4" />
+                    {social.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </SheetContent>
       </Sheet>

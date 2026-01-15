@@ -150,12 +150,12 @@ const PROPERTY_TYPE_IMAGES: Record<
   { src: string; alt: string }
 > = {
   house: {
-    src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
-    alt: "House cleaning placeholder image",
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/house.jpg",
+    alt: "House exterior ready for cleaning",
   },
   flat: {
-    src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w",
-    alt: "Flat cleaning placeholder image",
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/flat.jpg",
+    alt: "Apartment interior ready for cleaning",
   },
   office: {
     src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
@@ -582,7 +582,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                               }))
                             }
                             className={cn(
-                              "group relative flex min-h-[120px] flex-col justify-between overflow-hidden rounded-xl border p-4 text-left transition-all hover:-translate-y-[1px]",
+                              "group relative min-h-[120px] overflow-hidden rounded-xl border p-4 text-left transition-all hover:-translate-y-[1px]",
                               form.propertyType === type
                                 ? "border-primary/70 bg-primary/10"
                                 : "border-border/60 bg-card/80"
@@ -594,11 +594,12 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                                 alt={PROPERTY_TYPE_IMAGES[type as PropertyType].alt}
                                 fill
                                 sizes="(max-width: 640px) 100vw, 50vw"
-                                className="object-cover opacity-70 transition-transform duration-500 group-hover:scale-[1.04]"
+                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04] filter brightness-75 saturate-120"
                               />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                             </div>
                             <div className="relative z-10 flex items-center justify-between">
-                              <span className="text-sm font-semibold uppercase tracking-wide text-foreground">
+                              <span className="text-sm font-semibold uppercase tracking-wide text-white">
                                 {type}
                               </span>
                               <span className="rounded-full bg-background/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -606,7 +607,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                               </span>
                             </div>
                             <div className="relative z-10 mt-6">
-                              <span className="text-xs text-muted-foreground">
+                              <span className="text-xs text-white/80">
                                 Most popular for {type === "house" ? "family homes" : "flats & apartments"}.
                               </span>
                             </div>
