@@ -78,7 +78,12 @@ const StripeCheckoutButton = ({
 
   return (
     <div className="space-y-2">
-      <PrimaryButton onClick={handlePayNow} size="sm" disabled={isLoading}>
+      <PrimaryButton
+        onClick={handlePayNow}
+        size="sm"
+        disabled={isLoading}
+        className="w-full"
+      >
         {isLoading ? "Preparing checkout..." : "Pay Now"}
       </PrimaryButton>
       {error ? (
