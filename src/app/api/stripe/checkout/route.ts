@@ -186,7 +186,7 @@ export async function POST(request: Request) {
 
     const reference =
       body.referenceHint ||
-      `SM-${randomUUID().split(\"-\")[0].toUpperCase()}`;
+      `SM-${randomUUID().split("-")[0].toUpperCase()}`;
 
     const bookingPayload = buildBookingPayload({
       reference,
