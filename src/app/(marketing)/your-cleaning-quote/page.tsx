@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
+import StripeCheckoutButton from "@/components/payment/stripe-checkout-button";
 import {
   calculateQuote,
   formatCurrency,
@@ -16,7 +17,8 @@ interface QuoteResultPageProps {
 
 const CONTACT_PHONE = "07452 824799";
 const CONTACT_PHONE_LINK = "tel:07452824799";
-const STRIPE_PAYMENT_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
+const CONTACT_EMAIL = "sparkandmend@gmail.com";
+const CONTACT_EMAIL_LINK = `mailto:${CONTACT_EMAIL}`;
 
 const CONTACT_METHOD_LABELS: Record<string, string> = {
   text: "text message",
@@ -98,6 +100,21 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
   const whatsappUrl = `https://wa.me/447452824799?text=${encodeURIComponent(
     whatsappMessage
   )}`;
+  const contactName = getParam(searchParams, "contactName");
+  const contactEmail = getParam(searchParams, "contactEmail");
+  const contactPhone = getParam(searchParams, "contactPhone");
+  const contactPostcode = getParam(searchParams, "contactPostcode");
+  const notes = getParam(searchParams, "notes");
+  const referenceHint = getParam(searchParams, "reference");
+  const contactPayload = {
+    name: contactName,
+    email: contactEmail,
+    phone: contactPhone,
+    postcode: contactPostcode,
+    preferredDate,
+    preferredContact: contactMethod,
+    notes,
+  };
 
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
@@ -193,6 +210,28 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                     </ul>
                   </div>
                 )}
+                {quote.customExtrasItems && quote.customExtrasItems.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Custom requests we spotted
+                    </h3>
+                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      {quote.customExtrasItems.map((item) => (
+                        <CheckListItem key={item}>{item}</CheckListItem>
+                      ))}
+                    </ul>
+                    {quote.customExtrasReason && (
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        {quote.customExtrasReason}
+                      </p>
+                    )}
+                    {quote.customExtrasText && (
+                      <p className="mt-2 text-xs text-muted-foreground italic">
+                        Original request: {quote.customExtrasText}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -211,14 +250,14 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                 </p>
               )}
 
-              <div className="mt-6 border-t border-border/60 pt-6">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Don&apos;t want to wait?
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Add your preferred start date to your calendar, adjust it if
-                  needed, and send the invite so we can confirm the booking.
-                </p>
+                <div className="mt-6 border-t border-border/60 pt-6">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Don&apos;t want to wait?
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Add your preferred start date to your calendar, adjust it if
+                    needed, and send the invite so we can confirm the booking.
+                  </p>
                 <div className="mt-4 flex flex-col gap-3">
                   {calendarUrl ? (
                     <PrimaryButton asChild size="sm">
@@ -232,30 +271,20 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                       calendar hold.
                     </p>
                   )}
-                  {STRIPE_PAYMENT_LINK ? (
-                    <PrimaryButton asChild size="sm">
-                      <Link
-                        href={STRIPE_PAYMENT_LINK}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Pay by card (Stripe)
-                      </Link>
-                    </PrimaryButton>
-                  ) : (
-                    <p className="text-xs text-muted-foreground">
-                      We can send a secure Stripe payment link once we confirm
-                      your booking.
-                    </p>
-                  )}
+                  <StripeCheckoutButton
+                    quote={quote}
+                    contact={contactPayload}
+                    referenceHint={referenceHint ?? undefined}
+                  />
                   <Button variant="outline" asChild>
-                    <Link href={whatsappUrl}>WhatsApp us</Link>
+                    <Link href={whatsappUrl}>Pay later / cash (WhatsApp)</Link>
                   </Button>
                   <Button variant="outline" asChild>
                     <Link href={CONTACT_PHONE_LINK}>Call {CONTACT_PHONE}</Link>
                   </Button>
                   <p className="text-xs text-muted-foreground">
-                    Prefer to pay later or in cash? Just let us know on WhatsApp.
+                    Prefer to pay later or in cash? Use the WhatsApp button above
+                    or call us to arrange.
                   </p>
                 </div>
               </div>

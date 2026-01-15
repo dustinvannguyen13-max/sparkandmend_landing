@@ -214,6 +214,12 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const formatFallbackReason = (reason?: string) =>
+    reason
+      ? reason
+          .replace(/^openai_http_/, "OpenAI HTTP ")
+          .replace(/_/g, " ")
+      : "";
 
   const isResidential = form.service !== "commercial";
 
@@ -249,6 +255,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
         customExtrasPrice: 0,
         customExtrasSummary: "",
         customExtrasReason: "",
+        customExtrasSource: undefined,
+        customExtrasFallbackReason: "",
+        customExtrasItems: [],
       }));
       return;
     }
@@ -262,6 +271,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
         customExtrasPrice: 0,
         customExtrasSummary: "",
         customExtrasReason: "",
+        customExtrasSource: undefined,
+        customExtrasFallbackReason: "",
+        customExtrasItems: [],
       }));
       return;
     }
@@ -290,6 +302,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
           price?: number;
           summary?: string;
           reason?: string;
+          source?: "ai" | "fallback";
+          fallbackReason?: string;
+          items?: string[];
         };
 
         setForm((prev) => ({
@@ -297,7 +312,16 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
           customExtrasPrice: Number(data.price) || 0,
           customExtrasSummary: data.summary || "",
           customExtrasReason: data.reason || "",
+          customExtrasSource: data.source,
+          customExtrasFallbackReason: data.fallbackReason || "",
+          customExtrasItems: Array.isArray(data.items) ? data.items : [],
         }));
+        if (data.source) {
+          const reason = data.fallbackReason
+            ? ` (${data.fallbackReason})`
+            : "";
+          console.info(`[custom-extras] estimate source: ${data.source}${reason}`);
+        }
       } catch (error) {
         if (controller.signal.aborted) return;
         setCustomExtrasError(
@@ -308,6 +332,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
           customExtrasPrice: 0,
           customExtrasSummary: "",
           customExtrasReason: "",
+          customExtrasSource: undefined,
+          customExtrasFallbackReason: "",
+          customExtrasItems: [],
         }));
       } finally {
         if (!controller.signal.aborted) {
@@ -418,11 +445,40 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     }
     if (form.customExtrasSummary) {
       params.set("customExtrasSummary", form.customExtrasSummary);
-    } else if (form.customExtras) {
-      params.set("customExtras", form.customExtras.slice(0, 160));
+    }
+    if (form.customExtras) {
+      params.set("customExtras", form.customExtras);
+      params.set("customExtrasText", form.customExtras);
     }
     if (form.customExtrasPrice) {
       params.set("customExtrasPrice", String(form.customExtrasPrice));
+    }
+    if (form.customExtrasItems && form.customExtrasItems.length > 0) {
+      params.set("customExtrasItems", JSON.stringify(form.customExtrasItems));
+    }
+    if (form.customExtrasReason) {
+      params.set("customExtrasReason", form.customExtrasReason);
+    }
+    if (form.customExtrasSource) {
+      params.set("customExtrasSource", form.customExtrasSource);
+    }
+    if (form.customExtrasFallbackReason) {
+      params.set("customExtrasFallbackReason", form.customExtrasFallbackReason);
+    }
+    if (contact.name) {
+      params.set("contactName", contact.name);
+    }
+    if (contact.email) {
+      params.set("contactEmail", contact.email);
+    }
+    if (contact.phone) {
+      params.set("contactPhone", contact.phone);
+    }
+    if (contact.postcode) {
+      params.set("contactPostcode", contact.postcode);
+    }
+    if (contact.notes) {
+      params.set("notes", contact.notes);
     }
     if (contact.preferredDate) {
       params.set("preferredDate", contact.preferredDate);
@@ -905,8 +961,19 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                               <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                                 <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                                   <SparklesIcon className="h-3 w-3 text-primary" />
-                                  AI estimate
+                                  {form.customExtrasSource
+                                    ? `Estimate: ${form.customExtrasSource}`
+                                    : "AI estimate"}
                                 </span>
+                                {form.customExtrasSource === "fallback" &&
+                                  form.customExtrasFallbackReason && (
+                                    <span className="text-[10px] text-muted-foreground">
+                                      Fallback:{" "}
+                                      {formatFallbackReason(
+                                        form.customExtrasFallbackReason,
+                                      )}
+                                    </span>
+                                  )}
                                 {form.customExtrasSummary && (
                                   <span>Summary: {form.customExtrasSummary}</span>
                                 )}

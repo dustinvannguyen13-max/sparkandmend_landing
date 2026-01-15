@@ -30,6 +30,9 @@ export interface QuoteInput {
   customExtrasPrice?: number;
   customExtrasSummary?: string;
   customExtrasReason?: string;
+  customExtrasSource?: "ai" | "fallback";
+  customExtrasFallbackReason?: string;
+  customExtrasItems?: string[];
 }
 
 export interface QuoteResult {
@@ -43,6 +46,13 @@ export interface QuoteResult {
   packageItems: string[];
   addOns: string[];
   paymentSummary: string;
+  customExtrasItems?: string[];
+  customExtrasSummary?: string;
+  customExtrasReason?: string;
+  customExtrasSource?: string;
+  customExtrasFallbackReason?: string;
+  customExtrasText?: string;
+  customExtrasPrice?: number;
 }
 
 const PRICE_MULTIPLIER = 0.5;
@@ -180,6 +190,9 @@ export const DEFAULT_QUOTE_INPUT: QuoteInput = {
   customExtrasPrice: 0,
   customExtrasSummary: "",
   customExtrasReason: "",
+  customExtrasItems: [],
+  customExtrasSource: undefined,
+  customExtrasFallbackReason: "",
 };
 
 const FREQUENCY_META: Record<
@@ -317,6 +330,13 @@ export const calculateQuote = (input: QuoteInput): QuoteResult => {
     packageItems,
     addOns,
     paymentSummary,
+    customExtrasItems: input.customExtrasItems,
+    customExtrasSummary,
+    customExtrasReason: input.customExtrasReason,
+    customExtrasSource: input.customExtrasSource,
+    customExtrasFallbackReason: input.customExtrasFallbackReason,
+    customExtrasText: input.customExtras,
+    customExtrasPrice,
   };
 };
 
@@ -339,6 +359,21 @@ export const parseQuoteSearchParams = (
   const customExtrasSummary = getParam(params, "customExtrasSummary");
   const customExtras = customExtrasSummary || getParam(params, "customExtras");
   const customExtrasPrice = Number(getParam(params, "customExtrasPrice")) || 0;
+  const customExtrasItemsParam = getParam(params, "customExtrasItems");
+  let customExtrasItems: string[] | undefined = undefined;
+  if (customExtrasItemsParam) {
+    try {
+      const parsed = JSON.parse(customExtrasItemsParam);
+      if (Array.isArray(parsed)) {
+        customExtrasItems = parsed.filter((item): item is string => typeof item === "string");
+      }
+    } catch {
+      customExtrasItems = undefined;
+    }
+  }
+  const customExtrasReason = getParam(params, "customExtrasReason");
+  const customExtrasSource = getParam(params, "customExtrasSource");
+  const customExtrasFallbackReason = getParam(params, "customExtrasFallbackReason");
   const extras = extrasParam
     ? extrasParam.split(",").filter((extra): extra is ExtraOption => extra in EXTRA_PRICING)
     : [];
@@ -357,6 +392,10 @@ export const parseQuoteSearchParams = (
     customExtras,
     customExtrasPrice,
     customExtrasSummary: customExtrasSummary || undefined,
+    customExtrasItems,
+    customExtrasReason,
+    customExtrasSource,
+    customExtrasFallbackReason,
   };
 };
 
