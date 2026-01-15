@@ -17,10 +17,18 @@ import {
 import { cn, NAV_LINKS } from "@/utils";
 import { Facebook, Instagram, LucideIcon, Menu, Music2, X } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+const CLOSE_NAV_EVENT = "spark-mend-close-nav";
 
 const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handler = () => setIsOpen(false);
+    window.addEventListener(CLOSE_NAV_EVENT, handler);
+    return () => window.removeEventListener(CLOSE_NAV_EVENT, handler);
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);

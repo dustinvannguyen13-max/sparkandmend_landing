@@ -118,14 +118,18 @@ const WhyUsPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceWarm}`}>
-        <AnimationContainer delay={0.2}>
+          <AnimationContainer delay={0.2}>
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <SectionHeader
               eyebrow="Why we started"
-              title="Cleaning that feels simple and respectful"
-              description="We kept hearing the same stories: inconsistent standards, unclear pricing, and awkward experiences. We wanted to build a cleaning service that feels simple, respectful, and consistent - with a clear scope and a straightforward booking process."
+              title="Cleaning that gives you back your time"
+              description="We kept hearing the same stories: inconsistent standards, unclear pricing, and awkward experiences. People told us they want clean homes but are too busy to keep on top of it themselves, so we built a service that lets them focus on life while we handle the cleaning."
               align="left"
             />
+            <p className="mt-2 text-sm text-muted-foreground lg:text-base">
+              We clean so you can use the hours that open up for family, work, or rest.
+              It is about giving you leverage over your time—sparkling spaces without sacrificing what matters.
+            </p>
             <div className="relative overflow-hidden rounded-[28px] border border-border/60 bg-card/90 p-2 shadow-[0_20px_60px_-50px_hsl(var(--primary)/0.45)]">
               <Image
                 src={ORIGIN_IMAGE}

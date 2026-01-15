@@ -92,7 +92,7 @@ export const REVIEWS = [
     },
     {
         name: "Tom H",
-        // username: "@tomhughes",
+        username: "@tomhughes",
         avatar: "https://randomuser.me/api/portraits/women/1.jpg",
         rating: 5,
         review: "Booked an end-of-tenancy clean in Plymouth and the place looked brand spanking new."
@@ -114,28 +114,28 @@ export const REVIEWS = [
     },
     {
         name: "Sarah B",
-        // username: "@sarahb",
+        username: "@sarahb",
         avatar: "https://randomuser.me/api/portraits/men/1.jpg",
         rating: 5,
         review: "Weekly cleans keep our flat spotless and the team is always on time."
     },
     {
         name: "Ben Walker",
-        // username: "@benw",
+        username: "@benw",
         avatar: "https://randomuser.me/api/portraits/women/3.jpg",
         rating: 4,
         review: "Tino is very helpful and has a good eye for details. Brings consistent results and a clear checklist every visit."
     },
     {
         name: "Hannah Price",
-        // username: "@hannahp",
+        username: "@hannahp",
         avatar: "https://randomuser.me/api/portraits/men/4.jpg",
         rating: 5,
         review: "Finally found cleaners we trust. Reliable, respectful, and always on time."
     },
     {
         name: "Mr. Williams",
-        // username: "@kylem",
+        username: "@kylem",
         avatar: "https://randomuser.me/api/portraits/women/4.jpg",
         rating: 5,
         review: "Quick booking via the platform, confirmed a slot within 2 days and fast responses to questions. Very pleased with the results, would highly recommend."

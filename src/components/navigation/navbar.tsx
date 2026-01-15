@@ -95,7 +95,15 @@ const Navbar = () => {
       <AnimationContainer reverse delay={0.1} className="size-full">
         <MaxWidthWrapper className="flex items-center justify-between">
           <div className="flex items-center space-x-12">
-            <Link href="/#home" className="flex items-center gap-x-2">
+            <Link
+              href="/"
+              className="flex items-center gap-x-2"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new Event("spark-mend-close-nav"));
+                }
+              }}
+            >
               <Icons.logo className="w-6 h-6" />
               <h1 className="text-base md:text-lg font-semibold uppercase tracking-[0.02em] text-primary whitespace-nowrap">
                 Spark &amp; Mend

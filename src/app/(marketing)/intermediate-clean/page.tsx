@@ -272,7 +272,7 @@ const IntermediateCleanPage = () => {
                 Fixed instant quote takes about 60 seconds.
               </p>
               <p className="text-sm text-muted-foreground">
-                Define your requirements in the calculator and book instantly.
+                Define what you need, book and pay in a simple five-minute flow, and we turn up on your requested date while staying in touch if anything changes.
               </p>
               <ContactDetails
                 email={CONTACT_EMAIL}
@@ -311,7 +311,7 @@ const IntermediateCleanPage = () => {
           <SectionHeader
             eyebrow="Reassurance"
             title="We get your concerns"
-            description="That is why we keep it simple and transparent."
+            description="We keep the booking quick and transparent so you can pay, confirm, and relax in minutes while we take care of everything."
           />
           <ul className="mt-6 grid gap-4 text-sm text-muted-foreground sm:grid-cols-2">
             {concerns.map((item) => {

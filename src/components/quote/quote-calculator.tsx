@@ -23,6 +23,7 @@ import {
   PreviewCardPanel,
   PreviewCardTrigger,
 } from "@/components/ui/preview-card";
+import { AnimateIcon } from "@/components/ui/animate-icon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -926,9 +927,14 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                           htmlFor="extra-custom"
                           className="flex-1 space-y-2 cursor-pointer"
                         >
-                          <span className="block text-sm font-semibold text-foreground">
-                            Custom requests
-                          </span>
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-semibold text-foreground">
+                              Custom requests
+                            </span>
+                            <AnimateIcon animateOnHover>
+                              <SparklesIcon className="h-4 w-4 text-primary" />
+                            </AnimateIcon>
+                          </div>
                           <span className="block text-xs text-muted-foreground">
                             Tell us what extra help you need and we will estimate it.
                           </span>
