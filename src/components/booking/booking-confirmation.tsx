@@ -34,8 +34,8 @@ const WHATSAPP_URL = "https://wa.me/447452824799";
 
 const BookingConfirmationClient = () => {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get("session_id");
-  const reference = searchParams.get("reference");
+  const sessionId = searchParams?.get("session_id") ?? null;
+  const reference = searchParams?.get("reference") ?? null;
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [booking, setBooking] = useState<BookingRecord | null>(null);
   const [error, setError] = useState<string | null>(null);
