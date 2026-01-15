@@ -1255,7 +1255,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                   )}
                 </div>
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex min-h-10 items-center justify-between gap-3">
                     <Label className="text-sm font-medium text-foreground">
                       Address
                     </Label>
@@ -1281,7 +1281,11 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-foreground">Postcode</Label>
+                  <div className="flex min-h-10 items-center">
+                    <Label className="text-sm font-medium text-foreground">
+                      Postcode
+                    </Label>
+                  </div>
                   <Input
                     value={contact.postcode}
                     onChange={(event) =>
@@ -1300,6 +1304,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     onChange={(event) =>
                       setContact((prev) => ({ ...prev, preferredDate: event.target.value }))
                     }
+                    className="min-w-0"
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
@@ -1312,6 +1317,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     onChange={(event) =>
                       setContact((prev) => ({ ...prev, preferredTime: event.target.value }))
                     }
+                    className="min-w-0"
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
