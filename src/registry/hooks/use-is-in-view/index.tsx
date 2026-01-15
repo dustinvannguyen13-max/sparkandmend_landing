@@ -9,10 +9,15 @@ interface UseIsInViewOptions {
   inViewMargin?: UseInViewOptions["margin"];
 }
 
+export interface UseIsInViewResult<T extends HTMLElement> {
+  ref: React.MutableRefObject<T | null>;
+  isInView: boolean;
+}
+
 function useIsInView<T extends HTMLElement = HTMLElement>(
   ref: React.Ref<T>,
   options: UseIsInViewOptions = {},
-) {
+): UseIsInViewResult<T> {
   const { inView, inViewOnce = false, inViewMargin = "0px" } = options;
   const localRef = React.useRef<T>(null);
   React.useImperativeHandle(ref, () => localRef.current as T);
@@ -24,4 +29,5 @@ function useIsInView<T extends HTMLElement = HTMLElement>(
   return { ref: localRef, isInView };
 }
 
-export { useIsInView, type UseIsInViewOptions };
+export { useIsInView };
+export type { UseIsInViewOptions };

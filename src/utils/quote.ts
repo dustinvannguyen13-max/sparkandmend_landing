@@ -372,7 +372,11 @@ export const parseQuoteSearchParams = (
     }
   }
   const customExtrasReason = getParam(params, "customExtrasReason");
-  const customExtrasSource = getParam(params, "customExtrasSource");
+  const customExtrasSourceParam = getParam(params, "customExtrasSource");
+  const customExtrasSource =
+    customExtrasSourceParam === "fallback" || customExtrasSourceParam === "ai"
+      ? customExtrasSourceParam
+      : undefined;
   const customExtrasFallbackReason = getParam(params, "customExtrasFallbackReason");
   const extras = extrasParam
     ? extrasParam.split(",").filter((extra): extra is ExtraOption => extra in EXTRA_PRICING)

@@ -20,26 +20,22 @@ type PreviewCardTriggerProps = WithAsChild<
 function PreviewCardTrigger({
   asChild = false,
   children,
-  nativeButton,
   ...props
 }: PreviewCardTriggerProps) {
   const Component = asChild ? Slot : motion.button;
-  const isButtonChild =
-    React.isValidElement(children) &&
-    typeof children.type === "string" &&
-    children.type === "button";
-  const resolvedNativeButton =
-    nativeButton ?? (asChild ? isButtonChild : true);
+  const { ref, ...restProps } = props;
 
   return (
     <PreviewCardPrimitive.Trigger
-      nativeButton={resolvedNativeButton}
-      {...props}
+      {...restProps}
       render={(triggerProps) => {
         const resolvedProps = asChild
-          ? triggerProps
-          : { ...triggerProps, type: "button" };
-        return <Component {...resolvedProps}>{children}</Component>;
+          ? (triggerProps as React.ComponentProps<typeof Slot>)
+          : ({
+              ...triggerProps,
+              type: "button",
+            } as React.ComponentProps<typeof motion.button>);
+        return <Component {...(resolvedProps as any)}>{children}</Component>;
       }}
     />
   );
@@ -57,13 +53,14 @@ type PreviewCardPopupProps = React.ComponentPropsWithoutRef<
   typeof PreviewCardPrimitive.Popup
 >;
 
-function PreviewCardPopup({ children, ...props }: PreviewCardPopupProps) {
-  return (
-    <PreviewCardPrimitive.Popup {...props}>
+const PreviewCardPopup = React.forwardRef<HTMLDivElement, PreviewCardPopupProps>(
+  ({ children, ...props }, ref) => (
+    <PreviewCardPrimitive.Popup ref={ref} {...props}>
       {children}
     </PreviewCardPrimitive.Popup>
-  );
-}
+  ),
+);
+PreviewCardPopup.displayName = "PreviewCardPopup";
 
 type PreviewCardPortalProps = React.ComponentPropsWithoutRef<
   typeof PreviewCardPrimitive.Portal

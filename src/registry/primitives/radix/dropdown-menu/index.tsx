@@ -147,7 +147,7 @@ function DropdownMenuSubTrigger({
 
   return (
     <DropdownMenuPrimitive.SubTrigger
-      ref={highlightedRef}
+      ref={highlightedRef as React.LegacyRef<HTMLDivElement>}
       disabled={disabled}
       textValue={textValue}
       asChild
@@ -356,7 +356,7 @@ function DropdownMenuItem({
 
   return (
     <DropdownMenuPrimitive.Item
-      ref={highlightedRef}
+      ref={highlightedRef as React.LegacyRef<HTMLDivElement>}
       disabled={disabled}
       onSelect={onSelect}
       textValue={textValue}
@@ -396,7 +396,7 @@ function DropdownMenuCheckboxItem({
 
   return (
     <DropdownMenuPrimitive.CheckboxItem
-      ref={highlightedRef}
+      ref={highlightedRef as React.LegacyRef<HTMLDivElement>}
       checked={checked}
       onCheckedChange={onCheckedChange}
       disabled={disabled}
@@ -441,7 +441,7 @@ function DropdownMenuRadioItem({
 
   return (
     <DropdownMenuPrimitive.RadioItem
-      ref={highlightedRef}
+      ref={highlightedRef as React.LegacyRef<HTMLDivElement>}
       value={value}
       disabled={disabled}
       onSelect={onSelect}

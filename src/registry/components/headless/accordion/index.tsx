@@ -85,12 +85,11 @@ function AccordionPanel<TTag extends React.ElementType = typeof motion.div>({
   ...props
 }: AccordionPanelProps<TTag>) {
   return (
-    <DisclosurePanelPrimitive {...props}>
-      {(bag) => (
-        <div className={cn("text-sm pt-0 pb-4", className)}>
-          {typeof children === "function" ? children(bag) : children}
-        </div>
-      )}
+    <DisclosurePanelPrimitive
+      {...props}
+      className={cn("text-sm pt-0 pb-4", className)}
+    >
+      {children}
     </DisclosurePanelPrimitive>
   );
 }

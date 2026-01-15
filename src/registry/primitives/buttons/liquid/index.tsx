@@ -44,30 +44,31 @@ function LiquidButton({
     onPointerUp,
     onPointerCancel,
     onBlur,
+    ref,
     ...restProps
   } = props;
 
   return (
     <Component
-      onPointerDown={(event: React.PointerEvent<HTMLElement>) => {
+      onPointerDown={(event: React.PointerEvent<HTMLButtonElement>) => {
         if (event.pointerType === "touch" || event.pointerType === "pen") {
           isTouchRef.current = true;
         }
         onPointerDown?.(event);
       }}
-      onPointerUp={(event: React.PointerEvent<HTMLElement>) => {
+      onPointerUp={(event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerUp?.(event);
         if (isTouchRef.current) {
           resetTouchStyles(event.currentTarget);
         }
       }}
-      onPointerCancel={(event: React.PointerEvent<HTMLElement>) => {
+      onPointerCancel={(event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerCancel?.(event);
         if (isTouchRef.current) {
           resetTouchStyles(event.currentTarget);
         }
       }}
-      onBlur={(event: React.FocusEvent<HTMLElement>) => {
+      onBlur={(event: React.FocusEvent<HTMLButtonElement>) => {
         onBlur?.(event);
         if (isTouchRef.current) {
           resetTouchStyles(event.currentTarget);
@@ -109,7 +110,7 @@ function LiquidButton({
           color: "var(--liquid-button-text-color, currentColor)",
         } as React.CSSProperties
       }
-      {...restProps}
+      {...(restProps as any)}
     />
   );
 }

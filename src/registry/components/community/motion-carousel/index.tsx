@@ -140,7 +140,7 @@ function MotionCarousel({ slides, options }: MotionCarouselProps) {
 
             return (
               <motion.div
-                key={isNumber ? slide : slide.src}
+                key={isNumber ? slide : slideData?.src ?? index}
                 className="mr-[var(--slide-spacing)] flex min-w-0 basis-[var(--slide-size)] flex-none"
               >
                 <motion.div
@@ -156,7 +156,7 @@ function MotionCarousel({ slides, options }: MotionCarouselProps) {
                 >
                   {isNumber ? (
                     slide + 1
-                  ) : (
+                  ) : slideData ? (
                     <>
                       <Image
                         src={slideData.src}
@@ -176,7 +176,7 @@ function MotionCarousel({ slides, options }: MotionCarouselProps) {
                         }}
                       />
                     </>
-                  )}
+                  ) : null}
                 </motion.div>
               </motion.div>
             );

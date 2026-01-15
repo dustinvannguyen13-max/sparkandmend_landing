@@ -39,17 +39,19 @@ function PreviewCardPositioner(props: PreviewCardPositionerProps) {
 
 type PreviewCardPopupProps = PreviewCardPopupPrimitiveProps;
 
-function PreviewCardPopup({ className, ...props }: PreviewCardPopupProps) {
-  return (
+const PreviewCardPopup = React.forwardRef<HTMLDivElement, PreviewCardPopupProps>(
+  ({ className, ...props }, ref) => (
     <PreviewCardPopupPrimitive
+      ref={ref}
       className={cn(
         "z-50 w-72 rounded-2xl border border-border/70 bg-popover/95 p-4 text-sm text-popover-foreground shadow-[0_22px_60px_-35px_hsl(var(--primary)/0.35)] backdrop-blur transition duration-200 data-[starting-style]:opacity-0 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[ending-style]:scale-95 data-[closed]:pointer-events-none",
         className,
       )}
       {...props}
     />
-  );
-}
+  ),
+);
+PreviewCardPopup.displayName = "PreviewCardPopup";
 
 type PreviewCardPortalProps = React.ComponentPropsWithoutRef<
   typeof PreviewCardPortalPrimitive
@@ -66,21 +68,27 @@ type PreviewCardPanelProps = PreviewCardPopupProps & {
   alignOffset?: PreviewCardPositionerProps["alignOffset"];
 };
 
-const PreviewCardPanel = React.forwardRef<HTMLDivElement, PreviewCardPanelProps>(
-  ({ align, side, sideOffset = 8, alignOffset, className, children, ...props }, ref) => (
-    <PreviewCardPortal>
-      <PreviewCardPositioner
-        align={align}
-        side={side}
-        sideOffset={sideOffset}
-        alignOffset={alignOffset}
-      >
-        <PreviewCardPopup ref={ref} className={className} {...props}>
-          {children}
-        </PreviewCardPopup>
-      </PreviewCardPositioner>
-    </PreviewCardPortal>
-  ),
+const PreviewCardPanel = ({
+  align,
+  side,
+  sideOffset = 8,
+  alignOffset,
+  className,
+  children,
+  ...props
+}: PreviewCardPanelProps) => (
+  <PreviewCardPortal>
+    <PreviewCardPositioner
+      align={align}
+      side={side}
+      sideOffset={sideOffset}
+      alignOffset={alignOffset}
+    >
+      <PreviewCardPopup className={className} {...props}>
+        {children}
+      </PreviewCardPopup>
+    </PreviewCardPositioner>
+  </PreviewCardPortal>
 );
 PreviewCardPanel.displayName = "PreviewCardPanel";
 

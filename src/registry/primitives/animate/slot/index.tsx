@@ -23,16 +23,16 @@ type SlotProps<T extends HTMLElement = HTMLElement> = {
 function mergeRefs<T>(
   ...refs: (React.Ref<T> | undefined)[]
 ): React.RefCallback<T> {
-  return (node) => {
-    refs.forEach((ref) => {
-      if (!ref) return;
-      if (typeof ref === "function") {
-        ref(node);
-      } else {
-        (ref as React.RefObject<T | null>).current = node;
-      }
-    });
-  };
+    return (node) => {
+      refs.forEach((ref) => {
+        if (!ref) return;
+        if (typeof ref === "function") {
+          ref(node);
+        } else {
+          (ref as React.MutableRefObject<T | null>).current = node;
+        }
+      });
+    };
 }
 
 function mergeProps<T extends HTMLElement>(
@@ -63,22 +63,25 @@ function Slot<T extends HTMLElement = HTMLElement>({
   ref,
   ...props
 }: SlotProps<T>) {
+  const childElement = React.isValidElement(children)
+    ? children
+    : null;
+
   const isAlreadyMotion =
-    typeof children.type === "object" &&
-    children.type !== null &&
-    isMotionComponent(children.type);
+    !!childElement &&
+    typeof childElement.type === "object" &&
+    childElement.type !== null &&
+    isMotionComponent(childElement.type);
 
-  const Base = React.useMemo(
-    () =>
-      isAlreadyMotion
-        ? (children.type as React.ElementType)
-        : motion.create(children.type as React.ElementType),
-    [isAlreadyMotion, children.type],
-  );
+  const Base = React.useMemo(() => {
+    if (!childElement) return null;
+    return isAlreadyMotion
+      ? (childElement.type as React.ElementType)
+      : motion.create(childElement.type as React.ElementType);
+  }, [childElement, isAlreadyMotion]);
 
-  if (!React.isValidElement(children)) return null;
-
-  const { ref: childRef, ...childProps } = children.props as AnyProps;
+  if (!childElement || !Base) return null;
+  const { ref: childRef, ...childProps } = childElement.props as AnyProps;
 
   const mergedProps = mergeProps(childProps, props);
 

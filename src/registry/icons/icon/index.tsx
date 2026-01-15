@@ -12,7 +12,10 @@ import {
 } from "framer-motion";
 
 import { cn } from "@/utils";
-import { useIsInView } from "@/registry/hooks/use-is-in-view";
+import {
+  useIsInView,
+  type UseIsInViewResult,
+} from "@/registry/hooks/use-is-in-view";
 import { Slot, type WithAsChild } from "@/registry/primitives/animate/slot";
 
 const staticAnimations = {
@@ -227,11 +230,18 @@ function AnimateIcon({
   }, []);
 
   const viewOuterRef = React.useRef<HTMLElement>(null);
-  const { ref: inViewRef, isInView } = useIsInView(viewOuterRef, {
-    inView: !!animateOnView,
-    inViewOnce: animateOnViewOnce,
-    inViewMargin: animateOnViewMargin,
-  });
+  const { ref: inViewRef, isInView } =
+    useIsInView(viewOuterRef, {
+      inView: !!animateOnView,
+      inViewOnce: animateOnViewOnce,
+      inViewMargin: animateOnViewMargin,
+    }) as UseIsInViewResult<HTMLElement>;
+  const setInViewRef = React.useCallback(
+    (node: HTMLElement | null) => {
+      inViewRef.current = node;
+    },
+    [inViewRef],
+  ) satisfies React.RefCallback<HTMLElement>;
 
   const startAnim = React.useCallback(
     async (anim: "initial" | "animate", method: "start" | "set" = "start") => {
@@ -409,28 +419,35 @@ function AnimateIcon({
     },
   );
 
-  const content = asChild ? (
+  const { ref: _ref, ...slotProps } = props;
+  const interactive = asChild ? (
     <Slot
-      ref={inViewRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      {...props}
+      {...slotProps}
     >
       {children}
     </Slot>
   ) : (
     <motion.span
-      ref={inViewRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      {...props}
+      {...slotProps}
     >
       {children}
     </motion.span>
+  );
+  const content = (
+    <span
+      ref={setInViewRef as React.Ref<HTMLSpanElement>}
+      className="contents"
+    >
+      {interactive}
+    </span>
   );
 
   return (

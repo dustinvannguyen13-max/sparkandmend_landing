@@ -138,7 +138,9 @@ function Highlight<T extends React.ElementType = "div">({
     mode = "children",
   } = props;
 
-  const localRef = React.useRef<HTMLDivElement>(null);
+  const localRef = React.useRef<HTMLDivElement>(null) as React.MutableRefObject<
+    HTMLDivElement | null
+  >;
   React.useImperativeHandle(ref, () => localRef.current as HTMLDivElement);
 
   const propsBoundsOffset = (props as ParentModeHighlightProps)?.boundsOffset;
@@ -420,7 +422,9 @@ function HighlightItem<T extends React.ElementType>({
   const isDisabled = disabled === undefined ? contextDisabled : disabled;
   const itemTransition = transition ?? contextTransition;
 
-  const localRef = React.useRef<HTMLDivElement>(null);
+  const localRef = React.useRef<HTMLDivElement>(null) as React.MutableRefObject<
+    HTMLDivElement | null
+  >;
   React.useImperativeHandle(ref, () => localRef.current as HTMLDivElement);
 
   const refCallback = React.useCallback((node: HTMLElement | null) => {
