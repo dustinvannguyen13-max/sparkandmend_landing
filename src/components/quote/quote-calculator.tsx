@@ -78,20 +78,20 @@ const SERVICE_IMAGES: Record<
   { src: string; alt: string }
 > = {
   basic: {
-    src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w",
-    alt: "Basic clean placeholder image",
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/clean-sink.jpg",
+    alt: "Pristine kitchen sink after cleaning",
   },
   intermediate: {
-    src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
-    alt: "Intermediate clean placeholder image",
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/home-carpet-stain.jpg",
+    alt: "Carpet refresh after cleaning",
   },
   advanced: {
-    src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.032175-FEUGECPAUDAFVQTGEIVS/imgg-od3-sa5ajg65.png?format=2500w",
-    alt: "Advanced clean placeholder image",
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-cleaned.jpg",
+    alt: "Detailed oven clean result",
   },
   commercial: {
-    src: "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.460308-XCMNTOMRCKQFUOKREBBC/imgg-od3-4wz7yy4a.png?format=2500w",
-    alt: "Commercial cleaning placeholder image",
+    src: "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-1.jpg",
+    alt: "Commercial kitchen cleaned surfaces",
   },
 };
 
@@ -530,11 +530,11 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                         : "border-border/60 bg-card/80"
                     )}
                   >
-                    <div className="overflow-hidden rounded-xl border border-border/60 bg-background/70">
+                    <div className="relative overflow-hidden rounded-xl border border-border/60 bg-background/70">
                       <Image
                         src={SERVICE_IMAGES[option.id].src}
                         alt={SERVICE_IMAGES[option.id].alt}
-                        width={800}
+                       width={800}
                         height={520}
                         className="h-28 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:h-32"
                       />
