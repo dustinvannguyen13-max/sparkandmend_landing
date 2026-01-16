@@ -1304,7 +1304,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     onChange={(event) =>
                       setContact((prev) => ({ ...prev, preferredDate: event.target.value }))
                     }
-                    className="min-w-0"
+                    className="min-w-0 max-w-full"
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
@@ -1317,7 +1317,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     onChange={(event) =>
                       setContact((prev) => ({ ...prev, preferredTime: event.target.value }))
                     }
-                    className="min-w-0"
+                    className="min-w-0 max-w-full"
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
