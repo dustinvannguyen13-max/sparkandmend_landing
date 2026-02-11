@@ -22,6 +22,7 @@ import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { AREA, BRAND, buildServiceTitle, getServiceBySlug, getServicePath } from "@/lib/seo/keywords";
+import ServiceInfoSection from "@/components/marketing/service-info-section";
 import { REVIEWS, generateMetadata } from "@/utils";
 import Link from "next/link";
 import { CheckCheck } from "@/registry/icons/check-check";
@@ -62,8 +63,9 @@ export const metadata: Metadata = {
 const SERVICE_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: SERVICE.seoTitle,
+  name: SERVICE.schemaName,
   areaServed: AREA,
+  url: `https://sparkandmend.co.uk${CANONICAL}`,
   provider: {
     "@type": "LocalBusiness",
     name: BRAND,
@@ -78,6 +80,7 @@ const INCLUDE_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-2.jpg";
 const RESULTS_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/restaurant-kitchen-clean-1.jpg";
+const QUOTE_LINK = "/get-a-quote?service=commercial";
 const STEP_IMAGES = [
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-1.webp",
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-2.webp",
@@ -90,7 +93,7 @@ const STEP_DETAILS = [
     numberLabel: "01",
     description: (
       <>
-        <Link href="/get-a-quote" className="text-foreground underline">
+        <Link href={QUOTE_LINK} className="text-foreground underline">
           Get a fixed instant quote
         </Link>{" "}
         in about 60 seconds with the calculator.
@@ -230,6 +233,13 @@ const results = [
   "No sticky bits. No missed corners.",
 ];
 
+const pricingFactors = [
+  "Workspace size and number of rooms",
+  "Type of business and surface needs",
+  "Schedule frequency and access hours",
+  "Add-ons like interior windows or carpet refresh",
+];
+
 const faqs = [
   {
     question: "What is the difference between Basic, Intermediate, and Advanced?",
@@ -278,7 +288,7 @@ const commercialReviews = REVIEWS.slice(5, 8);
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
     <PrimaryButton asChild>
-      <Link href="/get-a-quote">Get an Instant Quote</Link>
+      <Link href={QUOTE_LINK}>Get an Instant Quote</Link>
     </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
@@ -413,11 +423,24 @@ const CommercialCleanPage = () => {
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
-            <Link href="/get-a-quote" className="text-foreground underline">
+            <Link href={QUOTE_LINK} className="text-foreground underline">
               Get an Instant Quote
             </Link>
             .
           </p>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.3}>
+          <ServiceInfoSection
+            eyebrow="Pricing"
+            title="Pricing guidance for commercial cleaning"
+            description="Prices depend on workspace size, schedule, and service scope. The quote includes the standard checklist for this service, plus any add-ons you select."
+            bullets={pricingFactors}
+            ctaHref={QUOTE_LINK}
+            ctaLabel="Get an Instant Quote"
+          />
         </AnimationContainer>
       </Section>
 
@@ -618,9 +641,20 @@ const CommercialCleanPage = () => {
             title="See all cleaning services in Plymouth"
             description="Compare Basic, Intermediate, Advanced, and Commercial options."
           />
-          <div className="mt-6 flex justify-center">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See cleaning results in Plymouth
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Plymouth cleaning FAQs</Link>
             </Button>
           </div>
         </AnimationContainer>
@@ -630,7 +664,7 @@ const CommercialCleanPage = () => {
         <CTAStrip
           title="Ready to keep your workspace client-ready?"
           description="Get a fixed instant quote, book instantly, and keep the workplace tidy and professional."
-          primaryHref="/get-a-quote"
+          primaryHref={QUOTE_LINK}
           primaryLabel="Get an Instant Quote"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"

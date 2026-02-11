@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type CleaningService = "basic" | "intermediate" | "advanced" | "commercial";
 export type Frequency = "one-time" | "weekly" | "bi-weekly" | "monthly";
 export type OvenOption = "none" | "single" | "double";
@@ -193,6 +195,18 @@ export const DEFAULT_QUOTE_INPUT: QuoteInput = {
   customExtrasItems: [],
   customExtrasSource: undefined,
   customExtrasFallbackReason: "",
+};
+
+const SERVICE_PARAM_SCHEMA = z.enum([
+  "basic",
+  "intermediate",
+  "advanced",
+  "commercial",
+]);
+
+export const parseServiceParam = (value?: string | null) => {
+  const result = SERVICE_PARAM_SCHEMA.safeParse(value);
+  return result.success ? result.data : undefined;
 };
 
 const FREQUENCY_META: Record<

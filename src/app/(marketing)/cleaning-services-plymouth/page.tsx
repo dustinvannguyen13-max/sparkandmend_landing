@@ -250,6 +250,21 @@ const CleaningServicesPlymouthPage = () => {
               </div>
             ))}
           </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">
+                See cleaning prices in Plymouth
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See cleaning results in Plymouth
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Read Plymouth cleaning FAQs</Link>
+            </Button>
+          </div>
         </AnimationContainer>
       </Section>
 

@@ -66,6 +66,14 @@ const Footer = () => {
                     Commercial Cleaning
                   </Link>
                 </li>
+                <li className="mt-2">
+                  <Link
+                    href="/cleaning-prices-plymouth"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Cleaning Prices Plymouth
+                  </Link>
+                </li>
               </ul>
             </div>
           </AnimationContainer>
@@ -126,10 +134,18 @@ const Footer = () => {
                 </li>
                 <li className="mt-2">
                   <Link
-                    href="/resources/help"
+                    href="/cleaning-results-plymouth"
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Gallery
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/faq-plymouth"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    FAQs
                   </Link>
                 </li>
               </ul>

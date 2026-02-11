@@ -22,6 +22,8 @@ import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { AREA, BRAND, buildServiceTitle, getServiceBySlug, getServicePath } from "@/lib/seo/keywords";
+import BeforeAfterGallery from "@/components/marketing/before-after-gallery";
+import ServiceInfoSection from "@/components/marketing/service-info-section";
 import { REVIEWS, generateMetadata } from "@/utils";
 import Link from "next/link";
 import { CheckCheck } from "@/registry/icons/check-check";
@@ -62,8 +64,9 @@ export const metadata: Metadata = {
 const SERVICE_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: SERVICE.seoTitle,
+  name: SERVICE.schemaName,
   areaServed: AREA,
+  url: `https://sparkandmend.co.uk${CANONICAL}`,
   provider: {
     "@type": "LocalBusiness",
     name: BRAND,
@@ -78,6 +81,7 @@ const INCLUDE_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/sofa-stain.jpg";
 const RESULTS_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/sofa-stain-cleaned.jpg";
+const QUOTE_LINK = "/get-a-quote?service=intermediate";
 const STEP_IMAGES = [
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-1.webp",
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-2.webp",
@@ -90,7 +94,7 @@ const STEP_DETAILS = [
     numberLabel: "01",
     description: (
       <>
-        <Link href="/get-a-quote" className="text-foreground underline">
+        <Link href={QUOTE_LINK} className="text-foreground underline">
           Get a fixed instant quote
         </Link>{" "}
         in about 60 seconds with the calculator.
@@ -222,6 +226,29 @@ const results = [
   "No sticky bits. No missed corners.",
 ];
 
+const pricingFactors = [
+  "Property size, layout, and level of build-up",
+  "One-off deep clean vs. recurring schedule",
+  "Kitchen and bathroom detail requirements",
+  "Add-ons like inside oven or fridge cleaning",
+];
+
+const timeFactors = [
+  "Deep cleans take longer than regular upkeep",
+  "Time scales with property size and condition",
+  "Your instant quote includes a tailored estimate",
+];
+
+const beforeAfterItems = [
+  {
+    beforeSrc: INCLUDE_IMAGE,
+    afterSrc: RESULTS_IMAGE,
+    beforeAlt: "Sofa stain before a deep clean",
+    afterAlt: "Sofa after a deep clean",
+    caption: "Detail-focused deep clean",
+  },
+];
+
 const faqs = [
   {
     question: "What is the difference between Basic, Intermediate, and Advanced?",
@@ -229,7 +256,7 @@ const faqs = [
       "Basic is for light, regular upkeep. Intermediate gives extra time to build-up and touch points. Advanced is the most thorough option for a full reset.",
   },
   {
-    question: "How long does it take?",
+    question: "How long does a deep clean take?",
     answer:
       "It depends on the size and condition of the property. Your fixed instant quote gives a clear estimate, and we confirm timings before booking.",
   },
@@ -242,6 +269,11 @@ const faqs = [
     question: "Do you bring supplies?",
     answer:
       "Yes, we bring our own kit. If you prefer specific products, just let us know in the quote notes.",
+  },
+  {
+    question: "Is oven cleaning included?",
+    answer:
+      "Interior oven cleaning is available as an add-on. Add it in the quote form so we can price it accurately.",
   },
   {
     question: "Can you focus on specific areas?",
@@ -271,7 +303,7 @@ const AXA_BADGE = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/pu
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
     <PrimaryButton asChild>
-      <Link href="/get-a-quote">Get an Instant Quote</Link>
+      <Link href={QUOTE_LINK}>Get an Instant Quote</Link>
     </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
@@ -306,6 +338,9 @@ const IntermediateCleanPage = () => {
                 Deep cleaning for Plymouth homes that need a sharper reset. We put
                 extra attention into build-up and touch points for a cleaner, more
                 detailed finish.
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Serving Plymouth only.
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
@@ -406,11 +441,49 @@ const IntermediateCleanPage = () => {
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
-            <Link href="/get-a-quote" className="text-foreground underline">
+            <Link href={QUOTE_LINK} className="text-foreground underline">
               Get an Instant Quote
             </Link>
             .
           </p>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.28}>
+          <SectionHeader
+            eyebrow="Before & After"
+            title="Deep cleaning results you can see"
+            description="A quick look at the level of detail in an Intermediate Clean."
+          />
+          <div className="mt-8">
+            <BeforeAfterGallery items={beforeAfterItems} />
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.3}>
+          <ServiceInfoSection
+            eyebrow="Pricing"
+            title="Pricing guidance for deep cleaning"
+            description="Prices depend on size, condition, and requested detail. The quote includes the standard checklist for this service, plus any add-ons you select."
+            bullets={pricingFactors}
+            ctaHref={QUOTE_LINK}
+            ctaLabel="Get an Instant Quote"
+          />
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceMuted}`}>
+        <AnimationContainer delay={0.32}>
+          <ServiceInfoSection
+            eyebrow="Timing"
+            title="Typical time estimates"
+            description="Deep cleans take longer to cover the extra detail."
+            bullets={timeFactors}
+            note="Share any preferred time window in the quote notes and we will confirm availability."
+          />
         </AnimationContainer>
       </Section>
 
@@ -621,9 +694,20 @@ const IntermediateCleanPage = () => {
             title="See all cleaning services in Plymouth"
             description="Compare Basic, Intermediate, Advanced, and Commercial options."
           />
-          <div className="mt-6 flex justify-center">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See cleaning results in Plymouth
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Plymouth cleaning FAQs</Link>
             </Button>
           </div>
         </AnimationContainer>
@@ -633,7 +717,7 @@ const IntermediateCleanPage = () => {
         <CTAStrip
           title="Ready for a more detailed clean?"
           description="Get a fixed instant quote, book instantly, and let us handle the reset."
-          primaryHref="/get-a-quote"
+          primaryHref={QUOTE_LINK}
           primaryLabel="Get an Instant Quote"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"

@@ -1,6 +1,7 @@
 import {
     Building2Icon,
     ClipboardCheckIcon,
+    HelpCircleIcon,
     HomeIcon,
     InfoIcon,
     ImageIcon,
@@ -75,8 +76,14 @@ export const NAV_LINKS = [
             {
                 title: "Gallery",
                 tagline: "See recent cleans and service highlights.",
-                href: "/resources/help",
+                href: "/cleaning-results-plymouth",
                 icon: ImageIcon,
+            },
+            {
+                title: "FAQs",
+                tagline: "Answers for tenants, landlords, and homeowners.",
+                href: "/faq-plymouth",
+                icon: HelpCircleIcon,
             },
         ]
     },

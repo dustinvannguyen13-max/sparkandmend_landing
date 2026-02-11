@@ -10,6 +10,7 @@ export type ServiceSlug =
 export type ServiceKeyword = {
   slug: ServiceSlug;
   displayName: string;
+  schemaName: string;
   seoTitle: string;
   seoPrimaryKeyword: string;
   seoVariants: string[];
@@ -20,57 +21,64 @@ export const services: ServiceKeyword[] = [
   {
     slug: "basic-clean",
     displayName: "Basic Clean",
+    schemaName: "Regular House Cleaning",
     seoTitle: `Regular House Cleaning in ${AREA} (Basic Clean)`,
     seoPrimaryKeyword: "regular house cleaning plymouth",
     seoVariants: [
       "house cleaning plymouth",
+      "domestic cleaners plymouth",
       "domestic cleaning plymouth",
       "weekly cleaning plymouth",
       "fortnightly cleaning plymouth",
       "home cleaning plymouth",
       "local house cleaners plymouth",
+      "regular cleaning plymouth",
       "regular cleaner plymouth",
     ],
     metaDescription:
-      "Regular house cleaning in Plymouth for already tidy homes. A light, reliable Basic Clean focused on visible areas with instant quotes and easy booking.",
+      "Regular house cleaning in Plymouth for already tidy homes. Book domestic cleaners for weekly or fortnightly visits with instant quotes and a reliable Basic Clean.",
   },
   {
     slug: "intermediate-clean",
     displayName: "Intermediate Clean",
+    schemaName: "Deep Cleaning",
     seoTitle: `Deep Cleaning in ${AREA} (Intermediate Clean)`,
     seoPrimaryKeyword: "deep cleaning plymouth",
     seoVariants: [
       "deep house cleaning plymouth",
       "spring cleaning plymouth",
       "one off deep clean plymouth",
+      "one-off deep clean plymouth",
       "kitchen and bathroom deep clean plymouth",
       "monthly cleaning plymouth",
       "detailed house cleaning plymouth",
       "deep cleaner plymouth",
     ],
     metaDescription:
-      "Deep cleaning in Plymouth for homes that need a sharper reset. Intermediate Clean targets build-up, touch points, and extra detail with a fixed instant quote.",
+      "Deep cleaning in Plymouth for homes that need a sharper reset. Book a one-off deep clean or spring clean with extra detail on build-up and touch points.",
   },
   {
     slug: "advanced-clean",
     displayName: "Advanced Clean",
-    seoTitle: `End of Tenancy & Deep Cleaning in ${AREA} (Advanced Clean)`,
+    schemaName: "End of Tenancy Cleaning",
+    seoTitle: `End of Tenancy Cleaning in ${AREA} (Advanced Clean)`,
     seoPrimaryKeyword: "end of tenancy cleaning plymouth",
     seoVariants: [
       "move out cleaning plymouth",
       "tenancy clean plymouth",
-      "full deep clean plymouth",
+      "rental inspection cleaning plymouth",
+      "rental cleaning plymouth",
       "property reset cleaning plymouth",
       "pre tenancy cleaning plymouth",
-      "rental cleaning plymouth",
       "landlord cleaning plymouth",
     ],
     metaDescription:
-      "End of tenancy and deep cleaning in Plymouth for a full reset. Advanced Clean is our most thorough option for rentals, first cleans, and detailed finishes.",
+      "End of tenancy cleaning in Plymouth for rentals and move-outs. Advanced Clean delivers a full reset that aligns with landlord and letting-agent expectations.",
   },
   {
     slug: "commercial-cleaning",
     displayName: "Commercial Cleaning",
+    schemaName: "Office & Commercial Cleaning",
     seoTitle: `Office & Commercial Cleaning in ${AREA}`,
     seoPrimaryKeyword: "commercial cleaning plymouth",
     seoVariants: [
@@ -101,3 +109,21 @@ export const buildServiceTitle = (slug: ServiceSlug) => {
   const service = getServiceBySlug(slug);
   return `${service.seoTitle} | ${BRAND}`;
 };
+
+export const pricingKeywords = [
+  "cleaning prices plymouth",
+  "house cleaning cost plymouth",
+  "domestic cleaning prices plymouth",
+  "deep cleaning cost plymouth",
+  "end of tenancy cleaning cost plymouth",
+  "commercial cleaning prices plymouth",
+];
+
+export const faqKeywords = [
+  "cleaning faq plymouth",
+  "end of tenancy cleaning plymouth faq",
+  "deposit cleaning plymouth",
+  "move out cleaning questions",
+  "deep cleaning questions plymouth",
+  "commercial cleaning faq plymouth",
+];

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,6 +41,7 @@ import {
   OVEN_PRICING,
   RESIDENTIAL_PROPERTY_TYPES,
   SERVICE_DESCRIPTIONS,
+  parseServiceParam,
   formatCurrency,
   type CleaningService,
   type ExtraOption,
@@ -199,6 +200,7 @@ interface QuoteCalculatorProps {
 
 const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculatorProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<QuoteInput>(DEFAULT_QUOTE_INPUT);
   const [contact, setContact] = useState({
@@ -225,6 +227,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   const shouldReduceMotion = useReducedMotion();
   const formRef = useRef<HTMLDivElement>(null);
   const hasMountedRef = useRef(false);
+  const lastAppliedServiceParam = useRef<CleaningService | null>(null);
   const formatFallbackReason = (reason?: string) =>
     reason
       ? reason
@@ -233,8 +236,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       : "";
 
   const isResidential = form.service !== "commercial";
+  const serviceParam = parseServiceParam(searchParams?.get("service"));
 
-  const handleServiceSelect = (service: CleaningService) => {
+  const handleServiceSelect = useCallback((service: CleaningService) => {
     setForm((prev) => {
       const next = { ...prev, service };
       if (service === "commercial" && RESIDENTIAL_PROPERTY_TYPES.includes(prev.propertyType)) {
@@ -248,7 +252,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       }
       return next;
     });
-  };
+  }, []);
 
   useEffect(() => {
     if (form.service === "advanced" && form.frequency !== "one-time") {
@@ -266,6 +270,14 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       block: "start",
     });
   }, [step, shouldReduceMotion]);
+
+  useEffect(() => {
+    if (!isHydrated || !serviceParam) return;
+    if (lastAppliedServiceParam.current === serviceParam) return;
+    handleServiceSelect(serviceParam);
+    setStep(0);
+    lastAppliedServiceParam.current = serviceParam;
+  }, [handleServiceSelect, isHydrated, serviceParam]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

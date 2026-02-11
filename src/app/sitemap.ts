@@ -17,6 +17,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/cleaning-results-plymouth`,
+      lastModified,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/cleaning-prices-plymouth`,
+      lastModified,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/faq-plymouth`,
+      lastModified,
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/basic-clean`,
       lastModified,
       priority: 0.8,

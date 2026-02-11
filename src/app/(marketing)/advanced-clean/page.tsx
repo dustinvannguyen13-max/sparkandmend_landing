@@ -23,6 +23,8 @@ import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { AREA, BRAND, buildServiceTitle, getServiceBySlug, getServicePath } from "@/lib/seo/keywords";
+import BeforeAfterGallery from "@/components/marketing/before-after-gallery";
+import ServiceInfoSection from "@/components/marketing/service-info-section";
 import { REVIEWS, generateMetadata } from "@/utils";
 import Link from "next/link";
 import { CheckCheck } from "@/registry/icons/check-check";
@@ -63,8 +65,9 @@ export const metadata: Metadata = {
 const SERVICE_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: SERVICE.seoTitle,
+  name: SERVICE.schemaName,
   areaServed: AREA,
+  url: `https://sparkandmend.co.uk${CANONICAL}`,
   provider: {
     "@type": "LocalBusiness",
     name: BRAND,
@@ -79,6 +82,7 @@ const INCLUDE_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-dirty.jpg";
 const RESULTS_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-clean-3.jpg";
+const QUOTE_LINK = "/get-a-quote?service=advanced";
 const STEP_IMAGES = [
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-1.webp",
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/step-2.webp",
@@ -91,7 +95,7 @@ const STEP_DETAILS = [
     numberLabel: "01",
     description: (
       <>
-        <Link href="/get-a-quote" className="text-foreground underline">
+        <Link href={QUOTE_LINK} className="text-foreground underline">
           Get a fixed instant quote
         </Link>{" "}
         in about 60 seconds with the calculator.
@@ -230,6 +234,29 @@ const results = [
   "A sharp, detailed finish that lasts longer",
 ];
 
+const pricingFactors = [
+  "Property size, layout, and level of build-up",
+  "Inventory checklist or landlord requirements",
+  "Kitchen and bathroom detail level",
+  "Add-ons like oven, fridge, or interior windows",
+];
+
+const timeFactors = [
+  "End of tenancy cleans take longer than regular upkeep",
+  "Time depends on property size, condition, and checklist",
+  "Your instant quote includes a tailored estimate",
+];
+
+const beforeAfterItems = [
+  {
+    beforeSrc: INCLUDE_IMAGE,
+    afterSrc: RESULTS_IMAGE,
+    beforeAlt: "Oven before an end of tenancy clean",
+    afterAlt: "Oven after an end of tenancy clean",
+    caption: "Kitchen detail reset",
+  },
+];
+
 const faqs = [
   {
     question: "What is the difference between Basic, Intermediate, and Advanced?",
@@ -237,7 +264,7 @@ const faqs = [
       "Basic is light upkeep, Intermediate adds extra detail, and Advanced is the most thorough option for a full reset and deeper build-up.",
   },
   {
-    question: "How long does it take?",
+    question: "How long does an end of tenancy clean take?",
     answer:
       "Advanced cleans take longer because we go deeper into detail. Your fixed instant quote gives a clear estimate and we confirm timings before booking.",
   },
@@ -255,6 +282,16 @@ const faqs = [
     question: "Can you focus on specific areas?",
     answer:
       "Yes. Tell us what matters most in your quote notes and we will prioritise those areas.",
+  },
+  {
+    question: "Can you work to a landlord or letting-agent checklist?",
+    answer:
+      "Yes. Share the checklist or inventory notes when you request a quote and we will align the scope to those requirements.",
+  },
+  {
+    question: "Will this help with deposit or inspection outcomes?",
+    answer:
+      "We clean to a detailed standard and can align with an inspection checklist, but outcomes depend on the property condition and any pre-existing issues.",
   },
   {
     question: "What about pets?",
@@ -279,7 +316,7 @@ const AXA_BADGE = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/pu
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
     <PrimaryButton asChild>
-      <Link href="/get-a-quote">Get an Instant Quote</Link>
+      <Link href={QUOTE_LINK}>Get an Instant Quote</Link>
     </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
@@ -311,9 +348,12 @@ const AdvancedCleanPage = () => {
                 {SERVICE.seoTitle}
               </h1>
               <p className="mt-4 text-base md:text-lg text-muted-foreground">
-                End of tenancy and deep cleaning for Plymouth homes that need a full
-                reset. We take more time to cover the detail that makes the
-                difference.
+                End of tenancy cleaning for Plymouth rentals that need a full reset.
+                We take more time to cover the detail that matters for landlord or
+                letting-agent inspections.
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Serving Plymouth only.
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
@@ -385,7 +425,7 @@ const AdvancedCleanPage = () => {
           <SectionHeader
             eyebrow="Scope"
             title="What this service includes"
-            description="Advanced is the most thorough clean. It focuses on detail, build-up, and the areas that make a full reset feel complete."
+            description="Advanced is the most thorough clean. It focuses on detail, build-up, and end-of-tenancy inspection priorities."
             align="left"
           />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
@@ -414,11 +454,49 @@ const AdvancedCleanPage = () => {
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
-            <Link href="/get-a-quote" className="text-foreground underline">
+            <Link href={QUOTE_LINK} className="text-foreground underline">
               Get an Instant Quote
             </Link>
             .
           </p>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.28}>
+          <SectionHeader
+            eyebrow="Before & After"
+            title="End of tenancy results you can see"
+            description="A quick look at the level of detail in an Advanced Clean."
+          />
+          <div className="mt-8">
+            <BeforeAfterGallery items={beforeAfterItems} />
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.3}>
+          <ServiceInfoSection
+            eyebrow="Pricing"
+            title="Pricing guidance for end of tenancy cleaning"
+            description="Prices depend on size, condition, and checklist requirements. The quote includes the standard checklist for this service, plus any add-ons you select."
+            bullets={pricingFactors}
+            ctaHref={QUOTE_LINK}
+            ctaLabel="Get an Instant Quote"
+          />
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceMuted}`}>
+        <AnimationContainer delay={0.32}>
+          <ServiceInfoSection
+            eyebrow="Timing"
+            title="Typical time estimates"
+            description="End of tenancy cleans take longer to meet inspection detail."
+            bullets={timeFactors}
+            note="Share any inspection deadline in the quote notes and we will confirm availability."
+          />
         </AnimationContainer>
       </Section>
 
@@ -628,9 +706,20 @@ const AdvancedCleanPage = () => {
             title="See all cleaning services in Plymouth"
             description="Compare Basic, Intermediate, Advanced, and Commercial options."
           />
-          <div className="mt-6 flex justify-center">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See cleaning results in Plymouth
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Plymouth cleaning FAQs</Link>
             </Button>
           </div>
         </AnimationContainer>
@@ -640,7 +729,7 @@ const AdvancedCleanPage = () => {
         <CTAStrip
           title="Ready for a full reset?"
           description="Get a fixed instant quote, book instantly, and let us handle the detail."
-          primaryHref="/get-a-quote"
+          primaryHref={QUOTE_LINK}
           primaryLabel="Get an Instant Quote"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
