@@ -3,7 +3,10 @@ import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 import { aeonik, cn, generateMetadata, inter } from "@/utils";
 
-export const metadata = generateMetadata();
+export const metadata = {
+  ...generateMetadata(),
+  metadataBase: new URL("https://sparkandmend.co.uk"),
+};
 
 export default function RootLayout({
   children,

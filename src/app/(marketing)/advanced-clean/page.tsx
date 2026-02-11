@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ import { PrimaryButton } from "@/components/ui/primary-button";
 import ContactDetails from "@/components/ui/contact-details";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
+import { AREA, BRAND, buildServiceTitle, getServiceBySlug, getServicePath } from "@/lib/seo/keywords";
 import { REVIEWS, generateMetadata } from "@/utils";
 import Link from "next/link";
 import { CheckCheck } from "@/registry/icons/check-check";
@@ -31,11 +33,45 @@ import { MessageCircleX } from "@/registry/icons/message-circle-x";
 import { Timer } from "@/registry/icons/timer";
 import { Star } from "lucide-react";
 
-export const metadata = generateMetadata({
-  title: "Advanced Clean | Spark & Mend",
-  description:
-    "Advanced cleaning in Plymouth for a full reset. Best for first cleans, seasonal refreshes, and post-busy periods. Get a fixed instant quote in about 60 seconds and book instantly via our quote calculator.",
+const SERVICE = getServiceBySlug("advanced-clean");
+const METADATA_TITLE = buildServiceTitle(SERVICE.slug);
+const METADATA_DESCRIPTION = SERVICE.metaDescription;
+const CANONICAL = getServicePath(SERVICE.slug);
+const BASE_METADATA = generateMetadata({
+  title: METADATA_TITLE,
+  description: METADATA_DESCRIPTION,
 });
+
+export const metadata: Metadata = {
+  ...BASE_METADATA,
+  alternates: {
+    canonical: CANONICAL,
+  },
+  openGraph: {
+    ...(BASE_METADATA.openGraph ?? {}),
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
+    url: CANONICAL,
+  },
+  twitter: {
+    ...(BASE_METADATA.twitter ?? {}),
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
+  },
+};
+
+const SERVICE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: SERVICE.seoTitle,
+  areaServed: AREA,
+  provider: {
+    "@type": "LocalBusiness",
+    name: BRAND,
+    url: "https://sparkandmend.co.uk",
+    areaServed: AREA,
+  },
+};
 
 const HERO_IMAGE =
   "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/public/media/oven-cleaned.jpg";
@@ -254,6 +290,10 @@ const CtaButtons = () => (
 const AdvancedCleanPage = () => {
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(SERVICE_JSON_LD) }}
+      />
       <Section className={heroSurface}>
         <StarsBackground
           className="absolute inset-0 opacity-60"
@@ -268,12 +308,12 @@ const AdvancedCleanPage = () => {
                 className="block text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground"
               />
               <h1 className="mt-4 text-3xl md:text-5xl font-semibold font-heading text-foreground break-words text-balance">
-                Advanced Clean - a full reset with the details done
+                {SERVICE.seoTitle}
               </h1>
               <p className="mt-4 text-base md:text-lg text-muted-foreground">
-                Our most thorough option, best for a first clean, seasonal reset,
-                before guests, or after a hectic period. We take more time to cover
-                the detail that makes the difference.
+                End of tenancy and deep cleaning for Plymouth homes that need a full
+                reset. We take more time to cover the detail that makes the
+                difference.
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
@@ -578,6 +618,21 @@ const AdvancedCleanPage = () => {
             }))}
             className="mt-8"
           />
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.55}>
+          <SectionHeader
+            eyebrow="Explore"
+            title="See all cleaning services in Plymouth"
+            description="Compare Basic, Intermediate, Advanced, and Commercial options."
+          />
+          <div className="mt-6 flex justify-center">
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+          </div>
         </AnimationContainer>
       </Section>
 

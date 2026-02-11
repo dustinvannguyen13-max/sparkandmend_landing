@@ -156,6 +156,13 @@ const HomePage = async () => {
             ))}
           </BentoGrid>
         </AnimationContainer>
+        <div className="pb-8 flex justify-center">
+          <Button variant="outline" asChild>
+            <Link href="/cleaning-services-plymouth">
+              See all cleaning services in Plymouth
+            </Link>
+          </Button>
+        </div>
       </MaxWidthWrapper>
 
       {/* Process Section */}
