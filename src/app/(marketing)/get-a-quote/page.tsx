@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import QuoteCalculator from "@/components/quote/quote-calculator";
 import MagicBadge from "@/components/ui/magic-badge";
@@ -54,7 +55,15 @@ const GetAQuotePage = () => {
 
       <Section id="instant-quote-form" className="scroll-mt-24">
         <AnimationContainer delay={0.2}>
-          <QuoteCalculator />
+          <Suspense
+            fallback={
+              <div className="rounded-3xl border border-border/60 bg-card/70 p-6 text-sm text-muted-foreground">
+                Loading the instant quote form...
+              </div>
+            }
+          >
+            <QuoteCalculator />
+          </Suspense>
         </AnimationContainer>
       </Section>
     </MaxWidthWrapper>

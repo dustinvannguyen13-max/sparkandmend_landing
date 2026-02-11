@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import QuoteCalculator from "@/components/quote/quote-calculator";
 import { Button } from "@/components/ui/button";
@@ -251,7 +252,15 @@ const CleaningPricesPlymouthPage = () => {
             align="left"
           />
           <div className="mt-8">
-            <QuoteCalculator />
+            <Suspense
+              fallback={
+                <div className="rounded-3xl border border-border/60 bg-card/70 p-6 text-sm text-muted-foreground">
+                  Loading the instant quote form...
+                </div>
+              }
+            >
+              <QuoteCalculator />
+            </Suspense>
           </div>
         </AnimationContainer>
       </Section>
