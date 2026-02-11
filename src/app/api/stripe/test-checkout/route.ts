@@ -1,11 +1,9 @@
 import { Buffer } from "buffer";
 import { NextResponse } from "next/server";
+import { APP_DOMAIN } from "@/utils/constants/site";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-const APP_DOMAIN = (process.env.NEXT_PUBLIC_APP_DOMAIN || "http://localhost:3000").replace(
-  /\/$/,
-  "",
-);
+const APP_DOMAIN_BASE = APP_DOMAIN.replace(/\/$/, "");
 const TEST_CHECKOUT_ENABLED =
   process.env.NEXT_PUBLIC_ENABLE_STRIPE_TEST_BUTTON === "true";
 
@@ -37,8 +35,8 @@ const createStripeSession = async () => {
   );
   form.append("line_items[0][price_data][unit_amount]", "100");
   form.append("line_items[0][quantity]", "1");
-  form.append("success_url", `${APP_DOMAIN}/get-a-quote?stripeTest=success`);
-  form.append("cancel_url", `${APP_DOMAIN}/get-a-quote?stripeTest=cancel`);
+  form.append("success_url", `${APP_DOMAIN_BASE}/get-a-quote?stripeTest=success`);
+  form.append("cancel_url", `${APP_DOMAIN_BASE}/get-a-quote?stripeTest=cancel`);
   form.append("metadata[test_payment]", "true");
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {

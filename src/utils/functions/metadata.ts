@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { APP_NAME } from "../constants/site";
 
 export const generateMetadata = ({
     title,
@@ -23,7 +24,7 @@ export const generateMetadata = ({
     icons?: Metadata["icons"];
     noIndex?: boolean;
 } = {}): Metadata => {
-    const appName = process.env.NEXT_PUBLIC_APP_NAME || "Spark & Mend";
+    const appName = APP_NAME;
     const resolvedTitle = title ?? `${appName} Professional Cleaning in Plymouth`;
     const resolvedDescription = description ?? `${appName} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Get an instant quote in about 60 seconds and enjoy a spotless space without the stress.`;
 

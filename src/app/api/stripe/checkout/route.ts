@@ -4,12 +4,10 @@ import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
+import { APP_DOMAIN } from "@/utils/constants/site";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-const APP_DOMAIN = (process.env.NEXT_PUBLIC_APP_DOMAIN || "http://localhost:3000").replace(
-  /\/$/,
-  "",
-);
+const APP_DOMAIN_BASE = APP_DOMAIN.replace(/\/$/, "");
 
 const buildStripeHeaders = () => {
   if (!STRIPE_SECRET_KEY) {
@@ -112,8 +110,8 @@ const createStripeSession = async (reference: string, amount: number) => {
   );
   form.append("line_items[0][price_data][unit_amount]", String(Math.round(amount * 100)));
   form.append("line_items[0][quantity]", "1");
-  form.append("success_url", `${APP_DOMAIN}/booking-confirmation?session_id={CHECKOUT_SESSION_ID}&reference=${reference}`);
-  form.append("cancel_url", `${APP_DOMAIN}/your-cleaning-quote?reference=${reference}`);
+  form.append("success_url", `${APP_DOMAIN_BASE}/booking-confirmation?session_id={CHECKOUT_SESSION_ID}&reference=${reference}`);
+  form.append("cancel_url", `${APP_DOMAIN_BASE}/your-cleaning-quote?reference=${reference}`);
   form.append("metadata[reference]", reference);
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
