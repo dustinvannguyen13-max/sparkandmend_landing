@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Suspense } from "react";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
+import StripeTestButton from "@/components/payment/stripe-test-button";
 import QuoteCalculator from "@/components/quote/quote-calculator";
 import MagicBadge from "@/components/ui/magic-badge";
 import { PrimaryButton } from "@/components/ui/primary-button";
@@ -12,7 +13,18 @@ const HERO_IMAGE =
 const heroSurface =
   "relative overflow-hidden rounded-[36px] border border-border/50 bg-[radial-gradient(120%_120%_at_80%_0%,hsl(var(--background))_0%,hsl(var(--subtle))_45%,hsl(var(--background))_100%)] px-6 pt-10 pb-12 md:px-12 md:pt-12 md:pb-14 shadow-[0_45px_100px_-70px_hsl(var(--primary)/0.45)]";
 
-const GetAQuotePage = () => {
+const SHOW_STRIPE_TEST_BUTTON =
+  process.env.NEXT_PUBLIC_ENABLE_STRIPE_TEST_BUTTON === "true";
+
+interface GetAQuotePageProps {
+  searchParams?: {
+    stripeTest?: string;
+  };
+}
+
+const GetAQuotePage = ({ searchParams }: GetAQuotePageProps) => {
+  const stripeTestStatus = searchParams?.stripeTest;
+
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
       <Section className={heroSurface}>
@@ -66,6 +78,37 @@ const GetAQuotePage = () => {
           </Suspense>
         </AnimationContainer>
       </Section>
+
+      {SHOW_STRIPE_TEST_BUTTON && (
+        <Section className="pt-6">
+          <AnimationContainer delay={0.25}>
+            <div className="rounded-3xl border border-border/70 bg-card/90 p-6 text-center shadow-[0_30px_70px_-50px_hsl(var(--primary)/0.45)]">
+              <SectionHeader
+                eyebrow="Stripe test"
+                title="Run a £1 test payment"
+                description="Temporary button to verify Stripe Checkout is working."
+              />
+              {stripeTestStatus === "success" && (
+                <p className="mt-4 text-sm text-emerald-600">
+                  Test payment completed. Stripe Checkout returned successfully.
+                </p>
+              )}
+              {stripeTestStatus === "cancel" && (
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Test checkout was cancelled.
+                </p>
+              )}
+              <div className="mt-6 mx-auto max-w-xs">
+                <StripeTestButton />
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">
+                Disable with <code>NEXT_PUBLIC_ENABLE_STRIPE_TEST_BUTTON</code>{" "}
+                when finished testing.
+              </p>
+            </div>
+          </AnimationContainer>
+        </Section>
+      )}
     </MaxWidthWrapper>
   );
 };
