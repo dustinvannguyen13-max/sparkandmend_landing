@@ -31,8 +31,8 @@ export const COMPANIES = [
 
 export const PROCESS = [
     {
-        title: "Get an Instant Quote",
-        description: "Define your requirements in the quote calculator for a fixed instant quote.",
+        title: "Arrange a FREE clean",
+        description: "Share your requirements in the booking calculator for a clear price and next steps.",
         icon: ClipboardListIcon,
     },
     {

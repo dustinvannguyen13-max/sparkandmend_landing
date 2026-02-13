@@ -50,6 +50,9 @@ import {
   type PropertyType,
   type QuoteInput,
 } from "@/utils/quote";
+import {
+  FREE_BATHROOM_DISCOUNT,
+} from "@/lib/booking-promos/constants";
 
 const STEPS = ["Service", "Property", "Schedule", "Extras", "Details"];
 const STORAGE_KEY = "spark-mend-quote";
@@ -232,15 +235,22 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstTimeStatus, setFirstTimeStatus] = useState<
+    "idle" | "checking" | "eligible" | "ineligible"
+  >("idle");
+  const [firstTimeError, setFirstTimeError] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const formRef = useRef<HTMLDivElement>(null);
   const hasMountedRef = useRef(false);
   const lastAppliedServiceParam = useRef<CleaningService | null>(null);
   const lastSelectedAddressRef = useRef<string | null>(null);
+  const pendingFirstTimeKeyRef = useRef<string | null>(null);
+  const lastFirstTimeKeyRef = useRef<string | null>(null);
   const skipAddressLookupRef = useRef(false);
   const autocompleteServiceRef = useRef<any>(null);
   const placesServiceRef = useRef<any>(null);
   const addressLookupTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const firstTimeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const formatFallbackReason = (reason?: string) =>
     reason
       ? reason
@@ -249,6 +259,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       : "";
 
   const isResidential = form.service !== "commercial";
+  const isBathroomEligible = isResidential && Number(form.bathrooms || 0) > 0;
   const serviceParam = parseServiceParam(searchParams?.get("service"));
 
   const handleServiceSelect = useCallback((service: CleaningService) => {
@@ -350,6 +361,71 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       setContact((prev) => ({ ...prev, postcode: formatted }));
     }
   }, [contact.address, contact.postcode, isHydrated]);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    if (!isResidential) {
+      setFirstTimeStatus("idle");
+      setFirstTimeError(null);
+      pendingFirstTimeKeyRef.current = null;
+      return;
+    }
+
+    const email = contact.email.trim().toLowerCase();
+    const address = contact.address.trim();
+    if (!email || !address) {
+      setFirstTimeStatus("idle");
+      setFirstTimeError(null);
+      pendingFirstTimeKeyRef.current = null;
+      return;
+    }
+
+    const key = `${email}|${address}`;
+    if (lastFirstTimeKeyRef.current === key || pendingFirstTimeKeyRef.current === key) {
+      return;
+    }
+
+    if (firstTimeTimeoutRef.current) {
+      clearTimeout(firstTimeTimeoutRef.current);
+    }
+
+    setFirstTimeStatus("checking");
+    setFirstTimeError(null);
+    pendingFirstTimeKeyRef.current = key;
+    const controller = new AbortController();
+
+    firstTimeTimeoutRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `/api/bookings/first-time?email=${encodeURIComponent(
+            email,
+          )}&address=${encodeURIComponent(address)}`,
+          { signal: controller.signal },
+        );
+        if (!response.ok) {
+          throw new Error("first-time-check-failed");
+        }
+        const data = (await response.json()) as { isFirstTime?: boolean };
+        if (controller.signal.aborted) return;
+        const isFirstTime = Boolean(data?.isFirstTime);
+        setFirstTimeStatus(isFirstTime ? "eligible" : "ineligible");
+        lastFirstTimeKeyRef.current = key;
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        setFirstTimeStatus("idle");
+        setFirstTimeError("We couldn't confirm the first-time bonus yet.");
+      } finally {
+        pendingFirstTimeKeyRef.current = null;
+      }
+    }, 500);
+
+    return () => {
+      if (firstTimeTimeoutRef.current) {
+        clearTimeout(firstTimeTimeoutRef.current);
+      }
+      controller.abort();
+    };
+  }, [contact.email, contact.address, isHydrated, isResidential]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -806,6 +882,29 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     setIsSubmitting(false);
   };
 
+  const firstTimeMessage = (() => {
+    if (!isResidential) return null;
+    if (!isBathroomEligible) {
+      return "Add at least one bathroom to unlock the free bathroom clean for first-time customers.";
+    }
+    if (!contact.email.trim() || !contact.address.trim()) {
+      return "Enter your email and address to check if the free bathroom clean applies.";
+    }
+    if (firstTimeStatus === "checking") {
+      return "Checking your eligibility for the free bathroom clean...";
+    }
+    if (firstTimeStatus === "eligible") {
+      return `Free bathroom clean applied — save ${formatCurrency(FREE_BATHROOM_DISCOUNT)} on your first visit.`;
+    }
+    if (firstTimeStatus === "ineligible") {
+      return null;
+    }
+    if (firstTimeError) {
+      return "We couldn't confirm the free bathroom clean yet, but we'll apply it if you qualify.";
+    }
+    return "We will confirm the free bathroom clean after you submit your booking.";
+  })();
+
   return (
     <Card
       ref={formRef}
@@ -813,11 +912,16 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     >
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-primary">
-          Instant Quote Calculator form
+          Arrange a booking
         </CardTitle>
         <CardDescription>
-          Answer a few quick questions and we will show your instant estimate at the end.
+          Answer a few quick questions and we will confirm a clear price at the end.
         </CardDescription>
+        <div className="mt-4 rounded-2xl border border-emerald-200/70 bg-emerald-50/70 px-4 py-3 text-xs text-emerald-900">
+          First-time residential bookings with a bathroom included get a FREE bathroom clean (save{" "}
+          {formatCurrency(FREE_BATHROOM_DISCOUNT)}). We will check your email and address and
+          apply it automatically.
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         <AnimatePresence mode="wait" initial={false}>
@@ -1486,6 +1590,14 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     </div>
                   )}
                 </div>
+                {firstTimeMessage ? (
+                  <div className="rounded-2xl border border-border/60 bg-card/80 px-4 py-3 text-xs text-muted-foreground md:col-span-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
+                      First-time bonus
+                    </p>
+                    <p className="mt-2">{firstTimeMessage}</p>
+                  </div>
+                ) : null}
                 <div className="space-y-2 md:col-span-2">
                   <Label className="text-sm font-medium text-foreground">
                     Preferred start date
@@ -1539,7 +1651,7 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
           </PrimaryButton>
         ) : (
           <PrimaryButton onClick={handleSubmit} disabled={isSubmitting} size="sm">
-            {isSubmitting ? "Submitting..." : "See my quote"}
+            {isSubmitting ? "Submitting..." : "Arrange my booking"}
           </PrimaryButton>
         )}
       </CardFooter>

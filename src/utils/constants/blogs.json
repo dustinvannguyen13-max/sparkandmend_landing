@@ -151,9 +151,9 @@
       },
       {
         "type": "callout",
-        "title": "Want a fixed instant quote?",
-        "text": "Define your requirements in our quote calculator and get a fixed instant quote in about 60 seconds.",
-        "cta_label": "Get an Instant Quote",
+        "title": "Want a fixed price?",
+        "text": "Define your requirements in our booking calculator and get a fixed price in about 60 seconds.",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]
@@ -262,9 +262,9 @@
       },
       {
         "type": "callout",
-        "title": "Get a fixed instant quote",
-        "text": "Use the quote calculator to define your requirements and get a fixed instant quote in about 60 seconds.",
-        "cta_label": "Get an Instant Quote",
+        "title": "Get a fixed price",
+        "text": "Use the booking calculator to define your requirements and get a fixed price in about 60 seconds.",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]
@@ -387,9 +387,9 @@
       },
       {
         "type": "callout",
-        "title": "Need a fixed instant quote?",
-        "text": "Use the quote calculator to define your requirements and get a fixed instant quote before booking.",
-        "cta_label": "Get an Instant Quote",
+        "title": "Need a fixed price?",
+        "text": "Use the booking calculator to define your requirements and get a fixed price before booking.",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]
@@ -485,9 +485,9 @@
       },
       {
         "type": "callout",
-        "title": "Want a fixed instant quote?",
-        "text": "Use the quote calculator to define your requirements and book instantly with a fixed instant quote.",
-        "cta_label": "Get an Instant Quote",
+        "title": "Want a fixed price?",
+        "text": "Use the booking calculator to define your requirements and book instantly with a fixed price.",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]
@@ -564,7 +564,7 @@
         "type": "callout",
         "title": "Need a deeper reset?",
         "text": "Use our calculator to add an Advanced or Intermediate clean for consistent weekly support.",
-        "cta_label": "Get an Instant Quote",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]
@@ -627,9 +627,9 @@
       },
       {
         "type": "callout",
-        "title": "Book a fixed instant quote",
+        "title": "Book a fixed price",
         "text": "Define your requirements so we can keep your team and visitors confident.",
-        "cta_label": "Get an Instant Quote",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]
@@ -694,7 +694,7 @@
         "type": "callout",
         "title": "Let us do the heavy lifting",
         "text": "Add an oven clean to your advanced or commercial quote for a spotless finish.",
-        "cta_label": "Get an Instant Quote",
+        "cta_label": "Arrange a FREE clean",
         "cta_href": "/get-a-quote"
       }
     ]

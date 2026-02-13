@@ -228,7 +228,7 @@ const Navbar = () => {
                   onFocus={() => setCtaHover(true)}
                   onBlur={() => setCtaHover(false)}
                 >
-                  Get an Instant Quote
+                  Arrange a FREE clean
                   <BrushCleaning className="size-3.5" animate={ctaHover} />
                 </Link>
               </PrimaryButton>

@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const response = await fetch(
       `${supabaseConfig.url}/rest/v1/bookings?contact_email=ilike.${encodeURIComponent(
         email,
-      )}&select=reference,service,property_summary,frequency,per_visit_price,preferred_date,status,created_at&order=created_at.desc`,
+      )}&select=reference,service,property_summary,frequency,per_visit_price,preferred_date,status,created_at,promo_type,promo_label,promo_discount&order=created_at.desc`,
       {
         headers: supabaseHeaders,
       },

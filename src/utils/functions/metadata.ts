@@ -26,7 +26,7 @@ export const generateMetadata = ({
 } = {}): Metadata => {
     const appName = APP_NAME;
     const resolvedTitle = title ?? `${appName} Professional Cleaning in Plymouth`;
-    const resolvedDescription = description ?? `${appName} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Get an instant quote in about 60 seconds and enjoy a spotless space without the stress.`;
+    const resolvedDescription = description ?? `${appName} provides reliable home, office, and end-of-tenancy cleaning in Plymouth, UK. Arrange a FREE clean in minutes and enjoy a spotless space without the stress.`;
 
     return {
         title: resolvedTitle,

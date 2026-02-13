@@ -36,7 +36,7 @@ export const services: ServiceKeyword[] = [
       "regular cleaner plymouth",
     ],
     metaDescription:
-      "Regular house cleaning in Plymouth for already tidy homes. Book domestic cleaners for weekly or fortnightly visits with instant quotes and a reliable Basic Clean.",
+      "Regular house cleaning in Plymouth for already tidy homes. Book domestic cleaners for weekly or fortnightly visits with clear pricing and a reliable Basic Clean.",
   },
   {
     slug: "intermediate-clean",
@@ -91,7 +91,7 @@ export const services: ServiceKeyword[] = [
       "clinic cleaning plymouth",
     ],
     metaDescription:
-      "Office and commercial cleaning in Plymouth with consistent, reliable visits. We clean around your hours and keep the scope clear with fast quotes.",
+      "Office and commercial cleaning in Plymouth with consistent, reliable visits. We clean around your hours and keep the scope clear with transparent pricing.",
   },
 ];
 

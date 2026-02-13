@@ -230,7 +230,7 @@ const BlogPage = ({ params }: Props) => {
             <div>
               <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Stay in the loop</p>
               <p className="mt-2 text-sm text-foreground">
-                Bookmark this guide and use the quote calculator to lock in your preferred clean. We follow up within 24 hours.
+                Bookmark this guide and use the booking calculator to lock in your preferred clean. We follow up within 24 hours.
               </p>
             </div>
             <div className="flex flex-col items-start justify-end gap-3 pt-4 md:pt-0">

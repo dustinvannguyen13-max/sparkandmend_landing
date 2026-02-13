@@ -91,12 +91,12 @@ const STEP_IMAGES = [
 const STEP_DETAILS = [
   {
     image: STEP_IMAGES[0],
-    alt: "Calculator for instant quote",
+    alt: "Booking calculator preview",
     numberLabel: "01",
     description: (
       <>
         <Link href={QUOTE_LINK} className="text-foreground underline">
-          Get a fixed instant quote
+          Arrange a FREE clean
         </Link>{" "}
         in about 60 seconds with the calculator.
       </>
@@ -244,7 +244,7 @@ const pricingFactors = [
 const timeFactors = [
   "End of tenancy cleans take longer than regular upkeep",
   "Time depends on property size, condition, and checklist",
-  "Your instant quote includes a tailored estimate",
+  "Your booking estimate includes a tailored estimate",
 ];
 
 const beforeAfterItems = [
@@ -266,7 +266,7 @@ const faqs = [
   {
     question: "How long does an end of tenancy clean take?",
     answer:
-      "Advanced cleans take longer because we go deeper into detail. Your fixed instant quote gives a clear estimate and we confirm timings before booking.",
+      "Advanced cleans take longer because we go deeper into detail. Your booking estimate gives a clear baseline and we confirm timings before booking.",
   },
   {
     question: "Do I need to be home?",
@@ -316,7 +316,7 @@ const AXA_BADGE = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/pu
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
     <PrimaryButton asChild>
-      <Link href={QUOTE_LINK}>Get an Instant Quote</Link>
+      <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
     </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
@@ -357,7 +357,7 @@ const AdvancedCleanPage = () => {
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
-                Fixed instant quote takes about 60 seconds.
+                Arrange a FREE clean in about 60 seconds.
               </p>
               <p className="text-sm text-muted-foreground">
                 Describe your space, book and pay within five minutes, and rely on us to arrive on the confirmed date while we stay in touch if we need clarity.
@@ -399,7 +399,7 @@ const AdvancedCleanPage = () => {
           <SectionHeader
             eyebrow="Reassurance"
             title="We get your concerns"
-            description="Clear communication, a simple instant quote, and a payment in minutes—so you don’t have to think twice before the clean arrives."
+            description="Clear communication, a simple booking flow, and a payment in minutes—so you don’t have to think twice before the clean arrives."
           />
           <ul className="mt-6 grid gap-4 text-sm text-muted-foreground sm:grid-cols-2">
             {concerns.map((item) => {
@@ -455,7 +455,7 @@ const AdvancedCleanPage = () => {
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
             <Link href={QUOTE_LINK} className="text-foreground underline">
-              Get an Instant Quote
+              Arrange a FREE clean
             </Link>
             .
           </p>
@@ -483,7 +483,7 @@ const AdvancedCleanPage = () => {
             description="Prices depend on size, condition, and checklist requirements. The quote includes the standard checklist for this service, plus any add-ons you select."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
-            ctaLabel="Get an Instant Quote"
+            ctaLabel="Arrange a FREE clean"
           />
         </AnimationContainer>
       </Section>
@@ -624,7 +624,7 @@ const AdvancedCleanPage = () => {
           <SectionHeader
             eyebrow="Process"
             title="How it works"
-            description="Fixed instant quote via the calculator, then book instantly."
+            description="Use the booking calculator, then confirm your booking."
           />
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
             {STEP_DETAILS.map((step) => (
@@ -728,9 +728,9 @@ const AdvancedCleanPage = () => {
       <Section>
         <CTAStrip
           title="Ready for a full reset?"
-          description="Get a fixed instant quote, book instantly, and let us handle the detail."
+          description="Arrange a FREE clean, book in minutes, and let us handle the detail."
           primaryHref={QUOTE_LINK}
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />

@@ -11,6 +11,7 @@ import {
   parseQuoteSearchParams,
 } from "@/utils/quote";
 import { applyOfferToQuote, getActiveOffer } from "@/lib/offers";
+import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 
 interface QuoteResultPageProps {
   searchParams: Record<string, string | string[] | undefined>;
@@ -26,6 +27,31 @@ const CONTACT_METHOD_LABELS: Record<string, string> = {
   whatsapp: "WhatsApp",
   call: "phone call",
   email: "email",
+};
+
+const fetchBookingPromo = async (reference?: string) => {
+  if (!reference) return null;
+  if (!supabaseConfig.url || !supabaseHeaders) return null;
+
+  const response = await fetch(
+    `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
+      reference,
+    )}&select=promo_label,promo_discount`,
+    {
+      headers: supabaseHeaders,
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = (await response.json()) as Array<{
+    promo_label?: string | null;
+    promo_discount?: number | null;
+  }>;
+  return data[0] ?? null;
 };
 
 const getParam = (
@@ -79,6 +105,14 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
     baseQuote,
     activeOffer,
   );
+  const referenceHint = getParam(searchParams, "reference");
+  const bookingPromo = await fetchBookingPromo(referenceHint);
+  const promoDiscount = Number(bookingPromo?.promo_discount ?? 0);
+  const promoLabel = bookingPromo?.promo_label || "Free bathroom clean";
+  const firstVisitPrice =
+    promoDiscount > 0
+      ? Math.max(0, displayQuote.perVisitPrice - promoDiscount)
+      : null;
   const preferredDate = getParam(searchParams, "preferredDate");
   const preferredTime = getParam(searchParams, "preferredTime");
   const contactMethod = getParam(searchParams, "contactMethod");
@@ -92,8 +126,12 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
     : searchParams.submitted;
   const showSubmissionWarning = submissionStatus === "0";
   const contactAddress = getParam(searchParams, "contactAddress");
+  const calendarPriceLine =
+    promoDiscount > 0 && firstVisitPrice !== null
+      ? `First visit total: ${formatCurrency(firstVisitPrice)}`
+      : `Price: ${formatCurrency(displayQuote.perVisitPrice)} per visit`;
   const calendarDetails = [
-    `Quote: ${formatCurrency(displayQuote.perVisitPrice)} per visit`,
+    calendarPriceLine,
     `Service: ${displayQuote.serviceLabel}`,
     `Property: ${displayQuote.propertySummary}`,
     `Schedule: ${displayQuote.frequencyLabel}`,
@@ -118,7 +156,7 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
     preferredDateLabel ? `Preferred start date: ${preferredDateLabel}` : null,
     preferredTimeLabel ? `Preferred start time: ${preferredTimeLabel}` : null,
     contactAddress ? `Address: ${contactAddress}` : null,
-    `Quote: ${formatCurrency(displayQuote.perVisitPrice)} per visit`,
+    calendarPriceLine,
   ]
     .filter(Boolean)
     .join("\n");
@@ -130,7 +168,6 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
   const contactPhone = getParam(searchParams, "contactPhone");
   const contactPostcode = getParam(searchParams, "contactPostcode");
   const notes = getParam(searchParams, "notes");
-  const referenceHint = getParam(searchParams, "reference");
   const contactPayload = {
     name: contactName,
     email: contactEmail,
@@ -149,9 +186,9 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
         <AnimationContainer delay={0.1}>
           <div className="text-center max-w-2xl mx-auto">
             <SectionHeader
-              eyebrow="Your Quote"
-              title="Your instant cleaning quote"
-              description="Based on your selections, here is your personalised estimate."
+              eyebrow="Your Booking"
+              title="Your booking summary"
+              description="Based on your selections, here is your summary and next steps."
             />
           </div>
         </AnimationContainer>
@@ -165,11 +202,11 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                 {showSubmissionWarning && (
                   <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
                     We could not send your details automatically. Please call or
-                    email us to confirm this quote.
+                    email us to confirm this booking.
                   </div>
                 )}
                 <div>
-                  <p className="text-sm text-muted-foreground">Estimated price</p>
+                  <p className="text-sm text-muted-foreground">Estimated price per visit</p>
                   <p className="text-4xl font-semibold text-primary">
                     {formatCurrency(displayQuote.perVisitPrice)}
                   </p>
@@ -183,6 +220,16 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                       </p>
                       <p className="text-xs text-muted-foreground line-through">
                         Original price: {formatCurrency(baseQuote.perVisitPrice)}
+                      </p>
+                    </div>
+                  )}
+                  {promoDiscount > 0 && firstVisitPrice !== null && (
+                    <div className="mt-3 rounded-xl border border-emerald-200/70 bg-emerald-50/60 px-3 py-2 text-sm">
+                      <p className="font-medium text-emerald-700">
+                        {promoLabel} applied (-{formatCurrency(promoDiscount)})
+                      </p>
+                      <p className="text-xs text-emerald-800">
+                        First visit total: {formatCurrency(firstVisitPrice)}
                       </p>
                     </div>
                   )}
@@ -300,8 +347,8 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                 </h2>
                 <p className="mt-3 text-sm text-muted-foreground">
                   We will review your details, confirm availability, and send a
-                  final quote. Expect a response within 24 hours so we can book you
-                  in.
+                  final confirmation. Expect a response within 24 hours so we can
+                  book you in.
                 </p>
                 {referenceHint && (
                   <p className="mt-3 text-sm text-muted-foreground">
@@ -340,6 +387,7 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                     quote={baseQuote}
                     contact={contactPayload}
                     referenceHint={referenceHint ?? undefined}
+                    input={input}
                   />
                   <Button variant="outline" asChild>
                     <Link href={whatsappUrl}>Pay later / cash (WhatsApp)</Link>

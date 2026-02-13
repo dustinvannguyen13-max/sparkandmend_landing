@@ -65,11 +65,11 @@ const WhyUsPage = () => {
               />
               <div className="mt-6">
                 <PrimaryButton asChild>
-                  <Link href="/get-a-quote">Get an Instant Quote</Link>
+                  <Link href="/get-a-quote">Arrange a FREE clean</Link>
                 </PrimaryButton>
               </div>
               <p className="mt-3 text-sm text-muted-foreground">
-                Fixed instant quote takes about 60 seconds.
+                Arrange a FREE clean in about 60 seconds.
               </p>
               <p className="text-sm text-muted-foreground">
                 Define your requirements in the calculator and book instantly.
@@ -167,9 +167,9 @@ const WhyUsPage = () => {
       <Section>
         <CTAStrip
           title="Ready to see what a clear, calm clean feels like?"
-          description="Get a fixed instant quote, book instantly, and we will take it from there."
+          description="Arrange a FREE clean, book in minutes, and we will take it from there."
           primaryHref="/get-a-quote"
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />

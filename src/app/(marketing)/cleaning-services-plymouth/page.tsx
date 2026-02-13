@@ -18,7 +18,7 @@ import { AREA, BRAND, getServicePath, services } from "@/lib/seo/keywords";
 
 const TITLE = `Cleaning Services in ${AREA} | ${BRAND}`;
 const DESCRIPTION =
-  "Cleaning services in Plymouth from Spark & Mend, including regular house cleaning, deep cleaning, end of tenancy, and commercial cleaning. Get a fixed instant quote and book in minutes.";
+  "Cleaning services in Plymouth from Spark & Mend, including regular house cleaning, deep cleaning, end of tenancy, and commercial cleaning. Arrange a FREE clean and get a clear price in minutes.";
 const CANONICAL = "/cleaning-services-plymouth";
 
 export const metadata: Metadata = {
@@ -107,7 +107,7 @@ const FAQS = [
   {
     question: "How much does cleaning in Plymouth cost?",
     answer:
-      "Pricing depends on the size and condition of the property. Use the instant quote calculator for a fixed price in about 60 seconds.",
+      "Pricing depends on the size and condition of the property. Use the booking calculator for a clear price in about 60 seconds.",
   },
   {
     question: "How long does a clean take?",
@@ -117,7 +117,7 @@ const FAQS = [
   {
     question: "Do you bring cleaning supplies?",
     answer:
-      "Yes, we bring our own kit. If you prefer specific products, add a note in the quote form.",
+      "Yes, we bring our own kit. If you prefer specific products, add a note in the booking form.",
   },
   {
     question: "Can you support end of tenancy inspections?",
@@ -167,12 +167,12 @@ const CleaningServicesPlymouthPage = () => {
                 align="left"
               />
               <p className="mt-4 text-sm text-muted-foreground">
-                We serve Plymouth only, with fixed instant quotes and simple online
+                We serve Plymouth only, with clear pricing and simple online
                 booking.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
                 <Button asChild>
-                  <Link href="/get-a-quote">Get an Instant Quote</Link>
+                  <Link href="/get-a-quote">Arrange a FREE clean</Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href="#services">Browse services</Link>
@@ -289,9 +289,9 @@ const CleaningServicesPlymouthPage = () => {
       <Section>
         <CTAStrip
           title="Ready to book a Plymouth clean?"
-          description="Get a fixed instant quote, choose your service, and book online in minutes."
+          description="Arrange a FREE clean, choose your service, and book online in minutes."
           primaryHref="/get-a-quote"
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
         />
       </Section>
     </MaxWidthWrapper>

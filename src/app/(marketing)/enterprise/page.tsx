@@ -8,9 +8,9 @@ const EnterprisePage = () => {
     <MaxWidthWrapper className="pt-16 pb-20">
       <Section className="pt-6">
         <SectionHeader
-          eyebrow="Get a fixed instant quote"
+          eyebrow="Arrange a FREE clean"
           title="Tell us what you need"
-          description="Interested in our services? Share a few details and we will be in touch shortly. Prefer a fixed instant quote? Use the calculator to book instantly."
+          description="Interested in our services? Share a few details and we will be in touch shortly. Prefer to book online? Use the booking calculator to arrange your clean."
         />
         <div className="mt-8 text-sm md:text-base text-muted-foreground">
           <p className="font-medium text-foreground text-center">
@@ -37,10 +37,10 @@ const EnterprisePage = () => {
 
       <Section>
         <CTAStrip
-          title="Prefer a fixed instant quote instead?"
-          description="Get a fixed instant quote with the calculator and book instantly."
+          title="Prefer to book online instead?"
+          description="Use the booking calculator to arrange a free clean and confirm the details."
           primaryHref="/get-a-quote"
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref="tel:07452824799"
           secondaryLabel="Call or WhatsApp us"
         />

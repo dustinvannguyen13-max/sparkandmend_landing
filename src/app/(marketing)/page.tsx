@@ -47,7 +47,7 @@ const HomePage = async () => {
               <span className="backdrop absolute inset-[1px] rounded-full bg-primary transition-colors duration-200 group-hover:bg-primary/90" />
               <span className="h-full w-full blur-md absolute bottom-0 inset-x-0 bg-gradient-to-tr from-primary/20"></span>
               <span className="z-10 py-0.5 text-sm text-primary-foreground flex items-center justify-center gap-1">
-                ✨ Instant quote, instant booking in Plymouth
+                ✨ Arrange a FREE clean in Plymouth
                 <AnimateIcon animateOnHover>
                   <BrushCleaning className="ml-1 size-4" />
                 </AnimateIcon>
@@ -74,13 +74,13 @@ const HomePage = async () => {
               Reliable home, office, and end-of-tenancy cleaning across Plymouth.
               <br className="hidden md:block" />
               <span className="hidden md:block">
-                Define your requirements in our quote calculator for a fixed instant quote and instant booking.
+                Define your requirements in our booking calculator for a clear price and a confirmed booking.
               </span>
             </p>
             <div className="flex items-center justify-center whitespace-nowrap gap-4 z-50">
               <PrimaryButton asChild>
                 <Link href="/get-a-quote" className="flex items-center">
-                  Get an Instant Quote
+                  Arrange a FREE clean
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </PrimaryButton>
@@ -174,7 +174,7 @@ const HomePage = async () => {
               A clean space in 3 simple steps
             </h2>
             <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-              Get a fixed instant quote with the calculator, book instantly, and let us handle the rest.
+              Arrange a FREE clean with the calculator, book in minutes, and let us handle the rest.
             </p>
           </div>
         </AnimationContainer>
@@ -344,7 +344,7 @@ const HomePage = async () => {
               <div className="mt-6">
                 <Button asChild>
                   <Link href="/get-a-quote" className="flex items-center">
-                    Get an Instant Quote
+                    Arrange a FREE clean
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>

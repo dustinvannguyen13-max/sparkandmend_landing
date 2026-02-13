@@ -25,7 +25,7 @@ const fetchBooking = async (reference: string) => {
   const response = await fetch(
     `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
       reference,
-    )}&select=reference,service,property_summary,per_visit_price,contact_email,status`,
+    )}&select=reference,service,property_summary,per_visit_price,promo_discount,contact_email,status`,
     {
       headers: supabaseHeaders,
     },
@@ -143,7 +143,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const amount = Number(booking.per_visit_price);
+    const baseAmount = Number(booking.per_visit_price);
+    const promoDiscount = Number(booking.promo_discount ?? 0);
+    const amount = Math.max(0, baseAmount - Math.max(0, promoDiscount));
     if (!Number.isFinite(amount) || amount <= 0) {
       return NextResponse.json(
         { error: "A valid payment amount is required." },

@@ -27,6 +27,9 @@ type BookingRecord = {
   preferred_date?: string;
   preferred_time?: string;
   status?: string;
+  promo_type?: string;
+  promo_label?: string;
+  promo_discount?: number;
   frequency?: string;
   property_summary?: string;
   per_visit_price?: number;
@@ -426,6 +429,12 @@ const AdminCalendar = () => {
                       ? formatCurrency(viewing.per_visit_price)
                       : "—"}
                   </p>
+                  {viewing.promo_type && viewing.promo_discount ? (
+                    <p className="text-xs text-muted-foreground">
+                      Promo applied: {viewing.promo_label || "1x free bathroom"} (-
+                      {formatCurrency(viewing.promo_discount)})
+                    </p>
+                  ) : null}
                   <Badge variant="secondary">
                     {viewing.status ?? "pending"}
                   </Badge>

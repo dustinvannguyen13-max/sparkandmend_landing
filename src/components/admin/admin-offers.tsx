@@ -306,7 +306,7 @@ const AdminOffers = () => {
                 onChange={(event) =>
                   setOffer((prev) => ({ ...prev, cta_label: event.target.value }))
                 }
-                placeholder="Get an instant quote"
+                placeholder="Arrange a FREE clean"
               />
             </div>
             <div className="space-y-2">

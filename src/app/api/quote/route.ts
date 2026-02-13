@@ -4,6 +4,10 @@ import { calculateQuote, type QuoteInput } from "@/utils/quote";
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 import { APP_DOMAIN } from "@/utils/constants/site";
 import { applyOfferToQuote, getActiveOffer } from "@/lib/offers";
+import {
+  applyFreeBathroomPromo,
+  isFirstTimeCustomer,
+} from "@/lib/booking-promos";
 
 interface QuoteContact {
   name: string;
@@ -49,9 +53,11 @@ const buildCustomerEmailBody = (
   contact: QuoteContact,
   quoteSummary: ReturnType<typeof calculateQuote>,
   offerSummary: ReturnType<typeof applyOfferToQuote>["offerSummary"],
+  firstVisitPrice?: number,
+  freeBathroomPromo?: ReturnType<typeof applyFreeBathroomPromo>["promo"],
 ) => {
   return [
-    `Thanks ${contact.name}, we have received your quote request.`,
+    `Thanks ${contact.name}, we have received your booking request.`,
     ``,
     `Reference: ${reference}`,
     `Service: ${quoteSummary.serviceLabel}`,
@@ -60,6 +66,12 @@ const buildCustomerEmailBody = (
     `Estimated price: £${quoteSummary.perVisitPrice.toFixed(0)} per visit`,
     offerSummary
       ? `Offer applied: ${offerSummary.title} (-£${offerSummary.discountAmount.toFixed(0)})`
+      : null,
+    freeBathroomPromo && typeof firstVisitPrice === "number"
+      ? `First-time bonus: ${freeBathroomPromo.label} (-£${freeBathroomPromo.discountAmount.toFixed(0)})`
+      : null,
+    freeBathroomPromo && typeof firstVisitPrice === "number"
+      ? `First visit total: £${firstVisitPrice.toFixed(0)}`
       : null,
     ``,
     `Manage your booking: ${APP_DOMAIN}/my-booking?reference=${reference}`,
@@ -72,10 +84,12 @@ const formatEmailBody = (
   input: QuoteInput,
   contact: QuoteContact,
   quoteSummary: ReturnType<typeof calculateQuote>,
-  offerSummary: ReturnType<typeof applyOfferToQuote>["offerSummary"]
+  offerSummary: ReturnType<typeof applyOfferToQuote>["offerSummary"],
+  firstVisitPrice?: number,
+  freeBathroomPromo?: ReturnType<typeof applyFreeBathroomPromo>["promo"]
 ) => {
   return [
-    `New cleaning quote request`,
+    `New cleaning booking request`,
     ``,
     `Service: ${quoteSummary.serviceLabel}`,
     `Property: ${quoteSummary.propertySummary}`,
@@ -83,6 +97,12 @@ const formatEmailBody = (
     `Price: £${quoteSummary.perVisitPrice.toFixed(0)} per visit`,
     offerSummary
       ? `Offer applied: ${offerSummary.title} (-£${offerSummary.discountAmount.toFixed(0)})`
+      : null,
+    freeBathroomPromo && typeof firstVisitPrice === "number"
+      ? `First-time bonus: ${freeBathroomPromo.label} (-£${freeBathroomPromo.discountAmount.toFixed(0)})`
+      : null,
+    freeBathroomPromo && typeof firstVisitPrice === "number"
+      ? `First visit total: £${firstVisitPrice.toFixed(0)}`
       : null,
     quoteSummary.addOns.length > 0
       ? `Add-ons: ${quoteSummary.addOns.join(", ")}`
@@ -140,6 +160,12 @@ export async function POST(request: Request) {
       baseQuoteSummary,
       activeOffer,
     );
+    const isFirstTime = await isFirstTimeCustomer(
+      contact.email,
+      contact.address,
+    );
+    const { firstVisitPrice, promo: freeBathroomPromo } =
+      applyFreeBathroomPromo(quoteSummary, input, isFirstTime);
     const reference = `SMQ-${randomUUID().split("-")[0].toUpperCase()}`;
     const deliveries = {
       database: false,
@@ -160,6 +186,9 @@ export async function POST(request: Request) {
       custom_extras_source: quoteSummary.customExtrasSource ?? "",
       custom_extras_fallback_reason: quoteSummary.customExtrasFallbackReason ?? "",
       custom_extras_price: quoteSummary.customExtrasPrice ?? 0,
+      promo_type: freeBathroomPromo?.type ?? "",
+      promo_label: freeBathroomPromo?.label ?? "",
+      promo_discount: freeBathroomPromo?.discountAmount ?? 0,
       contact_name: contact.name,
       contact_email: contact.email,
       contact_phone: contact.phone,
@@ -219,8 +248,15 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           from: emailFrom,
           to: [emailTo],
-          subject: `New quote request - ${contact.name} (${reference})`,
-          text: formatEmailBody(input, contact, quoteSummary, offerSummary),
+          subject: `New booking request - ${contact.name} (${reference})`,
+          text: formatEmailBody(
+            input,
+            contact,
+            quoteSummary,
+            offerSummary,
+            firstVisitPrice,
+            freeBathroomPromo,
+          ),
         }),
       });
 
@@ -243,8 +279,15 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           from: emailFrom,
           to: [contact.email],
-          subject: `Your Spark & Mend quote reference ${reference}`,
-          text: buildCustomerEmailBody(reference, contact, quoteSummary, offerSummary),
+          subject: `Your Spark & Mend booking reference ${reference}`,
+          text: buildCustomerEmailBody(
+            reference,
+            contact,
+            quoteSummary,
+            offerSummary,
+            firstVisitPrice,
+            freeBathroomPromo,
+          ),
         }),
       });
 

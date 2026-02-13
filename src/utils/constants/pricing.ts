@@ -33,7 +33,7 @@ export const PLANS: Plan[] = [
       { text: "Ideal for ongoing maintenance" },
     ],
     btn: {
-      text: "Get an Instant Quote",
+      text: "Arrange a FREE clean",
       href: "/get-a-quote",
     },
   },
@@ -52,7 +52,7 @@ export const PLANS: Plan[] = [
       { text: "Great for monthly resets" },
     ],
     btn: {
-      text: "Get an Instant Quote",
+      text: "Arrange a FREE clean",
       href: "/get-a-quote",
     },
   },
@@ -71,7 +71,7 @@ export const PLANS: Plan[] = [
       { text: "Seasonal or post-renovation resets" },
     ],
     btn: {
-      text: "Get an Instant Quote",
+      text: "Arrange a FREE clean",
       href: "/get-a-quote",
     },
   },
@@ -100,7 +100,7 @@ export const PRICING_FEATURES = [
   },
   {
     text: "Fast responses",
-    tooltip: "Quick quotes and clear communication",
+    tooltip: "Quick responses and clear communication",
   },
   {
     text: "Custom packages",

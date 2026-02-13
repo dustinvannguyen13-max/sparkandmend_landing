@@ -15,7 +15,7 @@ import { generateMetadata } from "@/utils";
 
 const TITLE = `Cleaning Results in ${AREA} | ${BRAND}`;
 const DESCRIPTION =
-  "See before-and-after cleaning results in Plymouth from Spark & Mend. Browse real transformations and get an instant quote in about 60 seconds.";
+  "See before-and-after cleaning results in Plymouth from Spark & Mend. Browse real transformations and arrange a free clean in minutes.";
 const CANONICAL = "/cleaning-results-plymouth";
 
 const BASE_METADATA = generateMetadata({
@@ -80,7 +80,7 @@ const CleaningResultsPlymouthPage = () => {
           <p className="mt-4 text-sm text-muted-foreground text-center">
             Serving Plymouth only. Want your own transformation?{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              Get an Instant Quote
+              Arrange a FREE clean
             </Link>
             .
           </p>
@@ -162,9 +162,9 @@ const CleaningResultsPlymouthPage = () => {
       <Section>
         <CTAStrip
           title="Want results like these?"
-          description="Get a fixed instant quote with the calculator and book instantly."
+          description="Use the booking calculator to arrange a free clean and confirm the details."
           primaryHref="/get-a-quote"
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref="tel:07452824799"
           secondaryLabel="Call or WhatsApp us"
         />

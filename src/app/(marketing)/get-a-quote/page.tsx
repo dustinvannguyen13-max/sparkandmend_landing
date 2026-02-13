@@ -36,19 +36,19 @@ const GetAQuotePage = ({ searchParams }: GetAQuotePageProps) => {
         <AnimationContainer delay={0.1} className="relative z-10">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="text-center lg:text-left">
-              <MagicBadge title="Instant Quote" />
+              <MagicBadge title="Arrange a FREE clean" />
               <SectionHeader
-                title="Get an instant cleaning quote in minutes"
-                description="Pick a service, define your requirements, and get a fixed instant quote. Book instantly via the calculator."
+                title="Arrange a FREE clean in minutes"
+                description="Pick a service, share your requirements, and confirm a clear price via the booking calculator."
                 align="left"
                 className="mt-6"
               />
               <p className="mt-4 text-sm text-muted-foreground">
-                Fixed instant quote takes about 60 seconds.
+                Arrange your clean in about 60 seconds.
               </p>
               <div className="mt-6 flex justify-center lg:justify-start">
                 <PrimaryButton asChild>
-                  <a href="#instant-quote-form">Jump to the quote form</a>
+                  <a href="#booking-form">Jump to the booking form</a>
                 </PrimaryButton>
               </div>
             </div>
@@ -65,12 +65,12 @@ const GetAQuotePage = ({ searchParams }: GetAQuotePageProps) => {
         </AnimationContainer>
       </Section>
 
-      <Section id="instant-quote-form" className="scroll-mt-24">
+      <Section id="booking-form" className="scroll-mt-24">
         <AnimationContainer delay={0.2}>
           <Suspense
             fallback={
               <div className="rounded-3xl border border-border/60 bg-card/70 p-6 text-sm text-muted-foreground">
-                Loading the instant quote form...
+                Loading the booking form...
               </div>
             }
           >

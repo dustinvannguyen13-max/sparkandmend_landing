@@ -89,12 +89,12 @@ const STEP_IMAGES = [
 const STEP_DETAILS = [
   {
     image: STEP_IMAGES[0],
-    alt: "Calculator for instant quote",
+    alt: "Booking calculator preview",
     numberLabel: "01",
     description: (
       <>
         <Link href={QUOTE_LINK} className="text-foreground underline">
-          Get a fixed instant quote
+          Arrange a FREE clean
         </Link>{" "}
         in about 60 seconds with the calculator.
       </>
@@ -249,7 +249,7 @@ const faqs = [
   {
     question: "How long does it take?",
     answer:
-      "It depends on the size and condition of your space. Your fixed instant quote gives a clear estimate, and we confirm timings before booking.",
+      "It depends on the size and condition of your space. Your booking estimate gives a clear baseline, and we confirm timings before booking.",
   },
   {
     question: "Do we need to be on site?",
@@ -274,7 +274,7 @@ const faqs = [
   {
     question: "What if I need regular cleaning?",
     answer:
-      "Choose weekly or fortnightly in the quote form. We will line up a consistent schedule that suits your space.",
+      "Choose weekly or fortnightly in the booking form. We will line up a consistent schedule that suits your space.",
   },
   {
     question: "Can I book for a rental or end-of-tenancy style reset?",
@@ -288,7 +288,7 @@ const commercialReviews = REVIEWS.slice(5, 8);
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
     <PrimaryButton asChild>
-      <Link href={QUOTE_LINK}>Get an Instant Quote</Link>
+      <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
     </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
@@ -326,7 +326,7 @@ const CommercialCleanPage = () => {
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
-                Fixed instant quote takes about 60 seconds.
+                Arrange a FREE clean in about 60 seconds.
               </p>
               <p className="text-sm text-muted-foreground">
                 Let us know what matters, book and pay in one quick five-minute flow, and we’ll turn up on the date while keeping open communication.
@@ -424,7 +424,7 @@ const CommercialCleanPage = () => {
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
             <Link href={QUOTE_LINK} className="text-foreground underline">
-              Get an Instant Quote
+              Arrange a FREE clean
             </Link>
             .
           </p>
@@ -439,7 +439,7 @@ const CommercialCleanPage = () => {
             description="Prices depend on workspace size, schedule, and service scope. The quote includes the standard checklist for this service, plus any add-ons you select."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
-            ctaLabel="Get an Instant Quote"
+            ctaLabel="Arrange a FREE clean"
           />
         </AnimationContainer>
       </Section>
@@ -449,7 +449,7 @@ const CommercialCleanPage = () => {
           <SectionHeader
             eyebrow="Reviews"
             title="Trusted by local businesses and households"
-            description="Fixed instant quotes, clear scope, and professionals you can rely on time after time."
+            description="Clear pricing, clear scope, and professionals you can rely on time after time."
           />
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {commercialReviews.map((review) => (
@@ -559,7 +559,7 @@ const CommercialCleanPage = () => {
           <SectionHeader
             eyebrow="Process"
             title="How it works"
-            description="Fixed instant quote via the calculator, then book instantly."
+            description="Use the booking calculator, then confirm your booking."
           />
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
             {STEP_DETAILS.map((step) => (
@@ -663,9 +663,9 @@ const CommercialCleanPage = () => {
       <Section>
         <CTAStrip
           title="Ready to keep your workspace client-ready?"
-          description="Get a fixed instant quote, book instantly, and keep the workplace tidy and professional."
+          description="Arrange a FREE clean, book in minutes, and keep the workplace tidy and professional."
           primaryHref={QUOTE_LINK}
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />

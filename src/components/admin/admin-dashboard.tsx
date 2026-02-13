@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,8 +46,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { formatCurrency } from "@/utils/quote";
-import { Ban, Eye, Pencil, Save, Trash2, User } from "lucide-react";
+import {
+  calculateQuote,
+  DEFAULT_QUOTE_INPUT,
+  EXTRA_OPTIONS,
+  OVEN_PRICING,
+  RESIDENTIAL_PROPERTY_TYPES,
+  COMMERCIAL_PROPERTY_TYPES,
+  SERVICE_LABELS,
+  PROPERTY_LABELS,
+  type CleaningService,
+  type Frequency,
+  type OvenOption,
+  type PropertyType,
+  type QuoteInput,
+  formatCurrency,
+} from "@/utils/quote";
+import { Ban, Eye, Pencil, Plus, Save, Trash2, User } from "lucide-react";
 
 type BookingRecord = {
   reference: string;
@@ -61,6 +77,9 @@ type BookingRecord = {
   custom_extras_source?: string;
   custom_extras_fallback_reason?: string;
   custom_extras_price?: number;
+  promo_type?: string;
+  promo_label?: string;
+  promo_discount?: number;
   contact_name?: string;
   contact_email?: string;
   contact_phone?: string;
@@ -76,11 +95,43 @@ type BookingRecord = {
   created_at?: string;
 };
 
+type BookingContactForm = {
+  name: string;
+  email: string;
+  phone: string;
+  postcode: string;
+  address: string;
+  preferredContact: string;
+  preferredDate: string;
+  preferredTime: string;
+  notes: string;
+};
+
 const statusStyles: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   paid: "default",
   pending: "secondary",
   cancelled: "destructive",
 };
+
+const CONTACT_METHOD_OPTIONS = [
+  { id: "text", label: "Text message" },
+  { id: "whatsapp", label: "WhatsApp" },
+  { id: "call", label: "Phone call" },
+  { id: "email", label: "Email" },
+];
+
+const FREQUENCY_OPTIONS: Array<{ id: Frequency; label: string }> = [
+  { id: "one-time", label: "One-time" },
+  { id: "weekly", label: "Weekly" },
+  { id: "bi-weekly", label: "Every 2 weeks" },
+  { id: "monthly", label: "Monthly" },
+];
+
+const OVEN_OPTIONS: Array<{ id: OvenOption; label: string; price: number }> = [
+  { id: "none", label: "No oven clean", price: OVEN_PRICING.none },
+  { id: "single", label: "Single oven", price: OVEN_PRICING.single },
+  { id: "double", label: "Double oven", price: OVEN_PRICING.double },
+];
 
 const formatDate = (value?: string) => {
   if (!value) return "—";
@@ -102,11 +153,29 @@ const AdminDashboard = () => {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [confirmAction, setConfirmAction] = useState<"save" | "cancel" | "delete" | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createForm, setCreateForm] = useState<QuoteInput>(DEFAULT_QUOTE_INPUT);
+  const [createContact, setCreateContact] = useState<BookingContactForm>({
+    name: "",
+    email: "",
+    phone: "",
+    postcode: "",
+    address: "",
+    preferredContact: "",
+    preferredDate: "",
+    preferredTime: "",
+    notes: "",
+  });
+  const [createStatus, setCreateStatus] = useState<"pending" | "paid" | "cancelled">(
+    "pending",
+  );
+  const [createPaymentAmount, setCreatePaymentAmount] = useState("");
 
   const metrics = useMemo(() => {
     const total = bookings.length;
@@ -127,6 +196,10 @@ const AdminDashboard = () => {
       unpaidValue,
     };
   }, [bookings]);
+
+  const createQuote = useMemo(() => calculateQuote(createForm), [createForm]);
+  const createFieldClassName = "bg-[#fff7ed]";
+  const createCheckboxRowClassName = "bg-[#fff7ed]";
 
   const refresh = async () => {
     setIsLoading(true);
@@ -181,6 +254,96 @@ const AdminDashboard = () => {
     }
     setEditForm({ ...selected });
   }, [selected]);
+
+  useEffect(() => {
+    if (createStatus === "paid") {
+      setCreatePaymentAmount((prev) =>
+        prev ? prev : String(createQuote.perVisitPrice),
+      );
+      return;
+    }
+    setCreatePaymentAmount("");
+  }, [createStatus, createQuote.perVisitPrice]);
+
+  const resetCreateForm = () => {
+    setCreateForm(DEFAULT_QUOTE_INPUT);
+    setCreateContact({
+      name: "",
+      email: "",
+      phone: "",
+      postcode: "",
+      address: "",
+      preferredContact: "",
+      preferredDate: "",
+      preferredTime: "",
+      notes: "",
+    });
+    setCreateStatus("pending");
+    setCreatePaymentAmount("");
+  };
+
+  const handleCreateServiceChange = (service: CleaningService) => {
+    setCreateForm((prev) => {
+      const next: QuoteInput = { ...prev, service };
+      if (service === "commercial") {
+        next.propertyType = COMMERCIAL_PROPERTY_TYPES.includes(prev.propertyType)
+          ? prev.propertyType
+          : "office";
+      } else {
+        next.propertyType = RESIDENTIAL_PROPERTY_TYPES.includes(prev.propertyType)
+          ? prev.propertyType
+          : "house";
+      }
+      if (service === "advanced") {
+        next.frequency = "one-time";
+      } else if (prev.frequency === "one-time") {
+        next.frequency = "weekly";
+      }
+      return next;
+    });
+  };
+
+  const handleCreate = async () => {
+    setIsCreating(true);
+    setError(null);
+    setSuccess(null);
+
+    if (!createContact.name.trim() || !createContact.email.trim() || !createContact.phone.trim()) {
+      setError("Name, email, and phone are required.");
+      setIsCreating(false);
+      return;
+    }
+
+    const paymentAmount =
+      createStatus === "paid"
+        ? Number(createPaymentAmount || createQuote.perVisitPrice)
+        : undefined;
+
+    try {
+      const response = await fetch("/api/admin/bookings/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: createForm,
+          contact: createContact,
+          status: createStatus,
+          paymentAmount,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to create booking.");
+      }
+      setSuccess("Booking created.");
+      setCreateOpen(false);
+      resetCreateForm();
+      await refresh();
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   const handleSave = async () => {
     if (!editForm) return;
@@ -396,12 +559,25 @@ const AdminDashboard = () => {
 
       <div className="grid gap-6 lg:grid-cols-1 xl:grid-cols-[1.75fr_1.25fr]">
         <Card className="border-border/60 bg-card/90">
-          <CardHeader>
-            <CardTitle>Bookings</CardTitle>
-            <CardDescription>
-              {metrics.pending} awaiting payment • {metrics.cancelled} cancelled • Unpaid
-              value {formatCurrency(metrics.unpaidValue)}
-            </CardDescription>
+          <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <CardTitle>Bookings</CardTitle>
+              <CardDescription>
+                {metrics.pending} awaiting payment • {metrics.cancelled} cancelled • Unpaid
+                value {formatCurrency(metrics.unpaidValue)}
+              </CardDescription>
+            </div>
+            <Button
+              onClick={() => {
+                setError(null);
+                setSuccess(null);
+                setCreateOpen(true);
+              }}
+              className="self-start"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              New booking
+            </Button>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
@@ -474,6 +650,12 @@ const AdminDashboard = () => {
                         ? formatCurrency(booking.per_visit_price)
                         : "—"}
                     </p>
+                    {booking.promo_type && booking.promo_discount ? (
+                      <p>
+                        <span className="font-medium text-foreground">Promo:</span>{" "}
+                        {booking.promo_label || "1x free bathroom"}
+                      </p>
+                    ) : null}
                     <p>
                       <span className="font-medium text-foreground">Contact:</span>{" "}
                       <button
@@ -570,6 +752,11 @@ const AdminDashboard = () => {
                       <Badge variant={statusStyles[booking.status ?? "pending"] ?? "outline"}>
                         {booking.status ?? "pending"}
                       </Badge>
+                      {booking.promo_type && booking.promo_discount ? (
+                        <Badge variant="secondary" className="ml-2">
+                          {booking.promo_label || "1x free bathroom"}
+                        </Badge>
+                      ) : null}
                     </TableCell>
                     <TableCell>
                       {booking.status === "paid" ? "Yes" : "No"}
@@ -933,6 +1120,434 @@ const AdminDashboard = () => {
         </AlertDialogContent>
       </AlertDialog>
 
+      <Dialog
+        open={createOpen}
+        onOpenChange={(open) => {
+          setCreateOpen(open);
+          if (!open) resetCreateForm();
+        }}
+      >
+        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>New booking</DialogTitle>
+            <DialogDescription>
+              Add a booking manually using the same fields as the booking form.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 text-sm">
+            <div className="rounded-2xl border border-border/60 bg-background/70 px-4 py-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Estimated price
+              </p>
+              <p className="text-lg font-semibold text-foreground">
+                {formatCurrency(createQuote.perVisitPrice)} per visit
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {createQuote.paymentSummary}
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label>Service</Label>
+                <Select
+                  value={createForm.service}
+                  onValueChange={(value) =>
+                    handleCreateServiceChange(value as CleaningService)
+                  }
+                >
+                  <SelectTrigger className={createFieldClassName}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(SERVICE_LABELS).map(([id, label]) => (
+                      <SelectItem key={id} value={id}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Frequency</Label>
+                <Select
+                  value={createForm.frequency}
+                  onValueChange={(value) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      frequency: value as Frequency,
+                    }))
+                  }
+                >
+                  <SelectTrigger
+                    disabled={createForm.service === "advanced"}
+                    className={createFieldClassName}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FREQUENCY_OPTIONS.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {createForm.service === "advanced" && (
+                  <p className="text-xs text-muted-foreground">
+                    Advanced cleans are one-time bookings.
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label>Property type</Label>
+                <Select
+                  value={createForm.propertyType}
+                  onValueChange={(value) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      propertyType: value as PropertyType,
+                    }))
+                  }
+                >
+                  <SelectTrigger className={createFieldClassName}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(createForm.service === "commercial"
+                      ? COMMERCIAL_PROPERTY_TYPES
+                      : RESIDENTIAL_PROPERTY_TYPES
+                    ).map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {PROPERTY_LABELS[type]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {createForm.service === "commercial" ? (
+                <div className="space-y-2">
+                  <Label>Rooms/areas</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={50}
+                    value={createForm.rooms}
+                    className={createFieldClassName}
+                    onChange={(event) =>
+                      setCreateForm((prev) => ({
+                        ...prev,
+                        rooms: Number(event.target.value) || 1,
+                      }))
+                    }
+                  />
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <Label>Bedrooms</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={createForm.bedrooms}
+                    className={createFieldClassName}
+                    onChange={(event) =>
+                      setCreateForm((prev) => ({
+                        ...prev,
+                        bedrooms: Number(event.target.value) || 1,
+                      }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Bathrooms</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={createForm.bathrooms}
+                    className={createFieldClassName}
+                    onChange={(event) =>
+                      setCreateForm((prev) => ({
+                        ...prev,
+                        bathrooms: Number(event.target.value) || 1,
+                      }))
+                      }
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label>Oven clean</Label>
+                <Select
+                  value={createForm.oven}
+                  onValueChange={(value) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      oven: value as OvenOption,
+                    }))
+                  }
+                >
+                  <SelectTrigger className={createFieldClassName}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {OVEN_OPTIONS.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Select
+                  value={createStatus}
+                  onValueChange={(value) =>
+                    setCreateStatus(value as "pending" | "paid" | "cancelled")
+                  }
+                >
+                  <SelectTrigger className={createFieldClassName}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="paid">Paid</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {createStatus === "paid" && (
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Payment amount</Label>
+                  <Input
+                    type="number"
+                    value={createPaymentAmount}
+                    className={createFieldClassName}
+                    onChange={(event) => setCreatePaymentAmount(event.target.value)}
+                  />
+                </div>
+              )}
+            </div>
+
+              <div className="space-y-2">
+                <Label>Add-ons</Label>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {EXTRA_OPTIONS.map((extra) => {
+                    const checked = createForm.extras.includes(extra.id);
+                    return (
+                      <button
+                        key={extra.id}
+                        type="button"
+                        aria-pressed={checked}
+                        onClick={() =>
+                          setCreateForm((prev) => {
+                            const nextExtras = checked
+                              ? prev.extras.filter((item) => item !== extra.id)
+                              : [...prev.extras, extra.id];
+                            return { ...prev, extras: nextExtras };
+                          })
+                        }
+                        className={`flex items-center gap-2 rounded-xl border border-border/60 px-3 py-2 text-left text-xs transition-colors hover:bg-muted/40 ${createCheckboxRowClassName}`}
+                      >
+                        <Checkbox checked={checked} className="pointer-events-none" />
+                        <span>
+                          {extra.label} (+{formatCurrency(extra.price)})
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2 md:col-span-2">
+                <Label>Custom extras</Label>
+                <Textarea
+                  value={createForm.customExtras ?? ""}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      customExtras: event.target.value,
+                    }))
+                  }
+                  placeholder="Extra requests beyond the standard checklist."
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Custom extras price</Label>
+                <Input
+                  type="number"
+                  value={createForm.customExtrasPrice ?? ""}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      customExtrasPrice: Number(event.target.value) || 0,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label>Full name</Label>
+                <Input
+                  value={createContact.name}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      name: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Email</Label>
+                <Input
+                  type="email"
+                  value={createContact.email}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      email: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Phone</Label>
+                <Input
+                  value={createContact.phone}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      phone: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Preferred contact</Label>
+                <Select
+                  value={createContact.preferredContact}
+                  onValueChange={(value) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      preferredContact: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger className={createFieldClassName}>
+                    <SelectValue placeholder="Select method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CONTACT_METHOD_OPTIONS.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label>Address</Label>
+                <Input
+                  value={createContact.address}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      address: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Postcode</Label>
+                <Input
+                  value={createContact.postcode}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      postcode: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Preferred date</Label>
+                <Input
+                  type="date"
+                  value={createContact.preferredDate}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      preferredDate: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Preferred time</Label>
+                <Input
+                  type="time"
+                  value={createContact.preferredTime}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      preferredTime: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label>Notes</Label>
+                <Textarea
+                  value={createContact.notes}
+                  className={createFieldClassName}
+                  onChange={(event) =>
+                    setCreateContact((prev) => ({
+                      ...prev,
+                      notes: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            {error && <p className="text-sm text-destructive">{error}</p>}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setCreateOpen(false);
+                  resetCreateForm();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleCreate} disabled={isCreating}>
+                {isCreating ? "Creating..." : "Create booking"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={Boolean(viewing)} onOpenChange={(open) => !open && setViewing(null)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
@@ -986,6 +1601,12 @@ const AdminDashboard = () => {
                   <p className="text-muted-foreground">
                     {viewing.payment_currency || "GBP"}
                   </p>
+                  {viewing.promo_type && viewing.promo_discount ? (
+                    <p className="text-xs text-muted-foreground">
+                      Promo applied: {viewing.promo_label || "1x free bathroom"} (-
+                      {formatCurrency(viewing.promo_discount)})
+                    </p>
+                  ) : null}
                   <Badge
                     variant={statusStyles[viewing.status ?? "pending"] ?? "outline"}
                   >

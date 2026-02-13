@@ -25,7 +25,7 @@ import { generateMetadata } from "@/utils";
 
 const TITLE = `Cleaning FAQs for ${AREA} | ${BRAND}`;
 const DESCRIPTION =
-  "Cleaning FAQs for Plymouth covering deposits, inspections, timing, ovens, carpets, and products. Spark & Mend serves Plymouth only with instant quotes.";
+  "Cleaning FAQs for Plymouth covering deposits, inspections, timing, ovens, carpets, and products. Spark & Mend serves Plymouth only with clear pricing.";
 const CANONICAL = "/faq-plymouth";
 
 const BASE_METADATA = generateMetadata({
@@ -126,13 +126,13 @@ const FAQ_SECTIONS = [
             Inside cupboards can be added when you request a quote. Add it in the
             extras section of the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              instant quote form
+              booking form
             </Link>
             so pricing stays accurate.
           </p>
         ),
         answerText:
-          "Inside cupboards can be added when you request a quote. Add it in the extras section of the instant quote form so pricing stays accurate.",
+          "Inside cupboards can be added when you request a quote. Add it in the extras section of the booking form so pricing stays accurate.",
       },
       {
         id: "deposit-5",
@@ -162,7 +162,7 @@ const FAQ_SECTIONS = [
         answer: (
           <p>
             Timings depend on the service level, property size, and condition. Your
-            instant quote includes a tailored estimate. See pricing guidance on the{" "}
+            booking estimate includes a tailored time range. See pricing guidance on the{" "}
             <Link
               href="/cleaning-prices-plymouth"
               className="text-foreground underline"
@@ -173,7 +173,7 @@ const FAQ_SECTIONS = [
           </p>
         ),
         answerText:
-          "Timings depend on the service level, property size, and condition. Your instant quote includes a tailored estimate. See pricing guidance on the Plymouth prices page.",
+          "Timings depend on the service level, property size, and condition. Your booking estimate includes a tailored time range. See pricing guidance on the Plymouth prices page.",
       },
       {
         id: "timing-2",
@@ -183,13 +183,13 @@ const FAQ_SECTIONS = [
             We cannot promise same-day availability, but we will always check our
             schedule. Submit a request via the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              instant quote form
+              booking form
             </Link>
-            and we will confirm the earliest slot.
+            {" "}and we will confirm the earliest slot.
           </p>
         ),
         answerText:
-          "We cannot promise same-day availability, but we will always check our schedule. Submit a request via the instant quote form and we will confirm the earliest slot.",
+          "We cannot promise same-day availability, but we will always check our schedule. Submit a request via the booking form and we will confirm the earliest slot.",
       },
       {
         id: "timing-3",
@@ -216,7 +216,7 @@ const FAQ_SECTIONS = [
             <Link href="/basic-clean" className="text-foreground underline">
               Basic Clean service
             </Link>
-            and you can choose the frequency when you request a quote.
+            {" "}and you can choose the frequency when you request a quote.
           </p>
         ),
         answerText:
@@ -290,13 +290,13 @@ const FAQ_SECTIONS = [
             Yes. We bring our own kit for every clean. If you have preferences,
             add a note in the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              quote form
+              booking form
             </Link>
             .
           </p>
         ),
         answerText:
-          "Yes. We bring our own kit for every clean. If you have preferences, add a note in the quote form.",
+          "Yes. We bring our own kit for every clean. If you have preferences, add a note in the booking form.",
       },
       {
         id: "products-2",
@@ -306,13 +306,13 @@ const FAQ_SECTIONS = [
             If you want us to use specific products, let us know and we can work
             with what you provide. Share details in the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              instant quote notes
+              booking notes
             </Link>
             .
           </p>
         ),
         answerText:
-          "If you want us to use specific products, let us know and we can work with what you provide. Share details in the instant quote notes.",
+          "If you want us to use specific products, let us know and we can work with what you provide. Share details in the booking notes.",
       },
       {
         id: "products-3",
@@ -346,13 +346,13 @@ const FAQ_SECTIONS = [
           <p>
             Interior oven cleaning is available as an add-on. Select it in the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              quote form
+              booking form
             </Link>
-            and we will price it accurately.
+            {" "}and we will price it accurately.
           </p>
         ),
         answerText:
-          "Interior oven cleaning is available as an add-on. Select it in the quote form and we will price it accurately.",
+          "Interior oven cleaning is available as an add-on. Select it in the booking form and we will price it accurately.",
       },
       {
         id: "appliances-2",
@@ -361,13 +361,13 @@ const FAQ_SECTIONS = [
           <p>
             Yes, both can be added to your booking. Choose the add-ons in the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              instant quote form
+              booking form
             </Link>
-            to keep the scope clear.
+            {" "}to keep the scope clear.
           </p>
         ),
         answerText:
-          "Yes, both can be added to your booking. Choose the add-ons in the instant quote form to keep the scope clear.",
+          "Yes, both can be added to your booking. Choose the add-ons in the booking form to keep the scope clear.",
       },
       {
         id: "appliances-3",
@@ -380,7 +380,7 @@ const FAQ_SECTIONS = [
             <Link href="/intermediate-clean" className="text-foreground underline">
               Deep Cleaning service
             </Link>
-            flow.
+            {" "}flow.
           </p>
         ),
         answerText:
@@ -454,16 +454,16 @@ const FAQ_SECTIONS = [
         question: "Can I get a quote without calling?",
         answer: (
           <p>
-            Yes. Use the online calculator to get a fixed instant quote. Start on
+            Yes. Use the online calculator to get a fixed price. Start on
             the{" "}
             <Link href="/get-a-quote" className="text-foreground underline">
-              quote page
+              booking page
             </Link>
             .
           </p>
         ),
         answerText:
-          "Yes. Use the online calculator to get a fixed instant quote. Start on the quote page.",
+          "Yes. Use the online calculator to get a fixed price. Start on the booking page.",
       },
     ],
   },
@@ -622,9 +622,9 @@ const FaqPlymouthPage = () => {
       <Section className={`${sectionBase} ${surfaceNeutral}`}>
         <CTAStrip
           title="Still have questions?"
-          description="Get a fixed instant quote or send us your checklist so we can confirm the scope."
+          description="Get a fixed price or send us your checklist so we can confirm the scope."
           primaryHref="/get-a-quote"
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />

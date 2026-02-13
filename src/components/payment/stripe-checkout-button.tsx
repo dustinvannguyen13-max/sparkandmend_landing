@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PrimaryButton } from "@/components/ui/primary-button";
-import { QuoteResult } from "@/utils/quote";
+import { QuoteResult, type QuoteInput } from "@/utils/quote";
 
 interface ContactPayload {
   name?: string;
@@ -20,12 +20,14 @@ interface PaymentActionProps {
   quote: QuoteResult;
   contact: ContactPayload;
   referenceHint?: string;
+  input?: QuoteInput;
 }
 
 const StripeCheckoutButton = ({
   quote,
   contact,
   referenceHint,
+  input,
 }: PaymentActionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +66,12 @@ const StripeCheckoutButton = ({
             preferredContact: contact.preferredContact,
             notes: contact.notes,
           },
+          input: input
+            ? {
+                service: input.service,
+                bathrooms: input.bathrooms,
+              }
+            : undefined,
           referenceHint,
         }),
       });

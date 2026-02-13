@@ -6,6 +6,11 @@ import { NextResponse } from "next/server";
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 import { APP_DOMAIN } from "@/utils/constants/site";
 import { applyOfferToPrice, getActiveOffer } from "@/lib/offers";
+import {
+  applyFreeBathroomPromo,
+  isFirstTimeCustomer,
+} from "@/lib/booking-promos";
+import type { QuoteInput } from "@/utils/quote";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const APP_DOMAIN_BASE = APP_DOMAIN.replace(/\/$/, "");
@@ -118,6 +123,7 @@ const createStripeSession = async (
   reference: string,
   amount: number,
   offerLabel?: string | null,
+  promoLabel?: string | null,
 ) => {
   const headers = buildStripeHeaders();
   if (!headers) {
@@ -140,6 +146,9 @@ const createStripeSession = async (
   form.append("metadata[reference]", reference);
   if (offerLabel) {
     form.append("metadata[offer]", offerLabel);
+  }
+  if (promoLabel) {
+    form.append("metadata[promo]", promoLabel);
   }
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
@@ -191,6 +200,10 @@ export async function POST(request: Request) {
         preferredContact?: string;
         notes?: string;
       };
+      input?: {
+        service?: "basic" | "intermediate" | "advanced" | "commercial";
+        bathrooms?: number;
+      };
       extras?: string[];
       referenceHint?: string;
     };
@@ -216,7 +229,24 @@ export async function POST(request: Request) {
 
     const activeOffer = await getActiveOffer();
     const offerResult = applyOfferToPrice(baseAmount, activeOffer);
-    const amount = offerResult.finalPrice;
+    const isFirstTime = await isFirstTimeCustomer(
+      body.contact?.email,
+      body.contact?.address,
+    );
+    let firstVisitPrice = offerResult.finalPrice;
+    let promo = null as ReturnType<typeof applyFreeBathroomPromo>["promo"];
+    if (body.input) {
+      const promoResult = applyFreeBathroomPromo(
+        { ...body.quote, perVisitPrice: offerResult.finalPrice } as {
+          perVisitPrice: number;
+        } & typeof body.quote,
+        body.input as QuoteInput,
+        isFirstTime,
+      );
+      firstVisitPrice = promoResult.firstVisitPrice;
+      promo = promoResult.promo;
+    }
+    const amount = firstVisitPrice;
 
     const reference =
       body.referenceHint ||
@@ -224,20 +254,32 @@ export async function POST(request: Request) {
 
     const bookingPayload = buildBookingPayload({
       reference,
-      quote: { ...body.quote, perVisitPrice: amount },
+      quote: { ...body.quote, perVisitPrice: offerResult.finalPrice },
       contact: body.contact,
       extras: body.extras || [],
     });
+    const promoPayload = promo
+      ? {
+          promo_type: promo.type,
+          promo_label: promo.label,
+          promo_discount: promo.discountAmount,
+        }
+      : {
+          promo_type: "",
+          promo_label: "",
+          promo_discount: 0,
+        };
 
     const existing = await fetchBookingByReference(reference);
     if (!existing) {
-      await insertBookingRow(bookingPayload);
+      await insertBookingRow({ ...bookingPayload, ...promoPayload });
     }
 
     const session = await createStripeSession(
       reference,
       amount,
       offerResult.offerSummary?.label ?? null,
+      promo?.label ?? null,
     );
     await patchBookingStripeId(reference, session.id);
 

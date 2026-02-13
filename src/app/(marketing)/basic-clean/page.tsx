@@ -90,12 +90,12 @@ const STEP_IMAGES = [
 const STEP_DETAILS = [
   {
     image: STEP_IMAGES[0],
-    alt: "Calculator for instant quote",
+    alt: "Booking calculator preview",
     numberLabel: "01",
     description: (
       <>
         <Link href={QUOTE_LINK} className="text-foreground underline">
-          Get a fixed instant quote
+          Arrange a FREE clean
         </Link>{" "}
         in about 60 seconds with the calculator.
       </>
@@ -235,7 +235,7 @@ const pricingFactors = [
 const timeFactors = [
   "Regular cleans are shorter once the baseline is set",
   "Time depends on property size and condition",
-  "Your instant quote includes a tailored time estimate",
+  "Your booking estimate includes a tailored time estimate",
 ];
 
 const beforeAfterItems = [
@@ -257,7 +257,7 @@ const faqs = [
   {
     question: "How long does it take?",
     answer:
-      "It depends on the size and condition of the property. Your fixed instant quote gives a clear estimate, and we confirm timings before booking.",
+      "It depends on the size and condition of the property. Your booking estimate gives a clear baseline, and we confirm timings before booking.",
   },
   {
     question: "Do I need to be home?",
@@ -282,7 +282,7 @@ const faqs = [
   {
     question: "What if I need regular cleaning?",
     answer:
-      "Choose weekly or fortnightly in the quote form. We will line up a consistent schedule that works for you.",
+      "Choose weekly or fortnightly in the booking form. We will line up a consistent schedule that works for you.",
   },
   {
     question: "Can I book for a rental or end-of-tenancy style reset?",
@@ -297,7 +297,7 @@ const AXA_BADGE = "https://fmijmundotmgtsemfdat.supabase.co/storage/v1/object/pu
 const CtaButtons = () => (
   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 lg:justify-start">
     <PrimaryButton asChild>
-      <Link href={QUOTE_LINK}>Get an Instant Quote</Link>
+      <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
     </PrimaryButton>
     <Button variant="outline" asChild>
       <Link href={CONTACT_PHONE_LINK}>Call or WhatsApp us</Link>
@@ -338,7 +338,7 @@ const BasicCleanPage = () => {
               </p>
               <CtaButtons />
               <p className="mt-3 text-sm text-muted-foreground">
-                Fixed instant quote takes about 60 seconds.
+                Arrange a FREE clean in about 60 seconds.
               </p>
               <p className="text-sm text-muted-foreground">
                 Define your requirements, book instantly, and make payment all within five minutes—one-time only if needed. We arrive on your chosen date and keep in touch if we need anything.
@@ -436,7 +436,7 @@ const BasicCleanPage = () => {
           <p className="mt-4 text-sm text-muted-foreground">
             Not sure which clean you need?{" "}
             <Link href={QUOTE_LINK} className="text-foreground underline">
-              Get an Instant Quote
+              Arrange a FREE clean
             </Link>
             .
           </p>
@@ -464,7 +464,7 @@ const BasicCleanPage = () => {
             description="Prices vary by size, condition, and frequency. The quote includes the standard checklist for this service, plus any add-ons you select."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
-            ctaLabel="Get an Instant Quote"
+            ctaLabel="Arrange a FREE clean"
           />
         </AnimationContainer>
       </Section>
@@ -486,7 +486,7 @@ const BasicCleanPage = () => {
           <SectionHeader
             eyebrow="Reviews"
             title="Plymouth customers keep coming back"
-            description="Fixed instant quotes, friendly cleaners, and a consistent finish."
+            description="Clear pricing, friendly cleaners, and a consistent finish."
           />
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {basicReviews.map((review) => (
@@ -604,7 +604,7 @@ const BasicCleanPage = () => {
           <SectionHeader
             eyebrow="Process"
             title="How it works"
-            description="Fixed instant quote via the calculator, then book instantly."
+            description="Use the booking calculator, then confirm your booking."
           />
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
             {STEP_DETAILS.map((step) => (
@@ -708,9 +708,9 @@ const BasicCleanPage = () => {
       <Section>
         <CTAStrip
           title="Ready for a simple, reliable clean?"
-          description="Get a fixed instant quote, book instantly, and keep things tidy without the fuss."
+          description="Arrange a FREE clean, book in minutes, and keep things tidy without the fuss."
           primaryHref={QUOTE_LINK}
-          primaryLabel="Get an Instant Quote"
+          primaryLabel="Arrange a FREE clean"
           secondaryHref={CONTACT_PHONE_LINK}
           secondaryLabel="Call or WhatsApp us"
         />
