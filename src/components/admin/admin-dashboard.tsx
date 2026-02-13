@@ -622,29 +622,42 @@ const AdminDashboard = () => {
                 <p className="text-sm text-muted-foreground">No upcoming bookings.</p>
               )}
               {upcomingBookings.map((booking) => (
-                <button
+                <div
                   key={booking.reference}
-                  type="button"
-                  onClick={() => setSelected(booking)}
                   className="w-full rounded-2xl border border-border/60 bg-background/70 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/40"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <div>
+                    <button
+                      type="button"
+                      onClick={() => setSelected(booking)}
+                      className="flex-1 text-left"
+                    >
                       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                         {booking.reference}
                       </p>
                       <p className="text-sm font-semibold text-foreground">
                         {booking.contact_name || "—"}
                       </p>
+                    </button>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={statusStyles[booking.status ?? "pending"] ?? "outline"}>
+                        {booking.status ?? "pending"}
+                      </Badge>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setViewing(booking)}
+                        aria-label="View booking details"
+                        title="View booking details"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Badge variant={statusStyles[booking.status ?? "pending"] ?? "outline"}>
-                      {booking.status ?? "pending"}
-                    </Badge>
                   </div>
                   <div className="mt-2 text-xs text-muted-foreground">
                     {formatDate(booking.preferred_date)} • {booking.preferred_time || "Time TBC"}
                   </div>
-                </button>
+                </div>
               ))}
             </CardContent>
           </Card>

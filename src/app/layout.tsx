@@ -2,6 +2,7 @@ import { Providers } from "@/components";
 import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 import { aeonik, cn, generateMetadata, inter } from "@/utils";
+import OfferBar from "@/components/marketing/offer-bar";
 
 export const metadata = {
   ...generateMetadata(),
@@ -23,6 +24,7 @@ export default function RootLayout({
         )}
       >
         <Providers>
+          <OfferBar />
           <Toaster richColors theme="light" position="top-right" />
           {children}
         </Providers>

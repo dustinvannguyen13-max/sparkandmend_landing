@@ -10,6 +10,7 @@ import {
   formatCurrency,
   parseQuoteSearchParams,
 } from "@/utils/quote";
+import { applyOfferToQuote, getActiveOffer } from "@/lib/offers";
 
 interface QuoteResultPageProps {
   searchParams: Record<string, string | string[] | undefined>;
@@ -70,9 +71,14 @@ const buildCalendarLink = (
   )}`;
 };
 
-const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
+const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
   const input = parseQuoteSearchParams(searchParams);
-  const quote = calculateQuote(input);
+  const baseQuote = calculateQuote(input);
+  const activeOffer = await getActiveOffer();
+  const { quote: displayQuote, offerSummary } = applyOfferToQuote(
+    baseQuote,
+    activeOffer,
+  );
   const preferredDate = getParam(searchParams, "preferredDate");
   const preferredTime = getParam(searchParams, "preferredTime");
   const contactMethod = getParam(searchParams, "contactMethod");
@@ -87,11 +93,11 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
   const showSubmissionWarning = submissionStatus === "0";
   const contactAddress = getParam(searchParams, "contactAddress");
   const calendarDetails = [
-    `Quote: ${formatCurrency(quote.perVisitPrice)} per visit`,
-    `Service: ${quote.serviceLabel}`,
-    `Property: ${quote.propertySummary}`,
-    `Schedule: ${quote.frequencyLabel}`,
-    quote.addOns.length > 0 ? `Add-ons: ${quote.addOns.join(", ")}` : null,
+    `Quote: ${formatCurrency(displayQuote.perVisitPrice)} per visit`,
+    `Service: ${displayQuote.serviceLabel}`,
+    `Property: ${displayQuote.propertySummary}`,
+    `Schedule: ${displayQuote.frequencyLabel}`,
+    displayQuote.addOns.length > 0 ? `Add-ons: ${displayQuote.addOns.join(", ")}` : null,
     preferredTimeLabel ? `Preferred time: ${preferredTimeLabel}` : null,
     contactMethodLabel ? `Preferred contact: ${contactMethodLabel}` : null,
     contactAddress ? `Address: ${contactAddress}` : null,
@@ -105,14 +111,14 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
   );
   const whatsappMessage = [
     "Hi Spark & Mend, I would like to book a clean.",
-    `Service: ${quote.serviceLabel}`,
-    `Property: ${quote.propertySummary}`,
-    `Schedule: ${quote.frequencyLabel}`,
-    quote.addOns.length > 0 ? `Add-ons: ${quote.addOns.join(", ")}` : null,
+    `Service: ${displayQuote.serviceLabel}`,
+    `Property: ${displayQuote.propertySummary}`,
+    `Schedule: ${displayQuote.frequencyLabel}`,
+    displayQuote.addOns.length > 0 ? `Add-ons: ${displayQuote.addOns.join(", ")}` : null,
     preferredDateLabel ? `Preferred start date: ${preferredDateLabel}` : null,
     preferredTimeLabel ? `Preferred start time: ${preferredTimeLabel}` : null,
     contactAddress ? `Address: ${contactAddress}` : null,
-    `Quote: ${formatCurrency(quote.perVisitPrice)} per visit`,
+    `Quote: ${formatCurrency(displayQuote.perVisitPrice)} per visit`,
   ]
     .filter(Boolean)
     .join("\n");
@@ -165,11 +171,21 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                 <div>
                   <p className="text-sm text-muted-foreground">Estimated price</p>
                   <p className="text-4xl font-semibold text-primary">
-                    {formatCurrency(quote.perVisitPrice)}
+                    {formatCurrency(displayQuote.perVisitPrice)}
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">
-                    {quote.paymentSummary}
+                    {displayQuote.paymentSummary}
                   </p>
+                  {offerSummary && (
+                    <div className="mt-3 space-y-1 text-sm">
+                      <p className="text-emerald-600">
+                        Offer applied: {offerSummary.title} (-{formatCurrency(offerSummary.discountAmount)})
+                      </p>
+                      <p className="text-xs text-muted-foreground line-through">
+                        Original price: {formatCurrency(baseQuote.perVisitPrice)}
+                      </p>
+                    </div>
+                  )}
                   {referenceHint && (
                     <p className="mt-2 text-xs text-muted-foreground">
                       Reference:{" "}
@@ -178,9 +194,9 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                       </span>
                     </p>
                   )}
-                  {quote.monthlyEstimate && (
+                  {displayQuote.monthlyEstimate && (
                     <p className="text-xs text-muted-foreground mt-1">
-                      Estimated monthly total: {formatCurrency(quote.monthlyEstimate)}
+                      Estimated monthly total: {formatCurrency(displayQuote.monthlyEstimate)}
                     </p>
                   )}
                 </div>
@@ -188,15 +204,15 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                 <div className="grid gap-3 text-sm text-muted-foreground">
                   <p>
                     <span className="font-medium text-foreground">Service:</span>{" "}
-                    {quote.serviceLabel}
+                    {displayQuote.serviceLabel}
                   </p>
                   <p>
                     <span className="font-medium text-foreground">Property:</span>{" "}
-                    {quote.propertySummary}
+                    {displayQuote.propertySummary}
                   </p>
                   <p>
                     <span className="font-medium text-foreground">Schedule:</span>{" "}
-                    {quote.frequencyLabel}
+                    {displayQuote.frequencyLabel}
                   </p>
                   {preferredDateLabel && (
                     <p>
@@ -235,42 +251,42 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                     What is included
                   </h3>
                   <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                    {quote.packageItems.map((item) => (
+                    {displayQuote.packageItems.map((item) => (
                       <CheckListItem key={item}>{item}</CheckListItem>
                     ))}
                   </ul>
                 </div>
 
-                {quote.addOns.length > 0 && (
+                {displayQuote.addOns.length > 0 && (
                   <div>
                     <h3 className="text-lg font-semibold text-foreground">
                       Selected add-ons
                     </h3>
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      {quote.addOns.map((item) => (
+                      {displayQuote.addOns.map((item) => (
                         <CheckListItem key={item}>{item}</CheckListItem>
                       ))}
                     </ul>
                   </div>
                 )}
-                {quote.customExtrasItems && quote.customExtrasItems.length > 0 && (
+                {displayQuote.customExtrasItems && displayQuote.customExtrasItems.length > 0 && (
                   <div className="mt-6">
                     <h3 className="text-lg font-semibold text-foreground">
                       Custom requests we spotted
                     </h3>
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      {quote.customExtrasItems.map((item) => (
+                      {displayQuote.customExtrasItems.map((item) => (
                         <CheckListItem key={item}>{item}</CheckListItem>
                       ))}
                     </ul>
-                    {quote.customExtrasReason && (
+                    {displayQuote.customExtrasReason && (
                       <p className="mt-3 text-xs text-muted-foreground">
-                        {quote.customExtrasReason}
+                        {displayQuote.customExtrasReason}
                       </p>
                     )}
-                    {quote.customExtrasText && (
+                    {displayQuote.customExtrasText && (
                       <p className="mt-2 text-xs text-muted-foreground italic">
-                        Original request: {quote.customExtrasText}
+                        Original request: {displayQuote.customExtrasText}
                       </p>
                     )}
                   </div>
@@ -321,7 +337,7 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                     </p>
                   )}
                   <StripeCheckoutButton
-                    quote={quote}
+                    quote={baseQuote}
                     contact={contactPayload}
                     referenceHint={referenceHint ?? undefined}
                   />

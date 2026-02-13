@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { calculateQuote, type QuoteInput } from "@/utils/quote";
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 import { APP_DOMAIN } from "@/utils/constants/site";
+import { applyOfferToQuote, getActiveOffer } from "@/lib/offers";
 
 interface QuoteContact {
   name: string;
@@ -47,6 +48,7 @@ const buildCustomerEmailBody = (
   reference: string,
   contact: QuoteContact,
   quoteSummary: ReturnType<typeof calculateQuote>,
+  offerSummary: ReturnType<typeof applyOfferToQuote>["offerSummary"],
 ) => {
   return [
     `Thanks ${contact.name}, we have received your quote request.`,
@@ -56,6 +58,9 @@ const buildCustomerEmailBody = (
     `Property: ${quoteSummary.propertySummary}`,
     `Frequency: ${quoteSummary.frequencyLabel}`,
     `Estimated price: £${quoteSummary.perVisitPrice.toFixed(0)} per visit`,
+    offerSummary
+      ? `Offer applied: ${offerSummary.title} (-£${offerSummary.discountAmount.toFixed(0)})`
+      : null,
     ``,
     `Manage your booking: ${APP_DOMAIN}/my-booking?reference=${reference}`,
   ]
@@ -66,7 +71,8 @@ const buildCustomerEmailBody = (
 const formatEmailBody = (
   input: QuoteInput,
   contact: QuoteContact,
-  quoteSummary: ReturnType<typeof calculateQuote>
+  quoteSummary: ReturnType<typeof calculateQuote>,
+  offerSummary: ReturnType<typeof applyOfferToQuote>["offerSummary"]
 ) => {
   return [
     `New cleaning quote request`,
@@ -75,6 +81,9 @@ const formatEmailBody = (
     `Property: ${quoteSummary.propertySummary}`,
     `Frequency: ${quoteSummary.frequencyLabel}`,
     `Price: £${quoteSummary.perVisitPrice.toFixed(0)} per visit`,
+    offerSummary
+      ? `Offer applied: ${offerSummary.title} (-£${offerSummary.discountAmount.toFixed(0)})`
+      : null,
     quoteSummary.addOns.length > 0
       ? `Add-ons: ${quoteSummary.addOns.join(", ")}`
       : `Add-ons: None`,
@@ -125,7 +134,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const quoteSummary = calculateQuote(input);
+    const baseQuoteSummary = calculateQuote(input);
+    const activeOffer = await getActiveOffer();
+    const { quote: quoteSummary, offerSummary } = applyOfferToQuote(
+      baseQuoteSummary,
+      activeOffer,
+    );
     const reference = `SMQ-${randomUUID().split("-")[0].toUpperCase()}`;
     const deliveries = {
       database: false,
@@ -206,7 +220,7 @@ export async function POST(request: Request) {
           from: emailFrom,
           to: [emailTo],
           subject: `New quote request - ${contact.name} (${reference})`,
-          text: formatEmailBody(input, contact, quoteSummary),
+          text: formatEmailBody(input, contact, quoteSummary, offerSummary),
         }),
       });
 
@@ -230,7 +244,7 @@ export async function POST(request: Request) {
           from: emailFrom,
           to: [contact.email],
           subject: `Your Spark & Mend quote reference ${reference}`,
-          text: buildCustomerEmailBody(reference, contact, quoteSummary),
+          text: buildCustomerEmailBody(reference, contact, quoteSummary, offerSummary),
         }),
       });
 

@@ -9,12 +9,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/utils";
-import { Calendar, LayoutGrid, LineChart, LogOut, Menu } from "lucide-react";
+import { Calendar, LayoutGrid, LineChart, LogOut, Menu, Tag } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/dashboard", icon: LayoutGrid },
   { label: "Calendar", href: "/dashboard/calendar", icon: Calendar },
   { label: "Metrics", href: "/dashboard/metrics", icon: LineChart },
+  { label: "Offers", href: "/dashboard/offers", icon: Tag },
 ];
 
 const AdminShell = ({ children }: { children: React.ReactNode }) => {

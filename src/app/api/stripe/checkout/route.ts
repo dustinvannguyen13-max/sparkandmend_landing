@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 import { APP_DOMAIN } from "@/utils/constants/site";
+import { applyOfferToPrice, getActiveOffer } from "@/lib/offers";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const APP_DOMAIN_BASE = APP_DOMAIN.replace(/\/$/, "");
@@ -113,7 +114,11 @@ const patchBookingStripeId = async (reference: string, sessionId: string) => {
   );
 };
 
-const createStripeSession = async (reference: string, amount: number) => {
+const createStripeSession = async (
+  reference: string,
+  amount: number,
+  offerLabel?: string | null,
+) => {
   const headers = buildStripeHeaders();
   if (!headers) {
     throw new Error("Missing Stripe secret key.");
@@ -133,6 +138,9 @@ const createStripeSession = async (reference: string, amount: number) => {
   form.append("success_url", `${APP_DOMAIN_BASE}/booking-confirmation?session_id={CHECKOUT_SESSION_ID}&reference=${reference}`);
   form.append("cancel_url", `${APP_DOMAIN_BASE}/your-cleaning-quote?reference=${reference}`);
   form.append("metadata[reference]", reference);
+  if (offerLabel) {
+    form.append("metadata[offer]", offerLabel);
+  }
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
@@ -198,13 +206,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const amount = Math.max(0, body.quote.perVisitPrice);
-    if (amount <= 0) {
+    const baseAmount = Math.max(0, body.quote.perVisitPrice);
+    if (baseAmount <= 0) {
       return NextResponse.json(
         { error: "A valid total amount is required." },
         { status: 400 },
       );
     }
+
+    const activeOffer = await getActiveOffer();
+    const offerResult = applyOfferToPrice(baseAmount, activeOffer);
+    const amount = offerResult.finalPrice;
 
     const reference =
       body.referenceHint ||
@@ -212,7 +224,7 @@ export async function POST(request: Request) {
 
     const bookingPayload = buildBookingPayload({
       reference,
-      quote: body.quote,
+      quote: { ...body.quote, perVisitPrice: amount },
       contact: body.contact,
       extras: body.extras || [],
     });
@@ -222,7 +234,11 @@ export async function POST(request: Request) {
       await insertBookingRow(bookingPayload);
     }
 
-    const session = await createStripeSession(reference, amount);
+    const session = await createStripeSession(
+      reference,
+      amount,
+      offerResult.offerSummary?.label ?? null,
+    );
     await patchBookingStripeId(reference, session.id);
 
     return NextResponse.json({ url: session.url });
