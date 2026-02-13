@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { getAdminSession, isAdminEmail } from "@/lib/admin/auth";
 import { APP_DOMAIN } from "@/utils/constants/site";
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
   const state = searchParams.get("state");
-  const storedState = request.cookies.get(GOOGLE_OAUTH_STATE_COOKIE)?.value;
+  const storedState = cookies().get(GOOGLE_OAUTH_STATE_COOKIE)?.value;
 
   if (!code || !state || !storedState || storedState !== state) {
     return NextResponse.json(

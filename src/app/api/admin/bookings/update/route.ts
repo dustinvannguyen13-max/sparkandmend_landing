@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/auth";
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
+import { buildBookingEmail, sendBookingEmail } from "@/lib/booking-email";
 
 const ALLOWED_FIELDS = new Set([
   "service",
@@ -95,7 +96,22 @@ export async function PATCH(request: Request) {
       );
     }
 
-    return NextResponse.json({ booking: data[0] });
+    const updated = data[0] as Record<string, unknown>;
+    const contactEmail = updated.contact_email as string | undefined;
+    const isCancelled = updated.status === "cancelled";
+    if (contactEmail) {
+      const { subject, body } = buildBookingEmail(
+        isCancelled ? "cancelled" : "amended",
+        updated,
+      );
+      try {
+        await sendBookingEmail({ to: contactEmail, subject, body });
+      } catch {
+        // Email failures should not block booking updates.
+      }
+    }
+
+    return NextResponse.json({ booking: updated });
   } catch (error) {
     return NextResponse.json(
       { error: "Unable to update booking." },

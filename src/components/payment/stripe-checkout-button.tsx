@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PrimaryButton } from "@/components/ui/primary-button";
-import { QuoteResult, type QuoteInput } from "@/utils/quote";
+import { QuoteResult, formatCurrency, type QuoteInput } from "@/utils/quote";
 
 interface ContactPayload {
   name?: string;
@@ -21,6 +21,7 @@ interface PaymentActionProps {
   contact: ContactPayload;
   referenceHint?: string;
   input?: QuoteInput;
+  displayAmount?: number;
 }
 
 const StripeCheckoutButton = ({
@@ -28,6 +29,7 @@ const StripeCheckoutButton = ({
   contact,
   referenceHint,
   input,
+  displayAmount,
 }: PaymentActionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -96,7 +98,9 @@ const StripeCheckoutButton = ({
         disabled={isLoading}
         className="w-full"
       >
-        {isLoading ? "Preparing checkout..." : "Pay Now"}
+        {isLoading
+          ? "Preparing checkout..."
+          : `Pay Now (${formatCurrency(displayAmount ?? quote.perVisitPrice)})`}
       </PrimaryButton>
       {error ? (
         <p className="text-xs text-destructive">{error}</p>

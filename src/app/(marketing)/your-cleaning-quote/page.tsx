@@ -388,6 +388,7 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                     contact={contactPayload}
                     referenceHint={referenceHint ?? undefined}
                     input={input}
+                    displayAmount={firstVisitPrice ?? displayQuote.perVisitPrice}
                   />
                   <Button variant="outline" asChild>
                     <Link href={whatsappUrl}>Pay later / cash (WhatsApp)</Link>

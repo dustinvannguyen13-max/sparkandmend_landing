@@ -88,7 +88,7 @@ const fetchBookingByReference = async (reference: string) => {
   const response = await fetch(
     `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
       reference,
-    )}&select=reference`,
+    )}&select=reference,service,property_summary,per_visit_price,promo_label,promo_discount,contact_email`,
     {
       headers: supabaseHeaders,
     },
@@ -227,6 +227,32 @@ export async function POST(request: Request) {
       );
     }
 
+    const reference =
+      body.referenceHint ||
+      `SM-${randomUUID().split("-")[0].toUpperCase()}`;
+
+    const existing = await fetchBookingByReference(reference);
+    if (existing) {
+      const storedAmount = Number(existing.per_visit_price);
+      const promoDiscount = Number(existing.promo_discount ?? 0);
+      const amount = Math.max(0, storedAmount - Math.max(0, promoDiscount));
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return NextResponse.json(
+          { error: "A valid payment amount is required." },
+          { status: 400 },
+        );
+      }
+
+      const session = await createStripeSession(
+        reference,
+        amount,
+        null,
+        (existing.promo_label as string | null) ?? null,
+      );
+      await patchBookingStripeId(reference, session.id);
+      return NextResponse.json({ url: session.url });
+    }
+
     const activeOffer = await getActiveOffer();
     const offerResult = applyOfferToPrice(baseAmount, activeOffer);
     const isFirstTime = await isFirstTimeCustomer(
@@ -248,10 +274,6 @@ export async function POST(request: Request) {
     }
     const amount = firstVisitPrice;
 
-    const reference =
-      body.referenceHint ||
-      `SM-${randomUUID().split("-")[0].toUpperCase()}`;
-
     const bookingPayload = buildBookingPayload({
       reference,
       quote: { ...body.quote, perVisitPrice: offerResult.finalPrice },
@@ -270,10 +292,7 @@ export async function POST(request: Request) {
           promo_discount: 0,
         };
 
-    const existing = await fetchBookingByReference(reference);
-    if (!existing) {
-      await insertBookingRow({ ...bookingPayload, ...promoPayload });
-    }
+    await insertBookingRow({ ...bookingPayload, ...promoPayload });
 
     const session = await createStripeSession(
       reference,

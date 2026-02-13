@@ -63,6 +63,7 @@ import {
   formatCurrency,
 } from "@/utils/quote";
 import { Ban, Eye, Pencil, Plus, Save, Trash2, User } from "lucide-react";
+import { APP_DOMAIN } from "@/utils/constants/site";
 
 type BookingRecord = {
   reference: string;
@@ -106,6 +107,8 @@ type BookingContactForm = {
   preferredTime: string;
   notes: string;
 };
+
+type EmailTemplateOption = "amended" | "cancelled" | "custom";
 
 const statusStyles: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   paid: "default",
@@ -159,6 +162,12 @@ const AdminDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [confirmAction, setConfirmAction] = useState<"save" | "cancel" | "delete" | null>(null);
+  const [emailTemplate, setEmailTemplate] = useState<EmailTemplateOption>("amended");
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+  const [emailSending, setEmailSending] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [emailSuccess, setEmailSuccess] = useState<string | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [createForm, setCreateForm] = useState<QuoteInput>(DEFAULT_QUOTE_INPUT);
   const [createContact, setCreateContact] = useState<BookingContactForm>({
@@ -200,6 +209,38 @@ const AdminDashboard = () => {
   const createQuote = useMemo(() => calculateQuote(createForm), [createForm]);
   const createFieldClassName = "bg-[#fff7ed]";
   const createCheckboxRowClassName = "bg-[#fff7ed]";
+
+  const buildEmailTemplate = (
+    template: EmailTemplateOption,
+    booking: BookingRecord,
+  ) => {
+    const name = booking.contact_name || "there";
+    const reference = booking.reference || "your booking";
+    const subject =
+      template === "cancelled"
+        ? `Booking cancelled for ${reference}`
+        : `Booking updated for ${reference}`;
+    const intro =
+      template === "cancelled"
+        ? `Hi ${name}, your booking has been cancelled as requested.`
+        : `Hi ${name}, your booking details have been updated.`;
+    const lines = [
+      intro,
+      "",
+      `Reference: ${reference}`,
+      booking.service ? `Service: ${booking.service}` : null,
+      booking.property_summary ? `Property: ${booking.property_summary}` : null,
+      booking.frequency ? `Schedule: ${booking.frequency}` : null,
+      booking.preferred_date ? `Preferred date: ${formatDate(booking.preferred_date)}` : null,
+      booking.preferred_time ? `Preferred time: ${booking.preferred_time}` : null,
+      booking.notes ? `Notes: ${booking.notes}` : null,
+      "",
+      `Manage your booking: ${APP_DOMAIN}/my-booking?reference=${reference}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+    return { subject, body: lines };
+  };
 
   const refresh = async () => {
     setIsLoading(true);
@@ -254,6 +295,23 @@ const AdminDashboard = () => {
     }
     setEditForm({ ...selected });
   }, [selected]);
+
+  useEffect(() => {
+    if (!viewing) {
+      setEmailTemplate("amended");
+      setEmailSubject("");
+      setEmailBody("");
+      setEmailError(null);
+      setEmailSuccess(null);
+      return;
+    }
+    if (emailTemplate === "custom") {
+      return;
+    }
+    const { subject, body } = buildEmailTemplate(emailTemplate, viewing);
+    setEmailSubject(subject);
+    setEmailBody(body);
+  }, [viewing, emailTemplate]);
 
   useEffect(() => {
     if (createStatus === "paid") {
@@ -342,6 +400,46 @@ const AdminDashboard = () => {
       setError((err as Error).message);
     } finally {
       setIsCreating(false);
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!viewing) return;
+    setEmailSending(true);
+    setEmailError(null);
+    setEmailSuccess(null);
+
+    if (!viewing.contact_email) {
+      setEmailError("No customer email on this booking.");
+      setEmailSending(false);
+      return;
+    }
+    if (!emailSubject.trim() || !emailBody.trim()) {
+      setEmailError("Subject and message are required.");
+      setEmailSending(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/bookings/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reference: viewing.reference,
+          to: viewing.contact_email,
+          subject: emailSubject,
+          body: emailBody,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to send email.");
+      }
+      setEmailSuccess("Email sent.");
+    } catch (err) {
+      setEmailError((err as Error).message);
+    } finally {
+      setEmailSending(false);
     }
   };
 
@@ -1644,6 +1742,77 @@ const AdminDashboard = () => {
                       </a>
                     </Button>
                   )}
+                </div>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-background/70 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                      Email customer
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {viewing.contact_email || "No email on file"}
+                    </p>
+                  </div>
+                  <Select
+                    value={emailTemplate}
+                    onValueChange={(value) =>
+                      setEmailTemplate(value as EmailTemplateOption)
+                    }
+                  >
+                    <SelectTrigger className="w-44">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="amended">Booking updated</SelectItem>
+                      <SelectItem value="cancelled">Booking cancelled</SelectItem>
+                      <SelectItem value="custom">Custom</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="mt-4 space-y-3">
+                  <div className="space-y-2">
+                    <Label>Subject</Label>
+                    <Input
+                      value={emailSubject}
+                      onChange={(event) => setEmailSubject(event.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Message</Label>
+                    <Textarea
+                      value={emailBody}
+                      onChange={(event) => setEmailBody(event.target.value)}
+                      className="min-h-[140px]"
+                    />
+                  </div>
+                  {emailError && (
+                    <p className="text-xs text-destructive">{emailError}</p>
+                  )}
+                  {emailSuccess && (
+                    <p className="text-xs text-emerald-600">{emailSuccess}</p>
+                  )}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Button
+                      onClick={handleSendEmail}
+                      disabled={emailSending || !viewing.contact_email}
+                    >
+                      {emailSending ? "Sending..." : "Send email"}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const { subject, body } = buildEmailTemplate(
+                          emailTemplate === "custom" ? "amended" : emailTemplate,
+                          viewing,
+                        );
+                        setEmailSubject(subject);
+                        setEmailBody(body);
+                      }}
+                    >
+                      Reset template
+                    </Button>
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">

@@ -63,9 +63,11 @@ export const isFirstTimeCustomer = async (
 
   try {
     const response = await fetch(
-      `${supabaseConfig.url}/rest/v1/bookings?select=reference&contact_email=eq.${encodeURIComponent(
+      `${supabaseConfig.url}/rest/v1/bookings?select=reference,status&contact_email=eq.${encodeURIComponent(
         normalizedEmail,
-      )}&contact_address=eq.${encodeURIComponent(normalizedAddress)}&limit=1`,
+      )}&contact_address=eq.${encodeURIComponent(
+        normalizedAddress,
+      )}&status=in.("pending","paid")&limit=1`,
       { headers: supabaseHeaders },
     );
     if (!response.ok) {
