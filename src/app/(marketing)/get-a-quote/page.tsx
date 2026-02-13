@@ -1,12 +1,44 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Suspense } from "react";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import StripeTestButton from "@/components/payment/stripe-test-button";
 import QuoteCalculator from "@/components/quote/quote-calculator";
 import MagicBadge from "@/components/ui/magic-badge";
+import { Button } from "@/components/ui/button";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
+import { buildPageTitle, getPageByPath } from "@/lib/seo/keywords";
+import { generateMetadata } from "@/utils";
+
+const PAGE = getPageByPath("/get-a-quote");
+const METADATA_TITLE = buildPageTitle(PAGE.path);
+const METADATA_DESCRIPTION = PAGE.metaDescription;
+const CANONICAL = PAGE.path;
+const BASE_METADATA = generateMetadata({
+  title: METADATA_TITLE,
+  description: METADATA_DESCRIPTION,
+});
+
+export const metadata: Metadata = {
+  ...BASE_METADATA,
+  alternates: {
+    canonical: CANONICAL,
+  },
+  openGraph: {
+    ...(BASE_METADATA.openGraph ?? {}),
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
+    url: CANONICAL,
+  },
+  twitter: {
+    ...(BASE_METADATA.twitter ?? {}),
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
+  },
+};
 
 const HERO_IMAGE =
   "https://images.squarespace-cdn.com/content/v1/68f61185d7996607511c654e/1722371011.157589-XRPOXTQECTKYUAVFQOKA/imgg-od3-4foq0c2e.png?format=2500w";
@@ -39,12 +71,12 @@ const GetAQuotePage = ({ searchParams }: GetAQuotePageProps) => {
               <MagicBadge title="Arrange a FREE clean" />
               <SectionHeader
                 title="Arrange a FREE clean in minutes"
-                description="Pick a service, share your requirements, and confirm a clear price via the booking calculator."
+                description="Pick a service in Plymouth, share your requirements, and confirm a clear price via the booking calculator."
                 align="left"
                 className="mt-6"
               />
               <p className="mt-4 text-sm text-muted-foreground">
-                Arrange your clean in about 60 seconds.
+                Serving Plymouth only. Arrange your clean in about 60 seconds.
               </p>
               <div className="mt-6 flex justify-center lg:justify-start">
                 <PrimaryButton asChild>
@@ -76,6 +108,32 @@ const GetAQuotePage = ({ searchParams }: GetAQuotePageProps) => {
           >
             <QuoteCalculator />
           </Suspense>
+        </AnimationContainer>
+      </Section>
+
+      <Section className="pt-6">
+        <AnimationContainer delay={0.22}>
+          <div className="rounded-3xl border border-border/70 bg-card/90 p-6 text-center shadow-[0_30px_70px_-50px_hsl(var(--primary)/0.45)]">
+            <SectionHeader
+              eyebrow="Need more info?"
+              title="Helpful Plymouth links"
+              description="Compare services, check pricing guidance, or browse recent results."
+            />
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <PrimaryButton asChild>
+                <Link href="/cleaning-services-plymouth">View services</Link>
+              </PrimaryButton>
+              <Button variant="outline" asChild>
+                <Link href="/cleaning-prices-plymouth">Pricing guidance</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/faq-plymouth">Plymouth FAQs</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/cleaning-results-plymouth">See results</Link>
+              </Button>
+            </div>
+          </div>
         </AnimationContainer>
       </Section>
 

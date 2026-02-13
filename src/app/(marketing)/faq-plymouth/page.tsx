@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
@@ -20,34 +19,34 @@ import {
   AccordionItem,
   AccordionPanel,
 } from "@/registry/components/headless/accordion";
-import { AREA, BRAND } from "@/lib/seo/keywords";
+import { AREA, BRAND, buildPageTitle, getPageByPath } from "@/lib/seo/keywords";
 import { generateMetadata } from "@/utils";
 
-const TITLE = `Cleaning FAQs for ${AREA} | ${BRAND}`;
-const DESCRIPTION =
-  "Cleaning FAQs for Plymouth covering deposits, inspections, timing, ovens, carpets, and products. Spark & Mend serves Plymouth only with clear pricing.";
-const CANONICAL = "/faq-plymouth";
+const PAGE = getPageByPath("/faq-plymouth");
+const METADATA_TITLE = buildPageTitle(PAGE.path);
+const METADATA_DESCRIPTION = PAGE.metaDescription;
+const CANONICAL = PAGE.path;
 
 const BASE_METADATA = generateMetadata({
-  title: TITLE,
-  description: DESCRIPTION,
+  title: METADATA_TITLE,
+  description: METADATA_DESCRIPTION,
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   ...BASE_METADATA,
   alternates: {
     canonical: CANONICAL,
   },
   openGraph: {
     ...(BASE_METADATA.openGraph ?? {}),
-    title: TITLE,
-    description: DESCRIPTION,
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
     url: CANONICAL,
   },
   twitter: {
     ...(BASE_METADATA.twitter ?? {}),
-    title: TITLE,
-    description: DESCRIPTION,
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
   },
 };
 
@@ -536,6 +535,16 @@ const relatedServices = [
     title: "Commercial Cleaning",
     description: "Consistent visits for offices and workspaces.",
     href: "/commercial-cleaning",
+  },
+  {
+    title: "Cleaning Prices",
+    description: "See calculator-based pricing guidance in Plymouth.",
+    href: "/cleaning-prices-plymouth",
+  },
+  {
+    title: "Get a Quote",
+    description: "Book online in minutes with clear pricing.",
+    href: "/get-a-quote",
   },
 ];
 

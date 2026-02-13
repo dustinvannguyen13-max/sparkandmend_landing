@@ -365,6 +365,104 @@ const BasicCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <AnimationContainer delay={0.15}>
+          <SectionHeader
+            eyebrow="Regular cleaning"
+            title="Regular House Cleaning in Plymouth"
+            description="Book domestic cleaners in Plymouth for tidy homes that need reliable upkeep. This Basic Clean keeps visible areas fresh without the depth of a deep clean."
+            align="left"
+          />
+          <div className="mt-6 grid gap-4 text-sm text-muted-foreground md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Perfect for</p>
+              <p className="mt-2">
+                House cleaning and home cleaning that stays on top of the everyday
+                basics: kitchens, bathrooms, floors, and tidy living areas.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Optional add-ons</p>
+              <p className="mt-2">
+                Add oven cleaning or other extras in the quote form so pricing stays
+                accurate and aligned with the calculator.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">
+                See cleaning prices in Plymouth
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.18}>
+          <SectionHeader
+            eyebrow="Schedules"
+            title="Weekly, Fortnightly, or Monthly Cleaning"
+            description="Choose the frequency that fits your routine. Weekly and fortnightly visits keep things consistently tidy, while monthly cleaning is ideal for lighter upkeep."
+            align="left"
+          />
+          <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            <CheckListItem>Weekly cleaner for busy households</CheckListItem>
+            <CheckListItem>Fortnightly cleaner to stay on top of build-up</CheckListItem>
+            <CheckListItem>Monthly cleaning service for light maintenance</CheckListItem>
+            <CheckListItem>Availability confirmed before booking</CheckListItem>
+          </ul>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Read Plymouth cleaning FAQs</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See results in Plymouth
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.2}>
+          <SectionHeader
+            eyebrow="One-off vs regular"
+            title="One-off Cleaning vs Regular Visits"
+            description="If you only need a one-off clean, Basic Clean can still work for already tidy homes. For heavier build-up, choose a deeper option."
+            align="left"
+          />
+          <div className="mt-6 grid gap-4 text-sm text-muted-foreground md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Basic Clean</p>
+              <p className="mt-2">
+                One-off cleaning for quick freshness or regular visits for ongoing
+                upkeep.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Need more detail?</p>
+              <p className="mt-2">
+                Try{" "}
+                <Link href="/intermediate-clean" className="text-foreground underline">
+                  Intermediate Clean
+                </Link>{" "}
+                for a deep clean or{" "}
+                <Link href="/advanced-clean" className="text-foreground underline">
+                  Advanced Clean
+                </Link>{" "}
+                for end of tenancy resets.
+              </p>
+            </div>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
         <BubbleBackground
           className="absolute inset-0 opacity-100"
           colors={{
@@ -461,7 +559,7 @@ const BasicCleanPage = () => {
           <ServiceInfoSection
             eyebrow="Pricing"
             title="Pricing guidance for regular cleaning"
-            description="Prices vary by size, condition, and frequency. The quote includes the standard checklist for this service, plus any add-ons you select."
+            description="Prices vary by size, condition, and frequency. The calculator is the source of truth and includes the checklist for this service plus any add-ons."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
             ctaLabel="Arrange a FREE clean"
@@ -689,6 +787,9 @@ const BasicCleanPage = () => {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={QUOTE_LINK}>Get a Basic Clean quote</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>

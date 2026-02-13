@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import CTAStrip from "@/components/ui/cta-strip";
@@ -14,27 +13,40 @@ import {
 import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
-import { AREA, BRAND, getServicePath, services } from "@/lib/seo/keywords";
+import {
+  AREA,
+  BRAND,
+  buildPageTitle,
+  getPageByPath,
+  getServicePath,
+  services,
+} from "@/lib/seo/keywords";
+import { generateMetadata } from "@/utils";
 
-const TITLE = `Cleaning Services in ${AREA} | ${BRAND}`;
-const DESCRIPTION =
-  "Cleaning services in Plymouth from Spark & Mend, including regular house cleaning, deep cleaning, end of tenancy, and commercial cleaning. Arrange a FREE clean and get a clear price in minutes.";
-const CANONICAL = "/cleaning-services-plymouth";
+const PAGE = getPageByPath("/cleaning-services-plymouth");
+const METADATA_TITLE = buildPageTitle(PAGE.path);
+const METADATA_DESCRIPTION = PAGE.metaDescription;
+const CANONICAL = PAGE.path;
+const BASE_METADATA = generateMetadata({
+  title: METADATA_TITLE,
+  description: METADATA_DESCRIPTION,
+});
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
+export const metadata = {
+  ...BASE_METADATA,
   alternates: {
     canonical: CANONICAL,
   },
   openGraph: {
-    title: TITLE,
-    description: DESCRIPTION,
+    ...(BASE_METADATA.openGraph ?? {}),
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
     url: CANONICAL,
   },
   twitter: {
-    title: TITLE,
-    description: DESCRIPTION,
+    ...(BASE_METADATA.twitter ?? {}),
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
   },
 };
 
@@ -98,11 +110,44 @@ const COMPARISON = [
   },
 ];
 
+const GUIDE_LINKS = [
+  {
+    title: "End of Tenancy Cleaning Checklist (Plymouth)",
+    description: "Room-by-room checklist and inspection tips.",
+    href: "/guides/end-of-tenancy-cleaning-checklist-plymouth",
+  },
+  {
+    title: "Cleaning Cost Guide (Plymouth)",
+    description: "What affects pricing and how to choose a service.",
+    href: "/guides/cleaning-cost-guide-plymouth",
+  },
+  {
+    title: "What Landlords Check (Plymouth)",
+    description: "Inspection focus areas and deposit pain points.",
+    href: "/guides/what-landlords-check-plymouth",
+  },
+  {
+    title: "How Long Does a Deep Clean Take? (Plymouth)",
+    description: "Timing factors and how deep cleaning compares.",
+    href: "/guides/how-long-does-a-deep-clean-take-plymouth",
+  },
+];
+
 const FAQS = [
   {
     question: "Do you only serve Plymouth?",
     answer:
       "Yes. Spark & Mend focuses exclusively on cleaning services in Plymouth.",
+  },
+  {
+    question: "Are you the cleaners near me in Plymouth?",
+    answer:
+      "If you are in Plymouth, yes. We serve Plymouth only and confirm availability when you request a quote.",
+  },
+  {
+    question: "Do you offer same-day or next-day cleaning?",
+    answer:
+      "We cannot promise same-day slots, but we will always check availability and confirm the earliest visit that works.",
   },
   {
     question: "How much does cleaning in Plymouth cost?",
@@ -120,6 +165,11 @@ const FAQS = [
       "Yes, we bring our own kit. If you prefer specific products, add a note in the booking form.",
   },
   {
+    question: "Do you offer oven cleaning in Plymouth?",
+    answer:
+      "Yes. Oven cleaning is available as an add-on in the quote form so the price stays accurate.",
+  },
+  {
     question: "Can you support end of tenancy inspections?",
     answer:
       "Yes. Share any inventory checklist or agent requirements when you book and we align the scope to the inspection standard.",
@@ -128,6 +178,11 @@ const FAQS = [
     question: "Can you clean offices outside business hours?",
     answer:
       "Yes. We can schedule commercial cleaning around your opening hours to minimize disruption.",
+  },
+  {
+    question: "What is the difference between regular, deep, and end of tenancy?",
+    answer:
+      "Regular cleaning keeps on top of visible areas. Deep cleaning adds more detail and build-up removal. End of tenancy is the most thorough reset for inspections and move-outs.",
   },
 ];
 
@@ -163,12 +218,13 @@ const CleaningServicesPlymouthPage = () => {
               <SectionHeader
                 eyebrow="Plymouth"
                 title={`Cleaning Services in ${AREA}`}
-                description={`${BRAND} provides regular house cleaning, deep cleaning, end of tenancy, and commercial cleaning across ${AREA}. AXA insured and trusted by Plymouth homes and local businesses.`}
+                description={`${BRAND} is a Plymouth cleaning company providing domestic cleaners, deep cleaning, end of tenancy, and commercial cleaning across ${AREA}. AXA insured and trusted by Plymouth homes and local businesses.`}
                 align="left"
               />
               <p className="mt-4 text-sm text-muted-foreground">
                 We serve Plymouth only, with clear pricing and simple online
-                booking.
+                booking. Same-day and next-day visits are subject to availability.
+                Book a cleaner in Plymouth in minutes with the quote calculator.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
                 <Button asChild>
@@ -200,7 +256,7 @@ const CleaningServicesPlymouthPage = () => {
         <AnimationContainer delay={0.2}>
           <SectionHeader
             eyebrow="Services"
-            title="Choose the right clean for your Plymouth property"
+            title="Services offered in Plymouth"
             description="Each service links to the full checklist, pricing, and booking flow."
           />
           <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -264,6 +320,36 @@ const CleaningServicesPlymouthPage = () => {
             <Button variant="outline" asChild>
               <Link href="/faq-plymouth">Read Plymouth cleaning FAQs</Link>
             </Button>
+            <Button variant="outline" asChild>
+              <Link href="/get-a-quote">Get a Plymouth quote</Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <AnimationContainer delay={0.28}>
+          <SectionHeader
+            eyebrow="Guides"
+            title="Plymouth cleaning guides"
+            description="Support guides that answer the questions people ask before they book."
+          />
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {GUIDE_LINKS.map((guide) => (
+              <Card key={guide.href} className="border-none bg-card/85">
+                <CardHeader className="space-y-2">
+                  <CardTitle className="text-lg font-semibold text-foreground">
+                    {guide.title}
+                  </CardTitle>
+                  <CardDescription>{guide.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex items-center justify-between">
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={guide.href}>Read the guide</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </AnimationContainer>
       </Section>

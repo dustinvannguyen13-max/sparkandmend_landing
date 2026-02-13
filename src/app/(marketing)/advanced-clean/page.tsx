@@ -384,6 +384,95 @@ const AdvancedCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <AnimationContainer delay={0.15}>
+          <SectionHeader
+            eyebrow="End of tenancy"
+            title="End of Tenancy Cleaning in Plymouth"
+            description="Advanced Clean is our most thorough option for rentals and inspections. It is designed for move-outs and full-property resets across Plymouth."
+            align="left"
+          />
+          <div className="mt-6 grid gap-4 text-sm text-muted-foreground md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Checklist-led clean</p>
+              <p className="mt-2">
+                We work to a clear checklist and can align with landlord or letting
+                agent requirements when provided.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Detail focus</p>
+              <p className="mt-2">
+                Extra time for kitchens, bathrooms, fixtures, and build-up areas
+                that matter during inspections.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">
+                See cleaning prices in Plymouth
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.18}>
+          <SectionHeader
+            eyebrow="Inspection ready"
+            title="Deposit & Inspection Standard"
+            description="We clean to a detailed standard and follow inventory checklists when supplied. It keeps expectations clear without promising outcomes we cannot control."
+            align="left"
+          />
+          <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            <CheckListItem>Share agent or landlord checklists in the quote form</CheckListItem>
+            <CheckListItem>Oven cleaning available as an add-on</CheckListItem>
+            <CheckListItem>We confirm scope and timing before the visit</CheckListItem>
+          </ul>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.2}>
+          <SectionHeader
+            eyebrow="Move in/out"
+            title="Move-Out / Move-In Cleaning"
+            description="Ideal for tenants leaving a property or landlords preparing a home for new occupants. We reset kitchens, bathrooms, and high-touch areas."
+            align="left"
+          />
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See results in Plymouth
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Read Plymouth cleaning FAQs</Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceMuted}`}>
+        <AnimationContainer delay={0.22}>
+          <SectionHeader
+            eyebrow="Landlords"
+            title="Letting Agents & Landlords"
+            description="We support letting agents and landlords with clear checklists, tidy handovers, and reliable scheduling across Plymouth."
+            align="left"
+          />
+          <p className="mt-6 text-sm text-muted-foreground">
+            Need a specific inspection date? Share it in the quote notes and we
+            will confirm availability as soon as we can.
+          </p>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
         <BubbleBackground
           className="absolute inset-0 opacity-100"
           colors={{
@@ -480,7 +569,7 @@ const AdvancedCleanPage = () => {
           <ServiceInfoSection
             eyebrow="Pricing"
             title="Pricing guidance for end of tenancy cleaning"
-            description="Prices depend on size, condition, and checklist requirements. The quote includes the standard checklist for this service, plus any add-ons you select."
+            description="Prices depend on size, condition, and checklist requirements. The calculator is the source of truth and includes the checklist for this service plus any add-ons."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
             ctaLabel="Arrange a FREE clean"
@@ -700,6 +789,28 @@ const AdvancedCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.53}>
+          <SectionHeader
+            eyebrow="Guides"
+            title="End of tenancy support guides"
+            description="Checklists and inspection tips for Plymouth rentals."
+          />
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/guides/end-of-tenancy-cleaning-checklist-plymouth">
+                End of tenancy checklist
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/guides/what-landlords-check-plymouth">
+                What landlords check
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
         <AnimationContainer delay={0.55}>
           <SectionHeader
             eyebrow="Explore"
@@ -709,6 +820,9 @@ const AdvancedCleanPage = () => {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={QUOTE_LINK}>Get an End of Tenancy quote</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>

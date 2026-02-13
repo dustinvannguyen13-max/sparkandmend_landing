@@ -371,6 +371,96 @@ const IntermediateCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <AnimationContainer delay={0.15}>
+          <SectionHeader
+            eyebrow="Deep clean"
+            title="Deep Cleaning in Plymouth"
+            description="Intermediate Clean is our deep cleaning service for Plymouth homes that need a sharper reset. It goes beyond regular house cleaning to tackle build-up and touch points."
+            align="left"
+          />
+          <div className="mt-6 grid gap-4 text-sm text-muted-foreground md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Ideal when</p>
+              <p className="mt-2">
+                Your home needs a deeper clean between regular visits or before
+                guests, with more detail in kitchens and bathrooms.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Add-ons available</p>
+              <p className="mt-2">
+                Add oven cleaning or interior cupboards in the quote form so the
+                calculator keeps pricing accurate.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">
+                See cleaning prices in Plymouth
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.18}>
+          <SectionHeader
+            eyebrow="Kitchens"
+            title="Kitchen Deep Cleaning"
+            description="We focus on the places that collect build-up: worktops, splashbacks, sinks, and touch points. Appliances are cleaned externally, with optional add-ons for inside ovens and cupboards."
+            align="left"
+          />
+          <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            <CheckListItem>Degrease visible surfaces and remove build-up</CheckListItem>
+            <CheckListItem>Detail taps, hob exteriors, and splashbacks</CheckListItem>
+            <CheckListItem>Add inside-oven cleaning when required</CheckListItem>
+          </ul>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.2}>
+          <SectionHeader
+            eyebrow="Bathrooms"
+            title="Bathroom Deep Cleaning"
+            description="Extra attention to limescale, tiles, and fixtures delivers a sharper finish than regular cleaning."
+            align="left"
+          />
+          <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            <CheckListItem>Detail tiles, grout, taps, and screens</CheckListItem>
+            <CheckListItem>Focus on build-up around baths and showers</CheckListItem>
+            <CheckListItem>High-touch points reset for a fresher feel</CheckListItem>
+          </ul>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceMuted}`}>
+        <AnimationContainer delay={0.22}>
+          <SectionHeader
+            eyebrow="One-off"
+            title="Spring Clean / One-Off Deep Clean"
+            description="Intermediate Clean is ideal for spring cleaning and one-off deep cleans when you want a fresh baseline before returning to regular visits."
+            align="left"
+          />
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Read Plymouth cleaning FAQs</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-results-plymouth">
+                See results in Plymouth
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
         <BubbleBackground
           className="absolute inset-0 opacity-100"
           colors={{
@@ -467,7 +557,7 @@ const IntermediateCleanPage = () => {
           <ServiceInfoSection
             eyebrow="Pricing"
             title="Pricing guidance for deep cleaning"
-            description="Prices depend on size, condition, and requested detail. The quote includes the standard checklist for this service, plus any add-ons you select."
+            description="Prices depend on size, condition, and requested detail. The calculator is the source of truth and includes the checklist for this service plus any add-ons."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
             ctaLabel="Arrange a FREE clean"
@@ -688,6 +778,23 @@ const IntermediateCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.53}>
+          <SectionHeader
+            eyebrow="Guide"
+            title="How long does a deep clean take?"
+            description="See what affects timing before you book a Plymouth deep clean."
+          />
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/guides/how-long-does-a-deep-clean-take-plymouth">
+                Read the deep clean timing guide
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
         <AnimationContainer delay={0.55}>
           <SectionHeader
             eyebrow="Explore"
@@ -697,6 +804,9 @@ const IntermediateCleanPage = () => {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={QUOTE_LINK}>Get a Deep Clean quote</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>

@@ -56,5 +56,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/guides`,
+      lastModified,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/guides/end-of-tenancy-cleaning-checklist-plymouth`,
+      lastModified,
+      priority: 0.55,
+    },
+    {
+      url: `${baseUrl}/guides/cleaning-cost-guide-plymouth`,
+      lastModified,
+      priority: 0.55,
+    },
+    {
+      url: `${baseUrl}/guides/what-landlords-check-plymouth`,
+      lastModified,
+      priority: 0.55,
+    },
+    {
+      url: `${baseUrl}/guides/how-long-does-a-deep-clean-take-plymouth`,
+      lastModified,
+      priority: 0.55,
+    },
+    {
+      url: `${baseUrl}/case-studies`,
+      lastModified,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/case-studies/end-of-tenancy-plymouth`,
+      lastModified,
+      priority: 0.45,
+    },
+    {
+      url: `${baseUrl}/case-studies/deep-clean-plymouth`,
+      lastModified,
+      priority: 0.45,
+    },
   ];
 }

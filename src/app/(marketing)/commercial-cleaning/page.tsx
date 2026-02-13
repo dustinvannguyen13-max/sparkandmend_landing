@@ -353,6 +353,86 @@ const CommercialCleanPage = () => {
       </Section>
 
       <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <AnimationContainer delay={0.15}>
+          <SectionHeader
+            eyebrow="Office cleaning"
+            title="Office Cleaning in Plymouth"
+            description="Reliable office cleaners in Plymouth for workspaces that need a professional finish. We focus on visible areas, touch points, and shared spaces."
+            align="left"
+          />
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href={QUOTE_LINK}>Arrange a FREE clean</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">
+                See commercial pricing guidance
+              </Link>
+            </Button>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceSoft}`}>
+        <AnimationContainer delay={0.18}>
+          <SectionHeader
+            eyebrow="Workplace care"
+            title="Workplace & Commercial Cleaning"
+            description="From studios to clinics and retail spaces, we provide consistent commercial cleaning across Plymouth with clear scopes and tidy handovers."
+            align="left"
+          />
+          <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            {businessTypes.map((item) => (
+              <CheckListItem key={item}>{item}</CheckListItem>
+            ))}
+          </ul>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceNeutral}`}>
+        <AnimationContainer delay={0.2}>
+          <SectionHeader
+            eyebrow="Schedules"
+            title="Cleaning Schedules"
+            description="Choose daily, weekly, or after-hours schedules based on your opening times. Availability is always confirmed before booking."
+            align="left"
+          />
+          <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            <CheckListItem>Early-morning or evening visits when available</CheckListItem>
+            <CheckListItem>Weekly and fortnightly schedules for steady upkeep</CheckListItem>
+            <CheckListItem>Flexible timing for low-disruption cleans</CheckListItem>
+          </ul>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfaceMuted}`}>
+        <AnimationContainer delay={0.22}>
+          <SectionHeader
+            eyebrow="Scope"
+            title="What's Included for Offices"
+            description="Commercial cleaning keeps work areas and shared spaces ready for clients and staff, with a checklist-led finish."
+            align="left"
+          />
+          <div className="mt-6 grid gap-4 text-sm text-muted-foreground md:grid-cols-2">
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Core areas</p>
+              <p className="mt-2">
+                Desks, reception areas, washrooms, kitchens, and high-touch points
+                across your workplace.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/60 bg-card/85 p-5">
+              <p className="font-medium text-foreground">Add-ons</p>
+              <p className="mt-2">
+                Add interior windows or carpet refreshes in the quote form to keep
+                pricing accurate.
+              </p>
+            </div>
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
         <BubbleBackground
           className="absolute inset-0 opacity-100"
           colors={{
@@ -436,7 +516,7 @@ const CommercialCleanPage = () => {
           <ServiceInfoSection
             eyebrow="Pricing"
             title="Pricing guidance for commercial cleaning"
-            description="Prices depend on workspace size, schedule, and service scope. The quote includes the standard checklist for this service, plus any add-ons you select."
+            description="Prices depend on workspace size, schedule, and service scope. The calculator is the source of truth and includes the checklist for this service plus any add-ons."
             bullets={pricingFactors}
             ctaHref={QUOTE_LINK}
             ctaLabel="Arrange a FREE clean"
@@ -644,6 +724,9 @@ const CommercialCleanPage = () => {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button variant="outline" asChild>
               <Link href="/cleaning-services-plymouth">View all services</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={QUOTE_LINK}>Get a Commercial quote</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/cleaning-prices-plymouth">See pricing in Plymouth</Link>

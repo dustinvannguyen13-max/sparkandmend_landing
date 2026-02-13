@@ -1,43 +1,43 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { AnimationContainer, MaxWidthWrapper } from "@/components";
 import BeforeAfterGallery from "@/components/marketing/before-after-gallery";
 import CTAStrip from "@/components/ui/cta-strip";
 import { MotionCarousel } from "@/components/ui/motion-carousel";
+import { Button } from "@/components/ui/button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { StarsBackground } from "@/components/ui/stars-background";
-import { AREA, BRAND } from "@/lib/seo/keywords";
+import { AREA, BRAND, buildPageTitle, getPageByPath } from "@/lib/seo/keywords";
 import {
   BEFORE_AFTER_GROUPS,
   GALLERY_SECTIONS,
 } from "@/lib/gallery/gallery-data";
 import { generateMetadata } from "@/utils";
 
-const TITLE = `Cleaning Results in ${AREA} | ${BRAND}`;
-const DESCRIPTION =
-  "See before-and-after cleaning results in Plymouth from Spark & Mend. Browse real transformations and arrange a free clean in minutes.";
-const CANONICAL = "/cleaning-results-plymouth";
+const PAGE = getPageByPath("/cleaning-results-plymouth");
+const METADATA_TITLE = buildPageTitle(PAGE.path);
+const METADATA_DESCRIPTION = PAGE.metaDescription;
+const CANONICAL = PAGE.path;
 
 const BASE_METADATA = generateMetadata({
-  title: TITLE,
-  description: DESCRIPTION,
+  title: METADATA_TITLE,
+  description: METADATA_DESCRIPTION,
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   ...BASE_METADATA,
   alternates: {
     canonical: CANONICAL,
   },
   openGraph: {
     ...(BASE_METADATA.openGraph ?? {}),
-    title: TITLE,
-    description: DESCRIPTION,
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
     url: CANONICAL,
   },
   twitter: {
     ...(BASE_METADATA.twitter ?? {}),
-    title: TITLE,
-    description: DESCRIPTION,
+    title: METADATA_TITLE,
+    description: METADATA_DESCRIPTION,
   },
 };
 
@@ -127,11 +127,39 @@ const CleaningResultsPlymouthPage = () => {
                 ) : (
                   <p className="mt-6 text-sm text-muted-foreground">
                     We are building our before/after library for commercial spaces.
-                    More pairs are added regularly.
+                    More pairs are added weekly.
                   </p>
                 )}
               </div>
             ))}
+          </div>
+        </AnimationContainer>
+      </Section>
+
+      <Section className={`${sectionBase} ${surfacePrimary}`}>
+        <AnimationContainer delay={0.3}>
+          <SectionHeader
+            eyebrow="Next steps"
+            title="Plan your Plymouth clean"
+            description="Compare services, see pricing, and book a quote when you are ready."
+          />
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-services-plymouth">
+                View Plymouth services
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cleaning-prices-plymouth">
+                See pricing guidance
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/faq-plymouth">Read Plymouth FAQs</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/get-a-quote">Get a quote</Link>
+            </Button>
           </div>
         </AnimationContainer>
       </Section>

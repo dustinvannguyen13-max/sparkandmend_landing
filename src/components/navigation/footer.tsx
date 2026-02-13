@@ -36,6 +36,14 @@ const Footer = () => {
               <ul className="mt-4 text-sm text-muted-foreground">
                 <li className="mt-2">
                   <Link
+                    href="/cleaning-services-plymouth"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Plymouth Services Hub
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
                     href="/basic-clean"
                     className="hover:text-foreground transition-all duration-300"
                   >
@@ -72,6 +80,14 @@ const Footer = () => {
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Cleaning Prices Plymouth
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/get-a-quote"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Get a Quote
                   </Link>
                 </li>
               </ul>
@@ -130,6 +146,14 @@ const Footer = () => {
                     className="hover:text-foreground transition-all duration-300"
                   >
                     Blog
+                  </Link>
+                </li>
+                <li className="mt-2">
+                  <Link
+                    href="/guides"
+                    className="hover:text-foreground transition-all duration-300"
+                  >
+                    Guides
                   </Link>
                 </li>
                 <li className="mt-2">
