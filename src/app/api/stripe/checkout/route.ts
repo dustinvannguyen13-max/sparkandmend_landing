@@ -279,9 +279,7 @@ export async function POST(request: Request) {
     let promo = null as ReturnType<typeof applyFreeBathroomPromo>["promo"];
     if (body.input) {
       const promoResult = applyFreeBathroomPromo(
-        { ...body.quote, perVisitPrice: offerResult.finalPrice } as {
-          perVisitPrice: number;
-        } & typeof body.quote,
+        { perVisitPrice: offerResult.finalPrice },
         body.input as QuoteInput,
         isFirstTime,
       );

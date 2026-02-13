@@ -32,7 +32,7 @@ export const isFreeBathroomEligible = (
 };
 
 export const applyFreeBathroomPromo = (
-  quote: QuoteResult,
+  quote: Pick<QuoteResult, "perVisitPrice">,
   input: QuoteInput,
   isFirstTime: boolean,
 ) => {
