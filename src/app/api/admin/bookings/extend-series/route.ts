@@ -121,7 +121,8 @@ const handleExtend = async (request: Request) => {
     const created: BookingRecord[] = [];
     let extendedSeries = 0;
 
-    for (const [seriesId, bookings] of grouped.entries()) {
+    for (const entry of Array.from(grouped.entries())) {
+      const [seriesId, bookings] = entry;
       const active = bookings.filter((booking) => booking.status !== "cancelled");
       if (active.length === 0) continue;
 
