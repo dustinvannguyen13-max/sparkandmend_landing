@@ -18,19 +18,7 @@ import {
 } from "@/lib/seo/keywords";
 import { generateMetadata as buildMetadata } from "@/utils";
 
-type CaseStudy = {
-  slug: string;
-  title: string;
-  description: string;
-  serviceHref: string;
-  quoteHref: string;
-  guideHref: string;
-  galleryGroupTitle: string;
-  summary: string;
-  highlights: string[];
-};
-
-const CASE_STUDIES: CaseStudy[] = [
+const CASE_STUDIES = [
   {
     slug: "end-of-tenancy-plymouth",
     title: "End of tenancy clean - Plymouth (Template)",
@@ -67,7 +55,9 @@ const CASE_STUDIES: CaseStudy[] = [
       "Floors vacuumed, edges detailed, and mopped",
     ],
   },
-];
+] as const;
+
+type CaseStudy = (typeof CASE_STUDIES)[number];
 
 export const generateStaticParams = () =>
   CASE_STUDIES.map((study) => ({ slug: study.slug }));
