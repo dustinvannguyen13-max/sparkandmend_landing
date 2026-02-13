@@ -431,6 +431,23 @@ const FAQ_SECTIONS = [
     description: "How pricing is calculated and where to start.",
     items: [
       {
+        id: "pricing-0",
+        question: "How are regular cleans billed?",
+        answer: (
+          <p>
+            Regular weekly or fortnightly cleans are billed automatically via a
+            subscription once you confirm your schedule. One-off cleans are a
+            single payment. Manage billing anytime in{" "}
+            <Link href="/my-booking" className="text-foreground underline">
+              My booking
+            </Link>
+            .
+          </p>
+        ),
+        answerText:
+          "Regular weekly or fortnightly cleans are billed automatically via a subscription once you confirm your schedule. One-off cleans are a single payment. Manage billing anytime in My booking.",
+      },
+      {
         id: "pricing-1",
         question: "How is the price calculated?",
         answer: (
@@ -464,6 +481,21 @@ const FAQ_SECTIONS = [
         ),
         answerText:
           "Yes. Use the online calculator to get a fixed price. Start on the booking page.",
+      },
+      {
+        id: "pricing-3",
+        question: "Can I pause or cancel a subscription clean?",
+        answer: (
+          <p>
+            Yes. You can manage or cancel your subscription in{" "}
+            <Link href="/my-booking" className="text-foreground underline">
+              My booking
+            </Link>
+            , or contact us if you want to reschedule.
+          </p>
+        ),
+        answerText:
+          "Yes. You can manage or cancel your subscription in My booking, or contact us if you want to reschedule.",
       },
     ],
   },

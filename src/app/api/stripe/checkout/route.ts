@@ -104,7 +104,7 @@ const fetchBookingByReference = async (reference: string) => {
   const response = await fetch(
     `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
       reference,
-    )}&select=reference,service,property_summary,per_visit_price,promo_label,promo_discount,contact_email`,
+    )}&select=reference,series_id,series_reference,series_index,frequency,frequency_key,service,property_summary,per_visit_price,promo_label,promo_discount,contact_email,stripe_subscription_id`,
     {
       headers: supabaseHeaders,
     },
@@ -135,12 +135,33 @@ const patchBookingStripeId = async (reference: string, sessionId: string) => {
   );
 };
 
-const createStripeSession = async (
-  reference: string,
-  amount: number,
-  offerLabel?: string | null,
-  promoLabel?: string | null,
-) => {
+const createStripeSession = async ({
+  reference,
+  amount,
+  service,
+  propertySummary,
+  mode,
+  interval,
+  intervalCount,
+  offerLabel,
+  promoLabel,
+  couponId,
+  customerEmail,
+  metadata,
+}: {
+  reference: string;
+  amount: number;
+  service: string;
+  propertySummary: string;
+  mode: "payment" | "subscription";
+  interval?: "week" | "month";
+  intervalCount?: number;
+  offerLabel?: string | null;
+  promoLabel?: string | null;
+  couponId?: string | null;
+  customerEmail?: string | null;
+  metadata?: Record<string, string>;
+}) => {
   const headers = buildStripeHeaders();
   if (!headers) {
     throw new Error("Missing Stripe secret key.");
@@ -148,23 +169,63 @@ const createStripeSession = async (
 
   const form = new URLSearchParams();
   form.append("payment_method_types[]", "card");
-  form.append("mode", "payment");
+  form.append("mode", mode);
   form.append("line_items[0][price_data][currency]", "gbp");
-  form.append("line_items[0][price_data][product_data][name]", `Spark & Mend booking ${reference}`);
+  form.append(
+    "line_items[0][price_data][product_data][name]",
+    `Spark & Mend booking ${reference}`,
+  );
   form.append(
     "line_items[0][price_data][product_data][description]",
-    "Secure payment for Spark & Mend cleaning services.",
+    `${service} • ${propertySummary}`,
   );
-  form.append("line_items[0][price_data][unit_amount]", String(Math.round(amount * 100)));
+  form.append(
+    "line_items[0][price_data][unit_amount]",
+    String(Math.round(amount * 100)),
+  );
   form.append("line_items[0][quantity]", "1");
-  form.append("success_url", `${APP_DOMAIN_BASE}/booking-confirmation?session_id={CHECKOUT_SESSION_ID}&reference=${reference}`);
-  form.append("cancel_url", `${APP_DOMAIN_BASE}/your-cleaning-quote?reference=${reference}`);
+  if (mode === "subscription") {
+    form.append("line_items[0][price_data][recurring][interval]", interval ?? "week");
+    if (intervalCount && intervalCount > 1) {
+      form.append(
+        "line_items[0][price_data][recurring][interval_count]",
+        String(intervalCount),
+      );
+    }
+  }
+  form.append(
+    "success_url",
+    `${APP_DOMAIN_BASE}/booking-confirmation?session_id={CHECKOUT_SESSION_ID}&reference=${reference}&mode=${mode}`,
+  );
+  form.append(
+    "cancel_url",
+    `${APP_DOMAIN_BASE}/your-cleaning-quote?reference=${reference}`,
+  );
   form.append("metadata[reference]", reference);
+  if (mode === "subscription") {
+    form.append("subscription_data[metadata][reference]", reference);
+  }
   if (offerLabel) {
     form.append("metadata[offer]", offerLabel);
   }
   if (promoLabel) {
     form.append("metadata[promo]", promoLabel);
+  }
+  if (metadata) {
+    Object.entries(metadata).forEach(([key, value]) => {
+      form.append(`metadata[${key}]`, value);
+    });
+    if (mode === "subscription") {
+      Object.entries(metadata).forEach(([key, value]) => {
+        form.append(`subscription_data[metadata][${key}]`, value);
+      });
+    }
+  }
+  if (couponId) {
+    form.append("discounts[0][coupon]", couponId);
+  }
+  if (customerEmail) {
+    form.append("customer_email", customerEmail);
   }
 
   const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
@@ -179,6 +240,42 @@ const createStripeSession = async (
   }
 
   return payload;
+};
+
+const createStripeCoupon = async (amountOff: number) => {
+  const headers = buildStripeHeaders();
+  if (!headers) {
+    throw new Error("Missing Stripe secret key.");
+  }
+  const form = new URLSearchParams();
+  form.append("amount_off", String(Math.round(amountOff * 100)));
+  form.append("currency", "gbp");
+  form.append("duration", "once");
+  form.append("name", "FREE bathroom clean");
+
+  const response = await fetch("https://api.stripe.com/v1/coupons", {
+    method: "POST",
+    headers,
+    body: form,
+  });
+
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(payload.error?.message || "Stripe coupon creation failed.");
+  }
+  return payload;
+};
+
+const getSubscriptionInterval = (
+  frequencyKey: string,
+): { interval: "week" | "month"; intervalCount: number } => {
+  if (frequencyKey === "weekly") {
+    return { interval: "week", intervalCount: 1 };
+  }
+  if (frequencyKey === "bi-weekly") {
+    return { interval: "week", intervalCount: 2 };
+  }
+  return { interval: "month", intervalCount: 1 };
 };
 
 export async function POST(request: Request) {
@@ -219,6 +316,7 @@ export async function POST(request: Request) {
       input?: {
         service?: "basic" | "intermediate" | "advanced" | "commercial";
         bathrooms?: number;
+        frequency?: "one-time" | "weekly" | "bi-weekly" | "monthly";
       };
       extras?: string[];
       referenceHint?: string;
@@ -249,9 +347,23 @@ export async function POST(request: Request) {
 
     const existing = await fetchBookingByReference(reference);
     if (existing) {
+      if (existing.stripe_subscription_id) {
+        return NextResponse.json(
+          { error: "This booking already has an active subscription." },
+          { status: 400 },
+        );
+      }
+
       const storedAmount = Number(existing.per_visit_price);
       const promoDiscount = Number(existing.promo_discount ?? 0);
-      const amount = Math.max(0, storedAmount - Math.max(0, promoDiscount));
+      const frequencyKey =
+        getFrequencyKey(
+          (existing.frequency_key as string | null) ??
+            (existing.frequency as string | null),
+        ) ?? "one-time";
+      const isSubscription = frequencyKey !== "one-time";
+
+      const amount = Math.max(0, storedAmount);
       if (!Number.isFinite(amount) || amount <= 0) {
         return NextResponse.json(
           { error: "A valid payment amount is required." },
@@ -259,12 +371,37 @@ export async function POST(request: Request) {
         );
       }
 
-      const session = await createStripeSession(
-        reference,
-        amount,
-        null,
-        (existing.promo_label as string | null) ?? null,
+      let couponId: string | null = null;
+      const discountAmount = Math.min(
+        Math.max(0, promoDiscount),
+        Math.max(0, amount),
       );
+      if (isSubscription && discountAmount > 0) {
+        const coupon = await createStripeCoupon(discountAmount);
+        couponId = coupon.id ?? null;
+      }
+
+      const serviceLabel = (existing.service as string) ?? "Cleaning service";
+      const propertySummary =
+        (existing.property_summary as string) ?? "Cleaning booking";
+      const { interval, intervalCount } = getSubscriptionInterval(frequencyKey);
+
+      const session = await createStripeSession({
+        reference,
+        amount: isSubscription ? amount : Math.max(0, amount - discountAmount),
+        service: serviceLabel,
+        propertySummary,
+        mode: isSubscription ? "subscription" : "payment",
+        interval: isSubscription ? interval : undefined,
+        intervalCount: isSubscription ? intervalCount : undefined,
+        promoLabel: (existing.promo_label as string | null) ?? null,
+        couponId,
+        customerEmail: (existing.contact_email as string | null) ?? null,
+        metadata: {
+          frequency: frequencyKey,
+          series_reference: (existing.series_reference as string | null) ?? "",
+        },
+      });
       await patchBookingStripeId(reference, session.id);
       return NextResponse.json({ url: session.url });
     }
@@ -286,14 +423,14 @@ export async function POST(request: Request) {
       firstVisitPrice = promoResult.firstVisitPrice;
       promo = promoResult.promo;
     }
-    const amount = firstVisitPrice;
-
     const inferredFrequencyKey =
-      getFrequencyKey(body.quote.frequencyLabel as string | null) ?? "one-time";
+      body.input?.frequency ??
+      (getFrequencyKey(body.quote.frequencyLabel as string | null) ?? "one-time");
     const frequencyKey =
       body.input?.service === "advanced" ? "one-time" : inferredFrequencyKey;
     const frequencyLabel =
       getFrequencyLabel(frequencyKey) ?? (body.quote.frequencyLabel as string);
+    const isSubscription = frequencyKey !== "one-time";
 
     const hasSchedule = frequencyKey !== "one-time" && Boolean(body.contact?.preferredDate);
     const seriesId = hasSchedule ? randomUUID() : null;
@@ -350,12 +487,30 @@ export async function POST(request: Request) {
 
     await insertBookingRow(payloads);
 
-    const session = await createStripeSession(
+    let couponId: string | null = null;
+    if (isSubscription && promo?.discountAmount) {
+      const coupon = await createStripeCoupon(promo.discountAmount);
+      couponId = coupon.id ?? null;
+    }
+
+    const { interval, intervalCount } = getSubscriptionInterval(frequencyKey);
+    const session = await createStripeSession({
       reference,
-      amount,
-      offerResult.offerSummary?.label ?? null,
-      promo?.label ?? null,
-    );
+      amount: isSubscription ? offerResult.finalPrice : firstVisitPrice,
+      service: body.quote.serviceLabel ?? "Cleaning service",
+      propertySummary: body.quote.propertySummary ?? "Cleaning booking",
+      mode: isSubscription ? "subscription" : "payment",
+      interval: isSubscription ? interval : undefined,
+      intervalCount: isSubscription ? intervalCount : undefined,
+      offerLabel: offerResult.offerSummary?.label ?? null,
+      promoLabel: promo?.label ?? null,
+      couponId,
+      customerEmail: body.contact?.email ?? null,
+      metadata: {
+        frequency: frequencyKey,
+        series_reference: seriesId ? reference : "",
+      },
+    });
     await patchBookingStripeId(reference, session.id);
 
     return NextResponse.json({ url: session.url });

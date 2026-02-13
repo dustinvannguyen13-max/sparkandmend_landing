@@ -17,6 +17,10 @@ type BookingRecord = {
   property_summary?: string;
   frequency?: string;
   frequency_key?: string;
+  stripe_customer_id?: string;
+  stripe_subscription_id?: string;
+  stripe_subscription_status?: string;
+  stripe_current_period_end?: string;
   per_visit_price?: number;
   extras?: string[];
   custom_extras_items?: string[];
@@ -42,6 +46,9 @@ type BookingLookupProps = {
 };
 
 const buildStatusLabel = (booking: BookingRecord) => {
+  if (booking.stripe_subscription_id && booking.status !== "cancelled") {
+    return "Subscription active";
+  }
   const status = booking.status?.toLowerCase();
   if (status === "cancelled") return "Cancelled";
   if (status === "paid") {
@@ -74,6 +81,12 @@ const BookingLookup = ({ initialReference, paymentStatus }: BookingLookupProps) 
   const [isSaving, setIsSaving] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [isManaging, setIsManaging] = useState(false);
+  const hasSubscription = Boolean(booking?.stripe_subscription_id);
+  const subscriptionStatus = booking?.stripe_subscription_status;
+  const subscriptionPeriodEnd = booking?.stripe_current_period_end
+    ? new Date(booking.stripe_current_period_end)
+    : null;
   const [form, setForm] = useState({
     contact_name: "",
     contact_email: "",
@@ -250,6 +263,32 @@ const BookingLookup = ({ initialReference, paymentStatus }: BookingLookupProps) 
     }
   };
 
+  const handleManageSubscription = async () => {
+    if (!booking?.stripe_subscription_id && !booking?.stripe_customer_id) return;
+    setSearchError(null);
+    setSuccess(null);
+    setIsManaging(true);
+    try {
+      const response = await fetch("/api/stripe/portal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reference: booking.reference,
+          subscriptionId: booking.stripe_subscription_id,
+          customerId: booking.stripe_customer_id,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || "Unable to open billing portal.");
+      }
+      window.location.href = data.url as string;
+    } catch (err) {
+      setSearchError((err as Error).message);
+      setIsManaging(false);
+    }
+  };
+
   return (
     <div className="grid gap-8">
         <Card className="border-border/60 bg-card/90">
@@ -358,6 +397,20 @@ const BookingLookup = ({ initialReference, paymentStatus }: BookingLookupProps) 
                     "—"}
                 </p>
               </div>
+              {hasSubscription && (
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em]">Billing</p>
+                  <p className="text-foreground">
+                    {subscriptionStatus ? subscriptionStatus.replace("_", " ") : "Subscription"}
+                  </p>
+                  {subscriptionPeriodEnd && (
+                    <p className="text-xs text-muted-foreground">
+                      Next billing:{" "}
+                      {subscriptionPeriodEnd.toLocaleDateString("en-GB")}
+                    </p>
+                  )}
+                </div>
+              )}
               <div>
                 <p className="text-xs uppercase tracking-[0.2em]">Estimated price</p>
                 <p className="text-foreground">
@@ -384,10 +437,24 @@ const BookingLookup = ({ initialReference, paymentStatus }: BookingLookupProps) 
               )}
             </div>
             <div className="flex flex-wrap gap-3 pt-2">
-              {booking.status !== "paid" && (
+              {booking.status !== "paid" && !hasSubscription && (
                 <PrimaryButton onClick={handlePay} disabled={isPaying}>
                   {isPaying ? "Preparing payment..." : "Make payment"}
                 </PrimaryButton>
+              )}
+              {hasSubscription && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={handleManageSubscription}
+                    disabled={isManaging}
+                  >
+                    {isManaging ? "Opening portal..." : "Manage subscription"}
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    This booking is billed automatically via subscription.
+                  </p>
+                </>
               )}
               <Button variant="outline" onClick={handleCancel} disabled={isCancelling}>
                 {isCancelling ? "Cancelling..." : "Cancel booking"}

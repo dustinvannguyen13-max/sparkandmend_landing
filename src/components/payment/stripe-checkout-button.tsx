@@ -72,6 +72,7 @@ const StripeCheckoutButton = ({
             ? {
                 service: input.service,
                 bathrooms: input.bathrooms,
+                frequency: input.frequency,
               }
             : undefined,
           referenceHint,
@@ -100,13 +101,19 @@ const StripeCheckoutButton = ({
       >
         {isLoading
           ? "Preparing checkout..."
+          : input?.frequency && input.frequency !== "one-time"
+          ? `Start subscription (${formatCurrency(
+              displayAmount ?? quote.perVisitPrice,
+            )} per visit)`
           : `Pay Now (${formatCurrency(displayAmount ?? quote.perVisitPrice)})`}
       </PrimaryButton>
       {error ? (
         <p className="text-xs text-destructive">{error}</p>
       ) : (
         <p className="text-xs text-muted-foreground">
-          We will send a secure booking receipt after payment is taken.
+          {input?.frequency && input.frequency !== "one-time"
+            ? "Your card will be billed automatically on this schedule."
+            : "We will send a secure booking receipt after payment is taken."}
         </p>
       )}
     </div>

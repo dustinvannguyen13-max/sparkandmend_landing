@@ -16,7 +16,7 @@ export async function GET() {
   }
 
   const response = await fetch(
-    `${supabaseConfig.url}/rest/v1/bookings?select=reference,series_id,series_reference,series_index,frequency,frequency_key,service,property_summary,per_visit_price,extras,custom_extras_items,custom_extras_text,custom_extras_reason,custom_extras_source,custom_extras_fallback_reason,custom_extras_price,promo_type,promo_label,promo_discount,contact_name,contact_email,contact_phone,contact_postcode,contact_address,contact_method,preferred_date,preferred_time,notes,status,payment_amount,payment_currency,created_at&order=created_at.desc`,
+    `${supabaseConfig.url}/rest/v1/bookings?select=reference,series_id,series_reference,series_index,frequency,frequency_key,stripe_customer_id,stripe_subscription_id,stripe_subscription_status,stripe_current_period_end,stripe_invoice_id,service,property_summary,per_visit_price,extras,custom_extras_items,custom_extras_text,custom_extras_reason,custom_extras_source,custom_extras_fallback_reason,custom_extras_price,promo_type,promo_label,promo_discount,contact_name,contact_email,contact_phone,contact_postcode,contact_address,contact_method,preferred_date,preferred_time,notes,status,payment_amount,payment_currency,created_at&order=created_at.desc`,
     { headers: supabaseHeaders },
   );
 

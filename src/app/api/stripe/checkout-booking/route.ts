@@ -25,7 +25,7 @@ const fetchBooking = async (reference: string) => {
   const response = await fetch(
     `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
       reference,
-    )}&select=reference,service,property_summary,per_visit_price,promo_discount,contact_email,status`,
+    )}&select=reference,service,property_summary,per_visit_price,promo_discount,contact_email,status,stripe_subscription_id`,
     {
       headers: supabaseHeaders,
     },
@@ -139,6 +139,12 @@ export async function POST(request: Request) {
     if (status === "paid") {
       return NextResponse.json(
         { error: "Booking is already paid." },
+        { status: 400 },
+      );
+    }
+    if (booking.stripe_subscription_id) {
+      return NextResponse.json(
+        { error: "This booking is billed by subscription." },
         { status: 400 },
       );
     }

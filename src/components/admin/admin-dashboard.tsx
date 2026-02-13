@@ -80,6 +80,11 @@ type BookingRecord = {
   property_summary?: string;
   frequency?: string;
   frequency_key?: string;
+  stripe_customer_id?: string;
+  stripe_subscription_id?: string;
+  stripe_subscription_status?: string;
+  stripe_current_period_end?: string;
+  stripe_invoice_id?: string;
   per_visit_price?: number;
   extras?: string[];
   custom_extras_items?: string[];
@@ -154,6 +159,13 @@ const formatDate = (value?: string) => {
   const [year, month, day] = value.split("-");
   if (!year || !month || !day) return value;
   return `${day}/${month}/${year}`;
+};
+
+const formatBillingDate = (value?: string | null) => {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-GB");
 };
 
 const formatFrequency = (frequency?: string | null, key?: string | null) => {
@@ -804,6 +816,15 @@ const AdminDashboard = () => {
                         {booking.promo_label || "Free bathroom"}
                       </p>
                     ) : null}
+                    {booking.stripe_subscription_id && (
+                      <p>
+                        <span className="font-medium text-foreground">Billing:</span>{" "}
+                        Subscription
+                        {booking.stripe_subscription_status
+                          ? ` (${booking.stripe_subscription_status})`
+                          : ""}
+                      </p>
+                    )}
                     <p>
                       <span className="font-medium text-foreground">Contact:</span>{" "}
                       <button
@@ -913,10 +934,22 @@ const AdminDashboard = () => {
                             {booking.promo_label || "Free bathroom"}
                           </Badge>
                         ) : null}
+                        {booking.stripe_subscription_id && (
+                          <Badge
+                            variant="outline"
+                            className="border-sky-200/70 bg-sky-50 text-sky-700"
+                          >
+                            Subscription
+                          </Badge>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell>
-                      {booking.status === "paid" ? "Yes" : "No"}
+                      {booking.stripe_subscription_id
+                        ? "Auto"
+                        : booking.status === "paid"
+                        ? "Yes"
+                        : "No"}
                     </TableCell>
                     <TableCell>{formatDate(booking.preferred_date)}</TableCell>
                     <TableCell>
@@ -1095,6 +1128,22 @@ const AdminDashboard = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                {editForm.stripe_subscription_id && (
+                  <div className="rounded-xl border border-border/60 bg-background/70 p-3 text-sm text-muted-foreground">
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                      Subscription
+                    </p>
+                    <p className="text-foreground">
+                      {editForm.stripe_subscription_status || "active"}
+                    </p>
+                    {editForm.stripe_current_period_end && (
+                      <p className="text-xs text-muted-foreground">
+                        Next billing:{" "}
+                        {formatBillingDate(editForm.stripe_current_period_end)}
+                      </p>
+                    )}
+                  </div>
+                )}
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label>Preferred date</Label>
@@ -1805,14 +1854,24 @@ const AdminDashboard = () => {
                       <p className="text-muted-foreground">
                         {viewing.payment_currency || "GBP"}
                       </p>
-                      {viewing.promo_type && viewing.promo_discount ? (
-                        <p className="text-xs text-muted-foreground">
-                          Promo applied: {viewing.promo_label || "Free bathroom"} (-
-                          {formatCurrency(viewing.promo_discount)})
-                        </p>
-                      ) : null}
-                      <Badge
-                        variant={
+                  {viewing.promo_type && viewing.promo_discount ? (
+                    <p className="text-xs text-muted-foreground">
+                      Promo applied: {viewing.promo_label || "Free bathroom"} (-
+                      {formatCurrency(viewing.promo_discount)})
+                    </p>
+                  ) : null}
+                  {viewing.stripe_subscription_id && (
+                    <p className="text-xs text-muted-foreground">
+                      Subscription: {viewing.stripe_subscription_status || "active"}
+                      {viewing.stripe_current_period_end
+                        ? ` • Next billing ${formatBillingDate(
+                            viewing.stripe_current_period_end,
+                          )}`
+                        : ""}
+                    </p>
+                  )}
+                  <Badge
+                    variant={
                           statusStyles[viewing.status ?? "pending"] ?? "outline"
                         }
                       >

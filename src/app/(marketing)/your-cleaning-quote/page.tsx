@@ -179,6 +179,7 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
     preferredContact: contactMethod,
     notes,
   };
+  const isSubscription = input.frequency !== "one-time";
 
   return (
     <MaxWidthWrapper className="pt-16 pb-20">
@@ -350,6 +351,16 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                   final confirmation. Expect a response within 24 hours so we can
                   book you in.
                 </p>
+                {isSubscription && (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    Scheduled cleans are billed automatically via subscription.
+                    You can manage billing anytime in{" "}
+                    <Link href="/my-booking" className="text-foreground underline">
+                      My booking
+                    </Link>
+                    .
+                  </p>
+                )}
                 {referenceHint && (
                   <p className="mt-3 text-sm text-muted-foreground">
                     Save your reference <strong>{referenceHint}</strong> to manage
@@ -388,7 +399,11 @@ const QuoteResultPage = async ({ searchParams }: QuoteResultPageProps) => {
                     contact={contactPayload}
                     referenceHint={referenceHint ?? undefined}
                     input={input}
-                    displayAmount={firstVisitPrice ?? displayQuote.perVisitPrice}
+                    displayAmount={
+                      isSubscription
+                        ? displayQuote.perVisitPrice
+                        : firstVisitPrice ?? displayQuote.perVisitPrice
+                    }
                   />
                   <Button variant="outline" asChild>
                     <Link href={whatsappUrl}>Pay later / cash (WhatsApp)</Link>
