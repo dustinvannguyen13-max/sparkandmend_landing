@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,8 +14,9 @@ import {
 } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/utils";
-import { Eye } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import { formatCurrency } from "@/utils/quote";
+import { getFrequencyLabel } from "@/lib/booking-frequency";
 
 type BookingRecord = {
   reference: string;
@@ -31,6 +33,7 @@ type BookingRecord = {
   promo_label?: string;
   promo_discount?: number;
   frequency?: string;
+  frequency_key?: string;
   property_summary?: string;
   per_visit_price?: number;
   payment_amount?: number;
@@ -62,6 +65,11 @@ const formatDateKey = (date: Date) => {
 
 const parseDate = (value: string) => new Date(`${value}T00:00:00`);
 
+const formatFrequency = (frequency?: string | null, key?: string | null) => {
+  const label = getFrequencyLabel(frequency ?? key ?? undefined);
+  return label ?? "—";
+};
+
 const AdminCalendar = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [currentMonth, setCurrentMonth] = useState(() => {
@@ -73,34 +81,37 @@ const AdminCalendar = () => {
   const [googleError, setGoogleError] = useState<string | null>(null);
   const [syncMessage, setSyncMessage] = useState<string | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isExtending, setIsExtending] = useState(false);
+  const [extendMessage, setExtendMessage] = useState<string | null>(null);
+  const [extendError, setExtendError] = useState<string | null>(null);
   const [viewing, setViewing] = useState<BookingRecord | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch("/api/admin/bookings");
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || "Unable to load bookings.");
-        }
-        const withDates = (data.bookings ?? []).filter(
-          (booking: BookingRecord) => booking.preferred_date,
-        );
-        setBookings(withDates);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setIsLoading(false);
+  const loadBookings = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/admin/bookings");
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to load bookings.");
       }
-    };
-
-    fetchBookings();
+      const withDates = (data.bookings ?? []).filter(
+        (booking: BookingRecord) => booking.preferred_date,
+      );
+      setBookings(withDates);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadBookings();
+  }, [loadBookings]);
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -199,6 +210,29 @@ const AdminCalendar = () => {
     }
   };
 
+  const handleExtendSeries = async () => {
+    setIsExtending(true);
+    setExtendMessage(null);
+    setExtendError(null);
+    try {
+      const response = await fetch("/api/admin/bookings/extend-series", {
+        method: "POST",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to extend bookings.");
+      }
+      setExtendMessage(
+        `Extended ${data.extendedSeries ?? 0} series and created ${data.created ?? 0} new bookings.`,
+      );
+      await loadBookings();
+    } catch (err) {
+      setExtendError((err as Error).message);
+    } finally {
+      setIsExtending(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -227,8 +261,13 @@ const AdminCalendar = () => {
           <Button variant="outline" onClick={goNext}>
             Next
           </Button>
+          <Button variant="outline" onClick={handleExtendSeries} disabled={isExtending}>
+            {isExtending ? "Extending..." : "Extend schedules"}
+          </Button>
         </div>
       </div>
+      {extendMessage && <p className="text-sm text-foreground">{extendMessage}</p>}
+      {extendError && <p className="text-sm text-destructive">{extendError}</p>}
 
       <Card className="border-border/60 bg-card/90">
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -373,6 +412,17 @@ const AdminCalendar = () => {
                   >
                     <Eye className="h-4 w-4" />
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    asChild
+                    aria-label="Edit booking"
+                    title="Edit booking"
+                  >
+                    <Link href={`/dashboard?reference=${booking.reference}`}>
+                      <Pencil className="h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -413,7 +463,7 @@ const AdminCalendar = () => {
                     {viewing.preferred_time || "Time TBC"}
                   </p>
                   <p className="text-muted-foreground">
-                    {viewing.frequency || "—"}
+                    {formatFrequency(viewing.frequency, viewing.frequency_key)}
                   </p>
                 </div>
               </div>
@@ -431,7 +481,7 @@ const AdminCalendar = () => {
                   </p>
                   {viewing.promo_type && viewing.promo_discount ? (
                     <p className="text-xs text-muted-foreground">
-                      Promo applied: {viewing.promo_label || "1x free bathroom"} (-
+                      Promo applied: {viewing.promo_label || "Free bathroom"} (-
                       {formatCurrency(viewing.promo_discount)})
                     </p>
                   ) : null}

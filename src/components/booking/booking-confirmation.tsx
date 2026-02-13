@@ -10,12 +10,14 @@ import { PrimaryButton } from "@/components/ui/primary-button";
 import { CheckListItem } from "@/components/ui/check-list";
 import { Section, SectionHeader } from "@/components/ui/section";
 import MagicBadge from "@/components/ui/magic-badge";
+import { getFrequencyLabel } from "@/lib/booking-frequency";
 
 interface BookingRecord {
   reference: string;
   service: string;
   property_summary: string;
   frequency: string;
+  frequency_key?: string;
   per_visit_price: number;
   extras?: string[];
   custom_extras_items?: string[];
@@ -110,7 +112,8 @@ const BookingConfirmationClient = () => {
                   </p>
                   <p>
                     <span className="font-medium text-foreground">Schedule:</span>{" "}
-                    {booking.frequency}
+                    {getFrequencyLabel(booking.frequency ?? booking.frequency_key) ??
+                      booking.frequency}
                   </p>
                   {booking.preferred_date && (
                     <p>

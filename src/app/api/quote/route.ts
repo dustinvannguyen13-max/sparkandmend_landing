@@ -8,6 +8,7 @@ import {
   applyFreeBathroomPromo,
   isFirstTimeCustomer,
 } from "@/lib/booking-promos";
+import { buildSeriesDates, buildSeriesReferences } from "@/lib/booking-series";
 
 interface QuoteContact {
   name: string;
@@ -29,7 +30,9 @@ interface QuoteRequestBody {
   };
 }
 
-const insertInquiryRow = async (payload: Record<string, unknown>) => {
+const insertInquiryRow = async (
+  payload: Record<string, unknown> | Array<Record<string, unknown>>,
+) => {
   if (!supabaseConfig.url || !supabaseHeaders) {
     throw new Error("Supabase configuration is missing.");
   }
@@ -167,6 +170,17 @@ export async function POST(request: Request) {
     const { firstVisitPrice, promo: freeBathroomPromo } =
       applyFreeBathroomPromo(quoteSummary, input, isFirstTime);
     const reference = `SMQ-${randomUUID().split("-")[0].toUpperCase()}`;
+    const frequencyKey = input.service === "advanced" ? "one-time" : input.frequency;
+    const hasSchedule = frequencyKey !== "one-time" && Boolean(contact.preferredDate);
+    const seriesId = hasSchedule ? randomUUID() : null;
+    const computedSeriesDates = hasSchedule
+      ? buildSeriesDates(contact.preferredDate as string, frequencyKey)
+      : [contact.preferredDate ?? null];
+    const seriesDates =
+      computedSeriesDates.length > 0 ? computedSeriesDates : [contact.preferredDate ?? null];
+    const seriesReferences = hasSchedule
+      ? buildSeriesReferences(reference, seriesDates.length)
+      : [reference];
     const deliveries = {
       database: false,
       webhook: false,
@@ -175,9 +189,13 @@ export async function POST(request: Request) {
     };
     const inquiryPayload = {
       reference,
+      series_id: seriesId,
+      series_reference: seriesId ? reference : null,
+      series_index: 0,
       service: quoteSummary.serviceLabel,
       property_summary: quoteSummary.propertySummary,
       frequency: quoteSummary.frequencyLabel,
+      frequency_key: frequencyKey,
       per_visit_price: quoteSummary.perVisitPrice,
       extras: input.extras ?? [],
       custom_extras_items: quoteSummary.customExtrasItems ?? [],
@@ -201,7 +219,14 @@ export async function POST(request: Request) {
       status: "pending",
     };
 
-    await insertInquiryRow(inquiryPayload);
+    const payloads = seriesDates.map((date, index) => ({
+      ...inquiryPayload,
+      reference: seriesReferences[index] ?? reference,
+      series_index: seriesId ? index : 0,
+      preferred_date: date,
+    }));
+
+    await insertInquiryRow(payloads);
     deliveries.database = true;
 
     const payload = {

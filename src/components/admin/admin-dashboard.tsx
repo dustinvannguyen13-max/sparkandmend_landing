@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -47,6 +48,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import {
   calculateQuote,
   DEFAULT_QUOTE_INPUT,
   EXTRA_OPTIONS,
@@ -55,6 +62,7 @@ import {
   COMMERCIAL_PROPERTY_TYPES,
   SERVICE_LABELS,
   PROPERTY_LABELS,
+  FREQUENCY_META,
   type CleaningService,
   type Frequency,
   type OvenOption,
@@ -64,12 +72,14 @@ import {
 } from "@/utils/quote";
 import { Ban, Eye, Pencil, Plus, Save, Trash2, User } from "lucide-react";
 import { APP_DOMAIN } from "@/utils/constants/site";
+import { getFrequencyKey, getFrequencyLabel } from "@/lib/booking-frequency";
 
 type BookingRecord = {
   reference: string;
   service?: string;
   property_summary?: string;
   frequency?: string;
+  frequency_key?: string;
   per_visit_price?: number;
   extras?: string[];
   custom_extras_items?: string[];
@@ -94,6 +104,9 @@ type BookingRecord = {
   payment_amount?: number;
   payment_currency?: string;
   created_at?: string;
+  series_id?: string;
+  series_reference?: string;
+  series_index?: number;
 };
 
 type BookingContactForm = {
@@ -143,6 +156,11 @@ const formatDate = (value?: string) => {
   return `${day}/${month}/${year}`;
 };
 
+const formatFrequency = (frequency?: string | null, key?: string | null) => {
+  const label = getFrequencyLabel(frequency ?? key ?? undefined);
+  return label ?? "—";
+};
+
 const AdminDashboard = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [filtered, setFiltered] = useState<BookingRecord[]>([]);
@@ -168,6 +186,7 @@ const AdminDashboard = () => {
   const [emailSending, setEmailSending] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [emailSuccess, setEmailSuccess] = useState<string | null>(null);
+  const searchParams = useSearchParams();
   const [createOpen, setCreateOpen] = useState(false);
   const [createForm, setCreateForm] = useState<QuoteInput>(DEFAULT_QUOTE_INPUT);
   const [createContact, setCreateContact] = useState<BookingContactForm>({
@@ -191,9 +210,14 @@ const AdminDashboard = () => {
     const paid = bookings.filter((item) => item.status === "paid");
     const pending = bookings.filter((item) => item.status !== "paid" && item.status !== "cancelled");
     const cancelled = bookings.filter((item) => item.status === "cancelled");
-    const revenue = paid.reduce((sum, item) => sum + (item.payment_amount ?? 0), 0);
+    const netAmount = (value?: number, discount?: number) =>
+      Math.max(0, (value ?? 0) - (discount ?? 0));
+    const revenue = paid.reduce(
+      (sum, item) => sum + netAmount(item.payment_amount, item.promo_discount),
+      0,
+    );
     const unpaidValue = pending.reduce(
-      (sum, item) => sum + (item.per_visit_price ?? 0),
+      (sum, item) => sum + netAmount(item.per_visit_price, item.promo_discount),
       0,
     );
     return {
@@ -230,7 +254,9 @@ const AdminDashboard = () => {
       `Reference: ${reference}`,
       booking.service ? `Service: ${booking.service}` : null,
       booking.property_summary ? `Property: ${booking.property_summary}` : null,
-      booking.frequency ? `Schedule: ${booking.frequency}` : null,
+      booking.frequency || booking.frequency_key
+        ? `Schedule: ${formatFrequency(booking.frequency, booking.frequency_key)}`
+        : null,
       booking.preferred_date ? `Preferred date: ${formatDate(booking.preferred_date)}` : null,
       booking.preferred_time ? `Preferred time: ${booking.preferred_time}` : null,
       booking.notes ? `Notes: ${booking.notes}` : null,
@@ -264,6 +290,22 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
+    const reference = searchParams?.get("reference");
+    if (reference) {
+      setSearchQuery(reference);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    const reference = searchParams?.get("reference");
+    if (!reference || !bookings.length) return;
+    const match = bookings.find((booking) => booking.reference === reference);
+    if (match) {
+      setSelected(match);
+    }
+  }, [bookings, searchParams]);
+
+  useEffect(() => {
     if (!searchQuery.trim()) {
       setFiltered(bookings);
       return;
@@ -293,7 +335,11 @@ const AdminDashboard = () => {
       setEditForm(null);
       return;
     }
-    setEditForm({ ...selected });
+    setEditForm({
+      ...selected,
+      frequency_key:
+        selected.frequency_key ?? getFrequencyKey(selected.frequency ?? undefined) ?? undefined,
+    });
   }, [selected]);
 
   useEffect(() => {
@@ -737,6 +783,10 @@ const AdminDashboard = () => {
                       {booking.service || "—"}
                     </p>
                     <p>
+                      <span className="font-medium text-foreground">Frequency:</span>{" "}
+                      {formatFrequency(booking.frequency, booking.frequency_key)}
+                    </p>
+                    <p>
                       <span className="font-medium text-foreground">Date:</span>{" "}
                       {formatDate(booking.preferred_date)}
                     </p>
@@ -751,7 +801,7 @@ const AdminDashboard = () => {
                     {booking.promo_type && booking.promo_discount ? (
                       <p>
                         <span className="font-medium text-foreground">Promo:</span>{" "}
-                        {booking.promo_label || "1x free bathroom"}
+                        {booking.promo_label || "Free bathroom"}
                       </p>
                     ) : null}
                     <p>
@@ -799,6 +849,7 @@ const AdminDashboard = () => {
                   <TableHead>Reference</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Service</TableHead>
+                  <TableHead>Frequency</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Paid</TableHead>
                   <TableHead>Preferred date</TableHead>
@@ -809,7 +860,7 @@ const AdminDashboard = () => {
               <TableBody>
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-sm text-muted-foreground">
+                    <TableCell colSpan={9} className="text-sm text-muted-foreground">
                       {isLoading ? "Loading bookings..." : "No bookings found."}
                     </TableCell>
                   </TableRow>
@@ -847,14 +898,22 @@ const AdminDashboard = () => {
                     </TableCell>
                     <TableCell>{booking.service || "—"}</TableCell>
                     <TableCell>
-                      <Badge variant={statusStyles[booking.status ?? "pending"] ?? "outline"}>
-                        {booking.status ?? "pending"}
-                      </Badge>
-                      {booking.promo_type && booking.promo_discount ? (
-                        <Badge variant="secondary" className="ml-2">
-                          {booking.promo_label || "1x free bathroom"}
+                      {formatFrequency(booking.frequency, booking.frequency_key)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="inline-flex items-center gap-2">
+                        <Badge variant={statusStyles[booking.status ?? "pending"] ?? "outline"}>
+                          {booking.status ?? "pending"}
                         </Badge>
-                      ) : null}
+                        {booking.promo_type && booking.promo_discount ? (
+                          <Badge
+                            variant="outline"
+                            className="border-emerald-200/70 bg-emerald-50 text-emerald-700"
+                          >
+                            {booking.promo_label || "Free bathroom"}
+                          </Badge>
+                        ) : null}
+                      </div>
                     </TableCell>
                     <TableCell>
                       {booking.status === "paid" ? "Yes" : "No"}
@@ -1003,6 +1062,38 @@ const AdminDashboard = () => {
                       )
                     }
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label>Frequency</Label>
+                  <Select
+                    value={
+                      getFrequencyKey(editForm.frequency_key ?? editForm.frequency) ??
+                      "one-time"
+                    }
+                    onValueChange={(value) =>
+                      setEditForm((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              frequency_key: value,
+                              frequency:
+                                FREQUENCY_META[value as Frequency]?.label ?? value,
+                            }
+                          : prev,
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {FREQUENCY_OPTIONS.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="space-y-2">
@@ -1647,7 +1738,7 @@ const AdminDashboard = () => {
       </Dialog>
 
       <Dialog open={Boolean(viewing)} onOpenChange={(open) => !open && setViewing(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden">
           <DialogHeader>
             <DialogTitle>Booking details</DialogTitle>
             <DialogDescription>
@@ -1655,244 +1746,272 @@ const AdminDashboard = () => {
             </DialogDescription>
           </DialogHeader>
           {viewing && (
-            <div className="space-y-4 text-sm">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Customer
+            <Tabs defaultValue="details" className="mt-2 flex flex-col gap-4">
+              <TabsList className="w-full">
+                <TabsTrigger value="details" className="flex-1">
+                  Details
+                </TabsTrigger>
+                <TabsTrigger value="email" className="flex-1">
+                  Email
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent
+                value="details"
+                className="mt-4 max-h-[60vh] overflow-y-auto pr-1"
+              >
+                <div className="space-y-4 text-sm">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Customer
+                      </p>
+                      <p className="text-foreground">
+                        {viewing.contact_name || "—"}
+                      </p>
+                      <p className="text-muted-foreground">
+                        {viewing.contact_email || "—"}
+                      </p>
+                      <p className="text-muted-foreground">
+                        {viewing.contact_phone || "—"}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Schedule
+                      </p>
+                      <p className="text-foreground">
+                        {formatDate(viewing.preferred_date)}
+                      </p>
+                      <p className="text-muted-foreground">
+                        {viewing.preferred_time || "Time TBC"}
+                      </p>
+                      <p className="text-muted-foreground">
+                    {formatFrequency(viewing.frequency, viewing.frequency_key)}
                   </p>
-                  <p className="text-foreground">{viewing.contact_name || "—"}</p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_email || "—"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_phone || "—"}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Schedule
-                  </p>
-                  <p className="text-foreground">
-                    {formatDate(viewing.preferred_date)}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.preferred_time || "Time TBC"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.frequency || "—"}
-                  </p>
-                </div>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Pricing
-                  </p>
-                  <p className="text-foreground">
-                    {viewing.payment_amount
-                      ? formatCurrency(viewing.payment_amount)
-                      : viewing.per_visit_price
-                      ? formatCurrency(viewing.per_visit_price)
-                      : "—"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.payment_currency || "GBP"}
-                  </p>
-                  {viewing.promo_type && viewing.promo_discount ? (
-                    <p className="text-xs text-muted-foreground">
-                      Promo applied: {viewing.promo_label || "1x free bathroom"} (-
-                      {formatCurrency(viewing.promo_discount)})
-                    </p>
-                  ) : null}
-                  <Badge
-                    variant={statusStyles[viewing.status ?? "pending"] ?? "outline"}
-                  >
-                    {viewing.status ?? "pending"}
-                  </Badge>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Property
-                  </p>
-                  <p className="text-foreground">{viewing.property_summary || "—"}</p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_address || "—"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_postcode || "—"}
-                  </p>
-                  {viewing.contact_address && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2 w-full sm:w-auto"
-                      asChild
-                    >
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(
-                          "25 Belgrave Road, Plymouth, England, PL4 7DP",
-                        )}&destination=${encodeURIComponent(
-                          viewing.contact_address,
-                        )}`}
-                        target="_blank"
-                        rel="noreferrer"
+                    </div>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Pricing
+                      </p>
+                      <p className="text-foreground">
+                        {viewing.payment_amount
+                          ? formatCurrency(viewing.payment_amount)
+                          : viewing.per_visit_price
+                          ? formatCurrency(viewing.per_visit_price)
+                          : "—"}
+                      </p>
+                      <p className="text-muted-foreground">
+                        {viewing.payment_currency || "GBP"}
+                      </p>
+                      {viewing.promo_type && viewing.promo_discount ? (
+                        <p className="text-xs text-muted-foreground">
+                          Promo applied: {viewing.promo_label || "Free bathroom"} (-
+                          {formatCurrency(viewing.promo_discount)})
+                        </p>
+                      ) : null}
+                      <Badge
+                        variant={
+                          statusStyles[viewing.status ?? "pending"] ?? "outline"
+                        }
                       >
-                        Directions from Belgrave Road
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </div>
-              <div className="rounded-2xl border border-border/60 bg-background/70 p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
+                        {viewing.status ?? "pending"}
+                      </Badge>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Property
+                      </p>
+                      <p className="text-foreground">
+                        {viewing.property_summary || "—"}
+                      </p>
+                      <p className="text-muted-foreground">
+                        {viewing.contact_address || "—"}
+                      </p>
+                      <p className="text-muted-foreground">
+                        {viewing.contact_postcode || "—"}
+                      </p>
+                      {viewing.contact_address && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="mt-2 w-full sm:w-auto"
+                          asChild
+                        >
+                          <a
+                            href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(
+                              "25 Belgrave Road, Plymouth, England, PL4 7DP",
+                            )}&destination=${encodeURIComponent(
+                              viewing.contact_address,
+                            )}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Directions from Belgrave Road
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="space-y-2">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Email customer
+                      Extras
                     </p>
-                    <p className="text-sm text-foreground">
-                      {viewing.contact_email || "No email on file"}
-                    </p>
-                  </div>
-                  <Select
-                    value={emailTemplate}
-                    onValueChange={(value) =>
-                      setEmailTemplate(value as EmailTemplateOption)
-                    }
-                  >
-                    <SelectTrigger className="w-44">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="amended">Booking updated</SelectItem>
-                      <SelectItem value="cancelled">Booking cancelled</SelectItem>
-                      <SelectItem value="custom">Custom</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="mt-4 space-y-3">
-                  <div className="space-y-2">
-                    <Label>Subject</Label>
-                    <Input
-                      value={emailSubject}
-                      onChange={(event) => setEmailSubject(event.target.value)}
-                    />
+                    {viewing.extras && viewing.extras.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {viewing.extras.map((extra) => (
+                          <Badge key={extra} variant="secondary">
+                            {extra}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground">No extras selected.</p>
+                    )}
                   </div>
                   <div className="space-y-2">
-                    <Label>Message</Label>
-                    <Textarea
-                      value={emailBody}
-                      onChange={(event) => setEmailBody(event.target.value)}
-                      className="min-h-[140px]"
-                    />
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                      Custom extras
+                    </p>
+                    <div className="rounded-xl border border-border/60 bg-background/70 p-3 text-sm text-muted-foreground space-y-1">
+                      <p>
+                        <span className="text-foreground">Items:</span>{" "}
+                        {viewing.custom_extras_items?.length
+                          ? viewing.custom_extras_items.join(", ")
+                          : "—"}
+                      </p>
+                      <p>
+                        <span className="text-foreground">Request:</span>{" "}
+                        {viewing.custom_extras_text || "—"}
+                      </p>
+                      <p>
+                        <span className="text-foreground">Reason:</span>{" "}
+                        {viewing.custom_extras_reason || "—"}
+                      </p>
+                      <p>
+                        <span className="text-foreground">Source:</span>{" "}
+                        {viewing.custom_extras_source || "—"}
+                      </p>
+                      <p>
+                        <span className="text-foreground">Fallback reason:</span>{" "}
+                        {viewing.custom_extras_fallback_reason || "—"}
+                      </p>
+                      <p>
+                        <span className="text-foreground">Price:</span>{" "}
+                        {viewing.custom_extras_price
+                          ? formatCurrency(viewing.custom_extras_price)
+                          : "—"}
+                      </p>
+                    </div>
                   </div>
-                  {emailError && (
-                    <p className="text-xs text-destructive">{emailError}</p>
+                  {viewing.notes && (
+                    <div className="space-y-2">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Notes
+                      </p>
+                      <p className="text-muted-foreground whitespace-pre-line">
+                        {viewing.notes}
+                      </p>
+                    </div>
                   )}
-                  {emailSuccess && (
-                    <p className="text-xs text-emerald-600">{emailSuccess}</p>
-                  )}
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Button
-                      onClick={handleSendEmail}
-                      disabled={emailSending || !viewing.contact_email}
-                    >
-                      {emailSending ? "Sending..." : "Send email"}
-                    </Button>
+                  {viewing.contact_email && (
                     <Button
                       variant="outline"
-                      onClick={() => {
-                        const { subject, body } = buildEmailTemplate(
-                          emailTemplate === "custom" ? "amended" : emailTemplate,
-                          viewing,
-                        );
-                        setEmailSubject(subject);
-                        setEmailBody(body);
-                      }}
+                      className="w-full sm:w-auto gap-2"
+                      onClick={() =>
+                        (setCustomerFilter({
+                          email: viewing.contact_email ?? undefined,
+                          name: viewing.contact_name ?? undefined,
+                        }),
+                        setViewing(null))
+                      }
                     >
-                      Reset template
+                      <User className="h-4 w-4" />
+                      View customer bookings
                     </Button>
+                  )}
+                </div>
+              </TabsContent>
+              <TabsContent
+                value="email"
+                className="mt-4 max-h-[60vh] overflow-y-auto pr-1"
+              >
+                <div className="space-y-4 text-sm">
+                  <div className="rounded-2xl border border-border/60 bg-background/70 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                          Email customer
+                        </p>
+                        <p className="text-sm text-foreground">
+                          {viewing.contact_email || "No email on file"}
+                        </p>
+                      </div>
+                      <Select
+                        value={emailTemplate}
+                        onValueChange={(value) =>
+                          setEmailTemplate(value as EmailTemplateOption)
+                        }
+                      >
+                        <SelectTrigger className="w-44">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="amended">Booking updated</SelectItem>
+                          <SelectItem value="cancelled">Booking cancelled</SelectItem>
+                          <SelectItem value="custom">Custom</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="mt-4 space-y-3">
+                      <div className="space-y-2">
+                        <Label>Subject</Label>
+                        <Input
+                          value={emailSubject}
+                          onChange={(event) => setEmailSubject(event.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Message</Label>
+                        <Textarea
+                          value={emailBody}
+                          onChange={(event) => setEmailBody(event.target.value)}
+                          className="min-h-[140px]"
+                        />
+                      </div>
+                      {emailError && (
+                        <p className="text-xs text-destructive">{emailError}</p>
+                      )}
+                      {emailSuccess && (
+                        <p className="text-xs text-emerald-600">{emailSuccess}</p>
+                      )}
+                      <div className="flex flex-wrap items-center gap-3">
+                        <Button
+                          onClick={handleSendEmail}
+                          disabled={emailSending || !viewing.contact_email}
+                        >
+                          {emailSending ? "Sending..." : "Send email"}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            const { subject, body } = buildEmailTemplate(
+                              emailTemplate === "custom" ? "amended" : emailTemplate,
+                              viewing,
+                            );
+                            setEmailSubject(subject);
+                            setEmailBody(body);
+                          }}
+                        >
+                          Reset template
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Extras
-                </p>
-                {viewing.extras && viewing.extras.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
-                    {viewing.extras.map((extra) => (
-                      <Badge key={extra} variant="secondary">
-                        {extra}
-                      </Badge>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">No extras selected.</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Custom extras
-                </p>
-                <div className="rounded-xl border border-border/60 bg-background/70 p-3 text-sm text-muted-foreground space-y-1">
-                  <p>
-                    <span className="text-foreground">Items:</span>{" "}
-                    {viewing.custom_extras_items?.length
-                      ? viewing.custom_extras_items.join(", ")
-                      : "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Request:</span>{" "}
-                    {viewing.custom_extras_text || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Reason:</span>{" "}
-                    {viewing.custom_extras_reason || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Source:</span>{" "}
-                    {viewing.custom_extras_source || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Fallback reason:</span>{" "}
-                    {viewing.custom_extras_fallback_reason || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Price:</span>{" "}
-                    {viewing.custom_extras_price
-                      ? formatCurrency(viewing.custom_extras_price)
-                      : "—"}
-                  </p>
-                </div>
-              </div>
-              {viewing.notes && (
-                <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Notes
-                  </p>
-                  <p className="text-muted-foreground whitespace-pre-line">
-                    {viewing.notes}
-                  </p>
-                </div>
-              )}
-              {viewing.contact_email && (
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto gap-2"
-                  onClick={() =>
-                    (setCustomerFilter({
-                      email: viewing.contact_email ?? undefined,
-                      name: viewing.contact_name ?? undefined,
-                    }),
-                    setViewing(null))
-                  }
-                >
-                  <User className="h-4 w-4" />
-                  View customer bookings
-                </Button>
-              )}
-            </div>
+              </TabsContent>
+            </Tabs>
           )}
         </DialogContent>
       </Dialog>

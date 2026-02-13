@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/auth";
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 import { calculateQuote, type QuoteInput } from "@/utils/quote";
+import { buildSeriesDates, buildSeriesReferences } from "@/lib/booking-series";
 
 export async function POST(request: Request) {
   const session = getAdminSession();
@@ -63,11 +64,26 @@ export async function POST(request: Request) {
         : null;
 
     const reference = `SMB-${randomUUID().split("-")[0].toUpperCase()}`;
+    const frequencyKey = sanitizedInput.frequency;
+    const hasSchedule = frequencyKey !== "one-time" && Boolean(contact.preferredDate);
+    const seriesId = hasSchedule ? randomUUID() : null;
+    const computedSeriesDates = hasSchedule
+      ? buildSeriesDates(contact.preferredDate as string, frequencyKey)
+      : [contact.preferredDate ?? null];
+    const seriesDates =
+      computedSeriesDates.length > 0 ? computedSeriesDates : [contact.preferredDate ?? null];
+    const seriesReferences = hasSchedule
+      ? buildSeriesReferences(reference, seriesDates.length)
+      : [reference];
     const payload = {
       reference,
+      series_id: seriesId,
+      series_reference: seriesId ? reference : null,
+      series_index: 0,
       service: quote.serviceLabel,
       property_summary: quote.propertySummary,
       frequency: quote.frequencyLabel,
+      frequency_key: frequencyKey,
       per_visit_price: quote.perVisitPrice,
       extras: sanitizedInput.extras ?? [],
       custom_extras_items: quote.customExtrasItems ?? [],
@@ -93,10 +109,20 @@ export async function POST(request: Request) {
       promo_discount: 0,
     };
 
+    const payloads = seriesDates.map((date, index) => ({
+      ...payload,
+      reference: seriesReferences[index] ?? reference,
+      series_index: seriesId ? index : 0,
+      preferred_date: date,
+      status: index === 0 ? status : "pending",
+      payment_amount: index === 0 ? paymentAmount : null,
+      payment_currency: index === 0 ? payload.payment_currency : null,
+    }));
+
     const response = await fetch(`${supabaseConfig.url}/rest/v1/bookings`, {
       method: "POST",
       headers: supabaseHeaders,
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payloads),
     });
 
     if (!response.ok) {

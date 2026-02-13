@@ -9,12 +9,14 @@ import { Label } from "@/components/ui/label";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatCurrency } from "@/utils/quote";
+import { getFrequencyLabel } from "@/lib/booking-frequency";
 
 type BookingRecord = {
   reference: string;
   service?: string;
   property_summary?: string;
   frequency?: string;
+  frequency_key?: string;
   per_visit_price?: number;
   extras?: string[];
   custom_extras_items?: string[];
@@ -351,7 +353,10 @@ const BookingLookup = ({ initialReference, paymentStatus }: BookingLookupProps) 
               </div>
               <div>
                 <p className="text-xs uppercase tracking-[0.2em]">Schedule</p>
-                <p className="text-foreground">{booking.frequency ?? "—"}</p>
+                <p className="text-foreground">
+                  {getFrequencyLabel(booking.frequency ?? booking.frequency_key) ??
+                    "—"}
+                </p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-[0.2em]">Estimated price</p>

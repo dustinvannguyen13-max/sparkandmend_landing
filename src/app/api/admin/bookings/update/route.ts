@@ -7,6 +7,7 @@ const ALLOWED_FIELDS = new Set([
   "service",
   "property_summary",
   "frequency",
+  "frequency_key",
   "per_visit_price",
   "extras",
   "custom_extras_items",

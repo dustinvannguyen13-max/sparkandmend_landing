@@ -10,6 +10,8 @@ import {
   applyFreeBathroomPromo,
   isFirstTimeCustomer,
 } from "@/lib/booking-promos";
+import { buildSeriesDates, buildSeriesReferences } from "@/lib/booking-series";
+import { getFrequencyKey, getFrequencyLabel } from "@/lib/booking-frequency";
 import type { QuoteInput } from "@/utils/quote";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
@@ -31,16 +33,28 @@ const buildBookingPayload = ({
   quote,
   contact,
   extras,
+  seriesId,
+  seriesReference,
+  seriesIndex,
+  frequencyKey,
 }: {
   reference: string;
   quote: Record<string, unknown>;
   contact: Record<string, unknown>;
   extras: string[];
+  seriesId?: string | null;
+  seriesReference?: string | null;
+  seriesIndex?: number;
+  frequencyKey?: string | null;
 }) => ({
   reference,
+  series_id: seriesId ?? null,
+  series_reference: seriesReference ?? null,
+  series_index: seriesIndex ?? 0,
   service: quote.serviceLabel,
   property_summary: quote.propertySummary,
   frequency: quote.frequencyLabel,
+  frequency_key: frequencyKey ?? null,
   per_visit_price: quote.perVisitPrice,
   extras,
   custom_extras_items: quote.customExtrasItems ?? [],
@@ -61,7 +75,9 @@ const buildBookingPayload = ({
   status: "pending",
 });
 
-const insertBookingRow = async (payload: Record<string, unknown>) => {
+const insertBookingRow = async (
+  payload: Record<string, unknown> | Array<Record<string, unknown>>,
+) => {
   if (!supabaseConfig.url || !supabaseHeaders) {
     throw new Error("Supabase configuration is missing.");
   }
@@ -274,11 +290,39 @@ export async function POST(request: Request) {
     }
     const amount = firstVisitPrice;
 
+    const inferredFrequencyKey =
+      getFrequencyKey(body.quote.frequencyLabel as string | null) ?? "one-time";
+    const frequencyKey =
+      body.input?.service === "advanced" ? "one-time" : inferredFrequencyKey;
+    const frequencyLabel =
+      getFrequencyLabel(frequencyKey) ?? (body.quote.frequencyLabel as string);
+
+    const hasSchedule = frequencyKey !== "one-time" && Boolean(body.contact?.preferredDate);
+    const seriesId = hasSchedule ? randomUUID() : null;
+    const computedSeriesDates = hasSchedule
+      ? buildSeriesDates(body.contact?.preferredDate as string, frequencyKey)
+      : [body.contact?.preferredDate ?? null];
+    const seriesDates =
+      computedSeriesDates.length > 0
+        ? computedSeriesDates
+        : [body.contact?.preferredDate ?? null];
+    const seriesReferences = hasSchedule
+      ? buildSeriesReferences(reference, seriesDates.length)
+      : [reference];
+
     const bookingPayload = buildBookingPayload({
       reference,
-      quote: { ...body.quote, perVisitPrice: offerResult.finalPrice },
+      quote: {
+        ...body.quote,
+        frequencyLabel: frequencyLabel,
+        perVisitPrice: offerResult.finalPrice,
+      },
       contact: body.contact,
       extras: body.extras || [],
+      seriesId,
+      seriesReference: seriesId ? reference : null,
+      seriesIndex: 0,
+      frequencyKey,
     });
     const promoPayload = promo
       ? {
@@ -292,7 +336,21 @@ export async function POST(request: Request) {
           promo_discount: 0,
         };
 
-    await insertBookingRow({ ...bookingPayload, ...promoPayload });
+    const payloads = seriesDates.map((date, index) => ({
+      ...bookingPayload,
+      ...promoPayload,
+      reference: seriesReferences[index] ?? reference,
+      series_index: seriesId ? index : 0,
+      preferred_date: date,
+      status: index === 0 ? "pending" : "pending",
+      payment_amount: null,
+      payment_currency: null,
+      promo_type: index === 0 ? promoPayload.promo_type : "",
+      promo_label: index === 0 ? promoPayload.promo_label : "",
+      promo_discount: index === 0 ? promoPayload.promo_discount : 0,
+    }));
+
+    await insertBookingRow(payloads);
 
     const session = await createStripeSession(
       reference,

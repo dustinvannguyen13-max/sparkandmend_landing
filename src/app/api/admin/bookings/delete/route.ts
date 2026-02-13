@@ -26,10 +26,31 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const response = await fetch(
+    const lookupResponse = await fetch(
       `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
         reference,
-      )}`,
+      )}&select=series_id`,
+      { headers: supabaseHeaders },
+    );
+
+    if (!lookupResponse.ok) {
+      const text = await lookupResponse.text();
+      return NextResponse.json(
+        { error: text || "Unable to find booking." },
+        { status: 502 },
+      );
+    }
+
+    const lookupData = (await lookupResponse.json()) as Array<{
+      series_id?: string | null;
+    }>;
+    const seriesId = lookupData[0]?.series_id ?? null;
+    const deleteQuery = seriesId
+      ? `series_id=eq.${encodeURIComponent(seriesId)}`
+      : `reference=eq.${encodeURIComponent(reference)}`;
+
+    const response = await fetch(
+      `${supabaseConfig.url}/rest/v1/bookings?${deleteQuery}`,
       {
         method: "DELETE",
         headers: supabaseHeaders,
