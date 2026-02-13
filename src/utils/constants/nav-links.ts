@@ -64,6 +64,10 @@ export const NAV_LINKS = [
         href: "/get-a-quote",
     },
     {
+        title: "My Booking",
+        href: "/my-booking",
+    },
+    {
         title: "Resources",
         href: "/resources",
         menu: [

@@ -2,6 +2,7 @@ import { Buffer } from "buffer";
 import { NextResponse } from "next/server";
 
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
+import { APP_DOMAIN } from "@/utils/constants/site";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 
@@ -64,6 +65,48 @@ const updateBookingStatus = async (
   return response.json();
 };
 
+const sendPaymentEmail = async (booking: Record<string, unknown>) => {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const emailFrom =
+    process.env.QUOTE_EMAIL_FROM || "Spark & Mend <quotes@sparkandmend.com>";
+  const contactEmail = booking.contact_email as string | undefined;
+
+  if (!resendApiKey || !contactEmail) return;
+
+  const reference = booking.reference as string;
+  const service = booking.service as string;
+  const property = booking.property_summary as string;
+  const amount = booking.payment_amount as number | undefined;
+  const currency = (booking.payment_currency as string | undefined) ?? "GBP";
+
+  const body = [
+    `Thanks ${booking.contact_name || ""}, your payment has been received.`,
+    ``,
+    `Reference: ${reference}`,
+    service ? `Service: ${service}` : null,
+    property ? `Property: ${property}` : null,
+    amount ? `Paid: £${amount} ${currency}` : null,
+    ``,
+    `Manage your booking: ${APP_DOMAIN}/my-booking?reference=${reference}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${resendApiKey}`,
+    },
+    body: JSON.stringify({
+      from: emailFrom,
+      to: [contactEmail],
+      subject: `Payment received for ${reference}`,
+      text: body,
+    }),
+  });
+};
+
 export async function POST(request: Request) {
   if (!STRIPE_SECRET_KEY) {
     return NextResponse.json(
@@ -111,6 +154,12 @@ export async function POST(request: Request) {
         { error: "Booking not found." },
         { status: 404 },
       );
+    }
+
+    try {
+      await sendPaymentEmail(updated[0]);
+    } catch {
+      // Email failures should not block booking confirmation.
     }
 
     return NextResponse.json({ booking: updated[0] });

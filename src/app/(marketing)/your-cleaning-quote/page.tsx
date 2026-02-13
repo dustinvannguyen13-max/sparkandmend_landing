@@ -170,6 +170,14 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
                   <p className="text-sm text-muted-foreground mt-2">
                     {quote.paymentSummary}
                   </p>
+                  {referenceHint && (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Reference:{" "}
+                      <span className="font-semibold text-foreground">
+                        {referenceHint}
+                      </span>
+                    </p>
+                  )}
                   {quote.monthlyEstimate && (
                     <p className="text-xs text-muted-foreground mt-1">
                       Estimated monthly total: {formatCurrency(quote.monthlyEstimate)}
@@ -270,15 +278,21 @@ const QuoteResultPage = ({ searchParams }: QuoteResultPageProps) => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border/70 bg-card/90 p-6 h-fit">
-              <h2 className="text-xl font-semibold text-foreground">
-                What happens next
-              </h2>
-              <p className="mt-3 text-sm text-muted-foreground">
-                We will review your details, confirm availability, and send a
-                final quote. Expect a response within 24 hours so we can book you
-                in.
-              </p>
+              <div className="rounded-2xl border border-border/70 bg-card/90 p-6 h-fit">
+                <h2 className="text-xl font-semibold text-foreground">
+                  What happens next
+                </h2>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  We will review your details, confirm availability, and send a
+                  final quote. Expect a response within 24 hours so we can book you
+                  in.
+                </p>
+                {referenceHint && (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    Save your reference <strong>{referenceHint}</strong> to manage
+                    your booking later.
+                  </p>
+                )}
               {contactMethodLabel && (
                 <p className="mt-3 text-sm text-muted-foreground">
                   We will reach out by {contactMethodLabel}.

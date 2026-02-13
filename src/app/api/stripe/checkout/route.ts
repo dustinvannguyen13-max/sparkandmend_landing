@@ -74,7 +74,29 @@ const insertBookingRow = async (payload: Record<string, unknown>) => {
   return response.json();
 };
 
-const patchBookingStripeId = async (reference: string, sessionId: string, amount: number) => {
+const fetchBookingByReference = async (reference: string) => {
+  if (!supabaseConfig.url || !supabaseHeaders) {
+    return null;
+  }
+
+  const response = await fetch(
+    `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
+      reference,
+    )}&select=reference`,
+    {
+      headers: supabaseHeaders,
+    },
+  );
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = (await response.json()) as Array<Record<string, unknown>>;
+  return data.length ? data[0] : null;
+};
+
+const patchBookingStripeId = async (reference: string, sessionId: string) => {
   if (!supabaseConfig.url || !supabaseHeaders) {
     return;
   }
@@ -86,8 +108,6 @@ const patchBookingStripeId = async (reference: string, sessionId: string, amount
       headers: supabaseHeaders,
       body: JSON.stringify({
         stripe_session_id: sessionId,
-        payment_amount: amount,
-        payment_currency: "GBP",
       }),
     },
   );
@@ -197,10 +217,13 @@ export async function POST(request: Request) {
       extras: body.extras || [],
     });
 
-    await insertBookingRow(bookingPayload);
+    const existing = await fetchBookingByReference(reference);
+    if (!existing) {
+      await insertBookingRow(bookingPayload);
+    }
 
     const session = await createStripeSession(reference, amount);
-    await patchBookingStripeId(reference, session.id, amount);
+    await patchBookingStripeId(reference, session.id);
 
     return NextResponse.json({ url: session.url });
   } catch (error) {

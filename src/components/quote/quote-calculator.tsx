@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Mail, MessageCircle, MessageSquareText, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -53,6 +53,7 @@ import {
 
 const STEPS = ["Service", "Property", "Schedule", "Extras", "Details"];
 const STORAGE_KEY = "spark-mend-quote";
+const UK_POSTCODE_REGEX = /\b([A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2})\b/i;
 
 const SERVICE_OPTIONS: Array<{
   id: CleaningService;
@@ -188,15 +189,20 @@ const PROPERTY_TYPE_IMAGES: Record<
 };
 
 const CONTACT_METHOD_OPTIONS = [
-  { id: "text", label: "Text message" },
-  { id: "whatsapp", label: "WhatsApp" },
-  { id: "call", label: "Phone call" },
-  { id: "email", label: "Email" },
+  { id: "text", label: "Text message", icon: MessageSquareText },
+  { id: "whatsapp", label: "WhatsApp", icon: MessageCircle },
+  { id: "call", label: "Phone call", icon: Phone },
+  { id: "email", label: "Email", icon: Mail },
 ];
 
 interface QuoteCalculatorProps {
   redirectUrl?: string;
 }
+
+type AddressSuggestion = {
+  placeId: string;
+  description: string;
+};
 
 const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculatorProps) => {
   const router = useRouter();
@@ -218,8 +224,10 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   const [customExtrasLoading, setCustomExtrasLoading] = useState(false);
   const [customExtrasError, setCustomExtrasError] = useState<string | null>(null);
   const [customExtrasHover, setCustomExtrasHover] = useState(false);
-  const [isLocating, setIsLocating] = useState(false);
-  const [locationError, setLocationError] = useState<string | null>(null);
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
+  const [addressLookupError, setAddressLookupError] = useState<string | null>(null);
+  const [isAddressLookupLoading, setIsAddressLookupLoading] = useState(false);
+  const [placesReady, setPlacesReady] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -228,6 +236,11 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
   const formRef = useRef<HTMLDivElement>(null);
   const hasMountedRef = useRef(false);
   const lastAppliedServiceParam = useRef<CleaningService | null>(null);
+  const lastSelectedAddressRef = useRef<string | null>(null);
+  const skipAddressLookupRef = useRef(false);
+  const autocompleteServiceRef = useRef<any>(null);
+  const placesServiceRef = useRef<any>(null);
+  const addressLookupTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const formatFallbackReason = (reason?: string) =>
     reason
       ? reason
@@ -325,6 +338,18 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
       console.warn("Unable to save quote details.");
     }
   }, [form, contact, customExtrasEnabled, step, isHydrated]);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    const match = contact.address.match(UK_POSTCODE_REGEX);
+    const raw = match ? match[1] : "";
+    const formatted = raw
+      ? `${raw.slice(0, -3).trim().toUpperCase()} ${raw.slice(-3).toUpperCase()}`
+      : "";
+    if (formatted !== contact.postcode) {
+      setContact((prev) => ({ ...prev, postcode: formatted }));
+    }
+  }, [contact.address, contact.postcode, isHydrated]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -431,56 +456,199 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     };
   }, [customExtrasEnabled, form.customExtras, form.propertyType, form.service, isHydrated]);
 
-  const handleUseLocation = async () => {
+  const initPlaces = useCallback(() => {
     if (typeof window === "undefined") return;
-    setLocationError(null);
-    if (!navigator.geolocation) {
-      setLocationError("Location is not supported by this browser.");
+    const google = (window as unknown as { google?: any }).google;
+    if (!google?.maps?.places) {
+      setAddressLookupError("Address lookup is unavailable. Please type it manually.");
       return;
     }
-    setIsLocating(true);
-    try {
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-        });
-      });
-
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-
-      if (apiKey) {
-        const url = new URL("https://maps.googleapis.com/maps/api/geocode/json");
-        url.searchParams.set("latlng", `${lat},${lng}`);
-        url.searchParams.set("key", apiKey);
-        const response = await fetch(url.toString());
-        const data = (await response.json()) as {
-          status?: string;
-          results?: Array<{ formatted_address?: string }>;
-        };
-        const address = data.results?.[0]?.formatted_address;
-        setContact((prev) => ({
-          ...prev,
-          address: address ?? `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
-        }));
-        if (!address) {
-          setLocationError("We could not find a full address, so we used coordinates.");
-        }
-      } else {
-        setContact((prev) => ({
-          ...prev,
-          address: `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
-        }));
-        setLocationError("Add a Google Maps API key to fetch a full address.");
-      }
-    } catch (error) {
-      setLocationError("We could not access your location. Please type it manually.");
-    } finally {
-      setIsLocating(false);
+    if (!autocompleteServiceRef.current) {
+      autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
     }
-  };
+    if (!placesServiceRef.current) {
+      placesServiceRef.current = new google.maps.places.PlacesService(
+        document.createElement("div"),
+      );
+    }
+    setPlacesReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated || typeof window === "undefined") return;
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey) {
+      setAddressLookupError("Add a Google Maps API key to enable address lookup.");
+      return;
+    }
+    if ((window as unknown as { google?: any }).google?.maps?.places) {
+      initPlaces();
+      return;
+    }
+
+    const existingScript = document.getElementById(
+      "google-maps-places-script",
+    ) as HTMLScriptElement | null;
+    if (existingScript) {
+      existingScript.addEventListener("load", initPlaces, { once: true });
+      existingScript.addEventListener(
+        "error",
+        () =>
+          setAddressLookupError("We couldn't load address lookup. Please type it manually."),
+        { once: true },
+      );
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = "google-maps-places-script";
+    script.async = true;
+    script.defer = true;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&v=weekly`;
+    script.onload = initPlaces;
+    script.onerror = () =>
+      setAddressLookupError("We couldn't load address lookup. Please type it manually.");
+    document.head.appendChild(script);
+
+    return () => {
+      script.onload = null;
+      script.onerror = null;
+    };
+  }, [initPlaces, isHydrated]);
+
+  const handleSelectAddress = useCallback((suggestion: AddressSuggestion) => {
+    lastSelectedAddressRef.current = suggestion.description;
+    skipAddressLookupRef.current = true;
+    setContact((prev) => ({
+      ...prev,
+      address: suggestion.description,
+    }));
+    setAddressSuggestions([]);
+    setAddressLookupError(null);
+
+    const google = (window as unknown as { google?: any }).google;
+    const service = placesServiceRef.current;
+    const okStatus = google?.maps?.places?.PlacesServiceStatus?.OK;
+    if (!service || !google?.maps?.places) return;
+
+    service.getDetails(
+      {
+        placeId: suggestion.placeId,
+        fields: ["formatted_address", "address_components"],
+      },
+      (place: any, status: string) => {
+        if (okStatus && status !== okStatus) return;
+        if (!place) return;
+        const formatted = place.formatted_address || suggestion.description;
+        const postcodeComponent = place.address_components?.find((component: any) =>
+          component.types?.includes("postal_code"),
+        );
+        const postcode = postcodeComponent?.long_name;
+        lastSelectedAddressRef.current = formatted;
+        setContact((prev) => ({
+          ...prev,
+          address: formatted,
+          postcode: postcode || prev.postcode,
+        }));
+      },
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!placesReady || typeof window === "undefined") return;
+    const query = contact.address.trim();
+    const postcode = contact.postcode.trim();
+    if (skipAddressLookupRef.current) {
+      if (lastSelectedAddressRef.current === query) {
+        setAddressSuggestions([]);
+        setIsAddressLookupLoading(false);
+        return;
+      }
+      skipAddressLookupRef.current = false;
+    }
+    if (addressLookupTimeoutRef.current) {
+      clearTimeout(addressLookupTimeoutRef.current);
+    }
+    if (!query) {
+      setAddressSuggestions([]);
+      setAddressLookupError(null);
+      setIsAddressLookupLoading(false);
+      return;
+    }
+    if (query.length < 3) {
+      setAddressSuggestions([]);
+      setIsAddressLookupLoading(false);
+      return;
+    }
+
+    setIsAddressLookupLoading(true);
+    addressLookupTimeoutRef.current = setTimeout(() => {
+      const service = autocompleteServiceRef.current;
+      const google = (window as unknown as { google?: any }).google;
+      const okStatus = google?.maps?.places?.PlacesServiceStatus?.OK;
+      if (!service || !google?.maps?.places) {
+        setIsAddressLookupLoading(false);
+        return;
+      }
+      const input =
+        postcode && !query.toLowerCase().includes(postcode.toLowerCase())
+          ? `${query}, ${postcode}`
+          : query;
+      let didRespond = false;
+      const fallbackTimer = window.setTimeout(() => {
+        if (!didRespond) {
+          setIsAddressLookupLoading(false);
+          setAddressSuggestions([]);
+          setAddressLookupError("Address lookup timed out. Please type it manually.");
+        }
+      }, 4000);
+
+      try {
+        service.getPlacePredictions(
+          {
+            input,
+            types: ["geocode"],
+            componentRestrictions: { country: "gb" },
+          },
+          (predictions: any[] | null, status: string) => {
+            didRespond = true;
+            window.clearTimeout(fallbackTimer);
+            setIsAddressLookupLoading(false);
+            if (!predictions || (okStatus && status !== okStatus)) {
+              setAddressSuggestions([]);
+              if (query.length >= 5) {
+                setAddressLookupError(
+                  "We couldn't find addresses for that postcode.",
+                );
+              }
+              return;
+            }
+            setAddressLookupError(null);
+            setAddressSuggestions(
+              predictions.slice(0, 6).map((prediction) => ({
+                placeId: prediction.place_id,
+                description: prediction.description,
+              })),
+            );
+          },
+        );
+      } catch (error) {
+        didRespond = true;
+        window.clearTimeout(fallbackTimer);
+        setIsAddressLookupLoading(false);
+        setAddressSuggestions([]);
+        setAddressLookupError(
+          "Address lookup is unavailable right now. Please type it manually.",
+        );
+      }
+    }, 300);
+
+    return () => {
+      if (addressLookupTimeoutRef.current) {
+        clearTimeout(addressLookupTimeoutRef.current);
+      }
+    };
+  }, [contact.address, contact.postcode, placesReady]);
 
   const toggleExtra = (extraId: ExtraOption) => {
     setForm((prev) => {
@@ -543,6 +711,8 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     setSubmitError(null);
     let submissionFailed = false;
 
+    let reference: string | undefined;
+
     try {
       const response = await fetch("/api/quote", {
         method: "POST",
@@ -554,9 +724,12 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
         }),
       });
 
-      if (!response.ok) {
+      const data = await response.json();
+      if (!response.ok || !data?.ok) {
         submissionFailed = true;
         setSubmitError("We could not send your details. Please call us to confirm.");
+      } else if (data.reference) {
+        reference = data.reference as string;
       }
     } catch (error) {
       submissionFailed = true;
@@ -615,6 +788,9 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
     }
     if (contact.notes) {
       params.set("notes", contact.notes);
+    }
+    if (reference) {
+      params.set("reference", reference);
     }
     if (contact.preferredDate) {
       params.set("preferredDate", contact.preferredDate);
@@ -1258,7 +1434,10 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                             : "border-border/60 bg-card/80 text-muted-foreground"
                         )}
                       >
-                        {option.label}
+                        <span className="inline-flex items-center gap-2">
+                          <option.icon className="h-4 w-4" aria-hidden="true" />
+                          {option.label}
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -1266,45 +1445,46 @@ const QuoteCalculator = ({ redirectUrl = "/your-cleaning-quote" }: QuoteCalculat
                     <p className="text-xs text-destructive">{errors.preferredContact}</p>
                   )}
                 </div>
-                <div className="space-y-2">
-                  <div className="flex min-h-10 items-center justify-between gap-3">
-                    <Label className="text-sm font-medium text-foreground">
-                      Address
-                    </Label>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleUseLocation}
-                      disabled={isLocating}
-                    >
-                      {isLocating ? "Locating..." : "Use my location"}
-                    </Button>
-                  </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="text-sm font-medium text-foreground">
+                    Address
+                  </Label>
                   <Input
                     value={contact.address}
                     onChange={(event) =>
                       setContact((prev) => ({ ...prev, address: event.target.value }))
                     }
-                    placeholder="Flat 2, 25 Belgrave Road, Plymouth"
+                    placeholder="Start typing house number and street"
                   />
-                  {locationError && (
-                    <p className="text-xs text-muted-foreground">{locationError}</p>
+                  <p className="text-xs text-muted-foreground">
+                    Type your house number and street. Add postcode if you know it.
+                  </p>
+                  {isAddressLookupLoading && (
+                    <p className="text-xs text-muted-foreground">
+                      Finding nearby addresses...
+                    </p>
                   )}
-                </div>
-                <div className="space-y-2">
-                  <div className="flex min-h-10 items-center">
-                    <Label className="text-sm font-medium text-foreground">
-                      Postcode
-                    </Label>
-                  </div>
-                  <Input
-                    value={contact.postcode}
-                    onChange={(event) =>
-                      setContact((prev) => ({ ...prev, postcode: event.target.value }))
-                    }
-                    placeholder="PL..."
-                  />
+                  {addressLookupError && (
+                    <p className="text-xs text-muted-foreground">{addressLookupError}</p>
+                  )}
+                  {addressSuggestions.length > 0 && (
+                    <div className="rounded-2xl border border-border/60 bg-card/90 p-2 text-sm text-muted-foreground shadow-[0_20px_40px_-30px_hsl(var(--primary)/0.35)]">
+                      <ul className="space-y-1">
+                        {addressSuggestions.map((suggestion) => (
+                          <li key={suggestion.placeId}>
+                            <button
+                              type="button"
+                              onMouseDown={(event) => event.preventDefault()}
+                              onClick={() => handleSelectAddress(suggestion)}
+                              className="w-full rounded-xl px-3 py-2 text-left text-sm text-foreground transition-colors hover:bg-primary/10"
+                            >
+                              {suggestion.description}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label className="text-sm font-medium text-foreground">
