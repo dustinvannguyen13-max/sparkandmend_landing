@@ -112,7 +112,7 @@ const StripeCheckoutButton = ({
       ) : (
         <p className="text-xs text-muted-foreground">
           {input?.frequency && input.frequency !== "one-time"
-            ? "Your card will be billed automatically on this schedule."
+            ? "Your card will be billed automatically on your scheduled clean dates."
             : "We will send a secure booking receipt after payment is taken."}
         </p>
       )}

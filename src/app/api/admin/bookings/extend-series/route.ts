@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/auth";
 import { supabaseConfig, supabaseHeaders } from "@/lib/supabase";
 import { getFrequencyKey, getFrequencyLabel } from "@/lib/booking-frequency";
-import { buildNextSeriesDates } from "@/lib/booking-series";
+import { buildNextSeriesDates, buildSeriesDates } from "@/lib/booking-series";
 import { type Frequency } from "@/utils/quote";
 
 const MIN_UPCOMING = 3;
+const STALE_SERIES_DAYS = 90;
 const EXTEND_COUNTS: Record<Frequency, number> = {
   "one-time": 0,
   weekly: 12,
@@ -49,6 +50,48 @@ const normalizeDate = (value?: string | null) => {
   if (!value) return null;
   const parsed = new Date(`${value}T00:00:00`);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const addDays = (date: Date, days: number) => {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+};
+
+const addMonths = (date: Date, months: number) => {
+  const day = date.getDate();
+  const target = new Date(date.getFullYear(), date.getMonth() + months, 1);
+  const lastDay = new Date(
+    target.getFullYear(),
+    target.getMonth() + 1,
+    0,
+  ).getDate();
+  target.setDate(Math.min(day, lastDay));
+  return target;
+};
+
+const getNextOccurrenceOnOrAfter = (
+  lastDate: string,
+  frequency: Frequency,
+  minDate: Date,
+) => {
+  const base = normalizeDate(lastDate);
+  if (!base) return null;
+  let current = new Date(base);
+  let safety = 0;
+  while (current < minDate && safety < 500) {
+    if (frequency === "weekly") {
+      current = addDays(current, 7);
+    } else if (frequency === "bi-weekly") {
+      current = addDays(current, 14);
+    } else if (frequency === "monthly") {
+      current = addMonths(current, 1);
+    } else {
+      break;
+    }
+    safety += 1;
+  }
+  return current < minDate ? null : current;
 };
 
 const getSeriesReference = (bookings: BookingRecord[]) => {
@@ -135,7 +178,7 @@ const handleExtend = async (request: Request) => {
         const date = normalizeDate(booking.preferred_date);
         return date ? date >= today : false;
       });
-      if (upcoming.length === 0) continue;
+
       if (upcoming.length >= MIN_UPCOMING) continue;
 
       const latest = bookings
@@ -167,11 +210,33 @@ const handleExtend = async (request: Request) => {
       const existingDates = new Set(
         bookings.map((booking) => booking.preferred_date).filter(Boolean),
       );
-      const datesToAdd = buildNextSeriesDates(
-        lastDate,
-        frequencyKey,
-        EXTEND_COUNTS[frequencyKey],
-      ).filter((date) => !existingDates.has(date));
+      let datesToAdd: string[] = [];
+      if (upcoming.length === 0) {
+        const lastDateValue = normalizeDate(lastDate);
+        if (!lastDateValue) continue;
+        const daysSinceLast =
+          (today.getTime() - lastDateValue.getTime()) / (1000 * 60 * 60 * 24);
+        if (daysSinceLast > STALE_SERIES_DAYS) continue;
+        const nextOccurrence = getNextOccurrenceOnOrAfter(
+          lastDate,
+          frequencyKey,
+          today,
+        );
+        if (!nextOccurrence) continue;
+        const anchor = nextOccurrence.toISOString().slice(0, 10);
+        datesToAdd = buildSeriesDates(
+          anchor,
+          frequencyKey,
+          EXTEND_COUNTS[frequencyKey],
+        );
+      } else {
+        datesToAdd = buildNextSeriesDates(
+          lastDate,
+          frequencyKey,
+          EXTEND_COUNTS[frequencyKey],
+        );
+      }
+      datesToAdd = datesToAdd.filter((date) => !existingDates.has(date));
 
       if (datesToAdd.length === 0) continue;
 

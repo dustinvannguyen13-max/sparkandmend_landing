@@ -6,6 +6,7 @@ import {
     InfoIcon,
     ImageIcon,
     NewspaperIcon,
+    BookOpenIcon,
     SprayCanIcon,
     UsersIcon,
 } from "lucide-react";
@@ -76,6 +77,12 @@ export const NAV_LINKS = [
                 tagline: "Cleaning tips, checklists, and local updates.",
                 href: "/resources/blog",
                 icon: NewspaperIcon,
+            },
+            {
+                title: "Guides",
+                tagline: "Step-by-step guides for a smoother clean.",
+                href: "/guides",
+                icon: BookOpenIcon,
             },
             {
                 title: "Gallery",

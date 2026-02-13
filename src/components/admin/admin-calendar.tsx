@@ -2,21 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/utils";
 import { Eye, Pencil } from "lucide-react";
-import { formatCurrency } from "@/utils/quote";
-import { getFrequencyLabel } from "@/lib/booking-frequency";
+import BookingDetailsDialog from "@/components/admin/booking-details-dialog";
 
 type BookingRecord = {
   reference: string;
@@ -38,6 +29,9 @@ type BookingRecord = {
   per_visit_price?: number;
   payment_amount?: number;
   payment_currency?: string;
+  stripe_subscription_id?: string;
+  stripe_subscription_status?: string;
+  stripe_current_period_end?: string;
   extras?: string[];
   custom_extras_items?: string[];
   custom_extras_text?: string;
@@ -61,13 +55,6 @@ const formatDateKey = (date: Date) => {
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
   const day = `${date.getDate()}`.padStart(2, "0");
   return `${year}-${month}-${day}`;
-};
-
-const parseDate = (value: string) => new Date(`${value}T00:00:00`);
-
-const formatFrequency = (frequency?: string | null, key?: string | null) => {
-  const label = getFrequencyLabel(frequency ?? key ?? undefined);
-  return label ?? "—";
 };
 
 const AdminCalendar = () => {
@@ -177,12 +164,6 @@ const AdminCalendar = () => {
   };
 
   const todayKey = formatDateKey(new Date());
-  const formatDate = (value?: string) => {
-    if (!value) return "—";
-    const [year, month, day] = value.split("-");
-    if (!year || !month || !day) return value;
-    return `${day}/${month}/${year}`;
-  };
 
   const handleSync = async () => {
     setIsSyncing(true);
@@ -429,164 +410,11 @@ const AdminCalendar = () => {
         </CardContent>
       </Card>
 
-      <Dialog open={Boolean(viewing)} onOpenChange={(open) => !open && setViewing(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Booking details</DialogTitle>
-            <DialogDescription>
-              {viewing?.reference} • {viewing?.service || "Cleaning service"}
-            </DialogDescription>
-          </DialogHeader>
-          {viewing && (
-            <div className="space-y-4 text-sm">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Customer
-                  </p>
-                  <p className="text-foreground">{viewing.contact_name || "—"}</p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_email || "—"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_phone || "—"}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Schedule
-                  </p>
-                  <p className="text-foreground">
-                    {formatDate(viewing.preferred_date)}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.preferred_time || "Time TBC"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {formatFrequency(viewing.frequency, viewing.frequency_key)}
-                  </p>
-                </div>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Pricing
-                  </p>
-                  <p className="text-foreground">
-                    {viewing.payment_amount
-                      ? formatCurrency(viewing.payment_amount)
-                      : viewing.per_visit_price
-                      ? formatCurrency(viewing.per_visit_price)
-                      : "—"}
-                  </p>
-                  {viewing.promo_type && viewing.promo_discount ? (
-                    <p className="text-xs text-muted-foreground">
-                      Promo applied: {viewing.promo_label || "Free bathroom"} (-
-                      {formatCurrency(viewing.promo_discount)})
-                    </p>
-                  ) : null}
-                  <Badge variant="secondary">
-                    {viewing.status ?? "pending"}
-                  </Badge>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Property
-                  </p>
-                  <p className="text-foreground">{viewing.property_summary || "—"}</p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_address || "—"}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {viewing.contact_postcode || "—"}
-                  </p>
-                  {viewing.contact_address && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2 w-full sm:w-auto"
-                      asChild
-                    >
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(
-                          "25 Belgrave Road, Plymouth, England, PL4 7DP",
-                        )}&destination=${encodeURIComponent(
-                          viewing.contact_address,
-                        )}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Directions from Belgrave Road
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Extras
-                </p>
-                {viewing.extras && viewing.extras.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
-                    {viewing.extras.map((extra) => (
-                      <Badge key={extra} variant="secondary">
-                        {extra}
-                      </Badge>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">No extras selected.</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Custom extras
-                </p>
-                <div className="rounded-xl border border-border/60 bg-background/70 p-3 text-sm text-muted-foreground space-y-1">
-                  <p>
-                    <span className="text-foreground">Items:</span>{" "}
-                    {viewing.custom_extras_items?.length
-                      ? viewing.custom_extras_items.join(", ")
-                      : "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Request:</span>{" "}
-                    {viewing.custom_extras_text || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Reason:</span>{" "}
-                    {viewing.custom_extras_reason || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Source:</span>{" "}
-                    {viewing.custom_extras_source || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Fallback reason:</span>{" "}
-                    {viewing.custom_extras_fallback_reason || "—"}
-                  </p>
-                  <p>
-                    <span className="text-foreground">Price:</span>{" "}
-                    {viewing.custom_extras_price
-                      ? formatCurrency(viewing.custom_extras_price)
-                      : "—"}
-                  </p>
-                </div>
-              </div>
-              {viewing.notes && (
-                <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Notes
-                  </p>
-                  <p className="text-muted-foreground whitespace-pre-line">
-                    {viewing.notes}
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <BookingDetailsDialog
+        open={Boolean(viewing)}
+        booking={viewing}
+        onOpenChange={(open) => !open && setViewing(null)}
+      />
     </div>
   );
 };

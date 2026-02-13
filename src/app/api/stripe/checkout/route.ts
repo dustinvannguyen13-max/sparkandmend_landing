@@ -104,7 +104,7 @@ const fetchBookingByReference = async (reference: string) => {
   const response = await fetch(
     `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
       reference,
-    )}&select=reference,series_id,series_reference,series_index,frequency,frequency_key,service,property_summary,per_visit_price,promo_label,promo_discount,contact_email,stripe_subscription_id`,
+    )}&select=reference,series_id,series_reference,series_index,frequency,frequency_key,service,property_summary,per_visit_price,promo_label,promo_discount,contact_email,stripe_subscription_id,preferred_date`,
     {
       headers: supabaseHeaders,
     },
@@ -143,6 +143,7 @@ const createStripeSession = async ({
   mode,
   interval,
   intervalCount,
+  billingAnchor,
   offerLabel,
   promoLabel,
   couponId,
@@ -156,6 +157,7 @@ const createStripeSession = async ({
   mode: "payment" | "subscription";
   interval?: "week" | "month";
   intervalCount?: number;
+  billingAnchor?: number | null;
   offerLabel?: string | null;
   promoLabel?: string | null;
   couponId?: string | null;
@@ -191,6 +193,10 @@ const createStripeSession = async ({
         "line_items[0][price_data][recurring][interval_count]",
         String(intervalCount),
       );
+    }
+    if (billingAnchor) {
+      form.append("subscription_data[billing_cycle_anchor]", String(billingAnchor));
+      form.append("subscription_data[proration_behavior]", "none");
     }
   }
   form.append(
@@ -276,6 +282,16 @@ const getSubscriptionInterval = (
     return { interval: "week", intervalCount: 2 };
   }
   return { interval: "month", intervalCount: 1 };
+};
+
+const getBillingAnchor = (preferredDate?: string | null) => {
+  if (!preferredDate) return null;
+  const [year, month, day] = preferredDate.split("-").map(Number);
+  if (!year || !month || !day) return null;
+  const anchor = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+  const now = new Date();
+  if (anchor.getTime() <= now.getTime()) return null;
+  return Math.floor(anchor.getTime() / 1000);
 };
 
 export async function POST(request: Request) {
@@ -385,6 +401,9 @@ export async function POST(request: Request) {
       const propertySummary =
         (existing.property_summary as string) ?? "Cleaning booking";
       const { interval, intervalCount } = getSubscriptionInterval(frequencyKey);
+      const billingAnchor = isSubscription
+        ? getBillingAnchor(existing.preferred_date as string | null)
+        : null;
 
       const session = await createStripeSession({
         reference,
@@ -394,6 +413,7 @@ export async function POST(request: Request) {
         mode: isSubscription ? "subscription" : "payment",
         interval: isSubscription ? interval : undefined,
         intervalCount: isSubscription ? intervalCount : undefined,
+        billingAnchor,
         promoLabel: (existing.promo_label as string | null) ?? null,
         couponId,
         customerEmail: (existing.contact_email as string | null) ?? null,
@@ -431,6 +451,9 @@ export async function POST(request: Request) {
     const frequencyLabel =
       getFrequencyLabel(frequencyKey) ?? (body.quote.frequencyLabel as string);
     const isSubscription = frequencyKey !== "one-time";
+    const billingAnchor = isSubscription
+      ? getBillingAnchor(body.contact?.preferredDate)
+      : null;
 
     const hasSchedule = frequencyKey !== "one-time" && Boolean(body.contact?.preferredDate);
     const seriesId = hasSchedule ? randomUUID() : null;
@@ -502,6 +525,7 @@ export async function POST(request: Request) {
       mode: isSubscription ? "subscription" : "payment",
       interval: isSubscription ? interval : undefined,
       intervalCount: isSubscription ? intervalCount : undefined,
+      billingAnchor,
       offerLabel: offerResult.offerSummary?.label ?? null,
       promoLabel: promo?.label ?? null,
       couponId,

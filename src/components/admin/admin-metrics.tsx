@@ -7,6 +7,9 @@ import {
   Legend,
   Line,
   LineChart,
+  Pie,
+  PieChart,
+  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -21,9 +24,15 @@ type BookingRecord = {
   contact_email?: string;
   contact_name?: string;
   preferred_date?: string;
+  created_at?: string;
+  frequency?: string;
+  frequency_key?: string;
+  service?: string;
   status?: string;
   payment_amount?: number;
   per_visit_price?: number;
+  promo_discount?: number;
+  stripe_subscription_id?: string;
 };
 
 const RANGE_OPTIONS = [
@@ -45,6 +54,18 @@ const getMonthKey = (date: Date) => `${date.getFullYear()}-${date.getMonth() + 1
 
 const formatMonthLabel = (date: Date) =>
   date.toLocaleString("en-GB", { month: "short", year: "2-digit" });
+
+const getNetAmount = (value?: number, discount?: number) =>
+  Math.max(0, (value ?? 0) - (discount ?? 0));
+
+const SERVICE_COLORS = [
+  "#38bdf8",
+  "#22c55e",
+  "#f97316",
+  "#a855f7",
+  "#facc15",
+  "#0f766e",
+];
 
 const AdminMetrics = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
@@ -73,7 +94,7 @@ const AdminMetrics = () => {
     fetchBookings();
   }, []);
 
-  const { monthBuckets, summary, topCustomers, rangeLabel } = useMemo(() => {
+  const { monthBuckets, summary, topCustomers, rangeLabel, serviceMix } = useMemo(() => {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth() - (rangeMonths - 1), 1);
     const months: Date[] = [];
@@ -92,6 +113,11 @@ const AdminMetrics = () => {
           revenue: 0,
           newCustomers: 0,
           returningCustomers: 0,
+          subscription: 0,
+          oneTime: 0,
+          totalCount: 0,
+          leadTimeTotal: 0,
+          leadTimeCount: 0,
         },
       ]),
     );
@@ -115,6 +141,7 @@ const AdminMetrics = () => {
     });
 
     const revenueByEmail = new Map<string, { label: string; total: number }>();
+    const serviceCounts = new Map<string, number>();
 
     bookingsWithDates.forEach(({ booking, date }) => {
       const key = getMonthKey(date);
@@ -123,11 +150,35 @@ const AdminMetrics = () => {
       const status = booking.status ?? "pending";
       if (status === "paid") {
         bucket.paid += 1;
-        bucket.revenue += booking.payment_amount ?? booking.per_visit_price ?? 0;
+        bucket.revenue += getNetAmount(
+          booking.payment_amount ?? booking.per_visit_price ?? 0,
+          booking.promo_discount ?? 0,
+        );
       } else if (status === "cancelled") {
         bucket.cancelled += 1;
       } else {
         bucket.pending += 1;
+      }
+
+      bucket.totalCount += 1;
+
+      if (booking.stripe_subscription_id) {
+        bucket.subscription += 1;
+      } else {
+        bucket.oneTime += 1;
+      }
+
+      if (booking.created_at && booking.preferred_date) {
+        const created = new Date(booking.created_at);
+        const preferred = new Date(`${booking.preferred_date}T00:00:00`);
+        if (!Number.isNaN(created.getTime()) && !Number.isNaN(preferred.getTime())) {
+          const leadDays = Math.max(
+            0,
+            (preferred.getTime() - created.getTime()) / (1000 * 60 * 60 * 24),
+          );
+          bucket.leadTimeTotal += leadDays;
+          bucket.leadTimeCount += 1;
+        }
       }
 
       if (booking.contact_email) {
@@ -146,12 +197,27 @@ const AdminMetrics = () => {
         const emailKey = booking.contact_email.toLowerCase();
         const label = booking.contact_name || booking.contact_email;
         const current = revenueByEmail.get(emailKey) ?? { label, total: 0 };
-        current.total += booking.payment_amount ?? booking.per_visit_price ?? 0;
+        current.total += getNetAmount(
+          booking.payment_amount ?? booking.per_visit_price ?? 0,
+          booking.promo_discount ?? 0,
+        );
         revenueByEmail.set(emailKey, current);
+      }
+
+      if (booking.service) {
+        const label = booking.service;
+        serviceCounts.set(label, (serviceCounts.get(label) ?? 0) + 1);
       }
     });
 
-    const monthBuckets = Array.from(monthMap.values());
+    const monthBuckets = Array.from(monthMap.values()).map((bucket) => ({
+      ...bucket,
+      avgBookingValue: bucket.paid ? bucket.revenue / bucket.paid : 0,
+      leadTimeAvg: bucket.leadTimeCount ? bucket.leadTimeTotal / bucket.leadTimeCount : 0,
+      cancellationRate: bucket.totalCount
+        ? (bucket.cancelled / bucket.totalCount) * 100
+        : 0,
+    }));
     const summary = monthBuckets.reduce(
       (acc, bucket) => {
         acc.total += bucket.paid + bucket.pending + bucket.cancelled;
@@ -159,9 +225,23 @@ const AdminMetrics = () => {
         acc.cancelled += bucket.cancelled;
         acc.revenue += bucket.revenue;
         acc.pending += bucket.pending;
+        acc.subscription += bucket.subscription;
+        acc.oneTime += bucket.oneTime;
+        acc.leadTimeTotal += bucket.leadTimeTotal;
+        acc.leadTimeCount += bucket.leadTimeCount;
         return acc;
       },
-      { total: 0, paid: 0, cancelled: 0, pending: 0, revenue: 0 },
+      {
+        total: 0,
+        paid: 0,
+        cancelled: 0,
+        pending: 0,
+        revenue: 0,
+        subscription: 0,
+        oneTime: 0,
+        leadTimeTotal: 0,
+        leadTimeCount: 0,
+      },
     );
 
     const topCustomers = Array.from(revenueByEmail.values())
@@ -172,10 +252,24 @@ const AdminMetrics = () => {
         total: item.total,
       }));
 
+    const serviceMix = Array.from(serviceCounts.entries())
+      .map(([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value);
+
+    const summaryWithRates = {
+      ...summary,
+      avgBookingValue: summary.paid ? summary.revenue / summary.paid : 0,
+      leadTimeAvg: summary.leadTimeCount
+        ? summary.leadTimeTotal / summary.leadTimeCount
+        : 0,
+      cancellationRate: summary.total ? (summary.cancelled / summary.total) * 100 : 0,
+    };
+
     return {
       monthBuckets,
-      summary,
+      summary: summaryWithRates,
       topCustomers,
+      serviceMix,
       rangeLabel:
         RANGE_OPTIONS.find((option) => option.value === String(rangeMonths))?.label ??
         `${rangeMonths} months`,
@@ -240,6 +334,35 @@ const AdminMetrics = () => {
         </Card>
       </div>
 
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardDescription>Avg booking value</CardDescription>
+            <CardTitle>
+              {summary.paid ? formatCurrency(summary.avgBookingValue) : "—"}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardDescription>Avg lead time</CardDescription>
+            <CardTitle>
+              {summary.leadTimeCount
+                ? `${summary.leadTimeAvg.toFixed(1)} days`
+                : "—"}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardDescription>Cancellation rate</CardDescription>
+            <CardTitle>
+              {summary.total ? `${summary.cancellationRate.toFixed(1)}%` : "—"}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="border-border/60 bg-card/90">
           <CardHeader>
@@ -289,6 +412,59 @@ const AdminMetrics = () => {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="border-border/60 bg-card/90">
           <CardHeader>
+            <CardTitle>Subscription vs one-time</CardTitle>
+            <CardDescription>Stripe subscription bookings compared to one-off</CardDescription>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={monthBuckets}>
+                <XAxis dataKey="label" />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="subscription" stackId="c" fill="#38bdf8" name="Subscription" />
+                <Bar dataKey="oneTime" stackId="c" fill="#facc15" name="One-time" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardTitle>Service mix</CardTitle>
+            <CardDescription>Share of bookings by service</CardDescription>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={serviceMix}
+                  dataKey="value"
+                  nameKey="label"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  innerRadius={50}
+                  label
+                >
+                  {serviceMix.map((entry, index) => (
+                    <Cell
+                      key={`cell-${entry.label}`}
+                      fill={SERVICE_COLORS[index % SERVICE_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
             <CardTitle>New vs returning customers</CardTitle>
             <CardDescription>Based on first booking date</CardDescription>
           </CardHeader>
@@ -324,6 +500,86 @@ const AdminMetrics = () => {
                 <Tooltip formatter={(value) => formatCurrency(Number(value))} />
                 <Bar dataKey="total" fill="#0f766e" name="Revenue" />
               </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardTitle>Average booking value</CardTitle>
+            <CardDescription>Paid bookings net of promos</CardDescription>
+          </CardHeader>
+          <CardContent className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthBuckets}>
+                <XAxis dataKey="label" />
+                <YAxis />
+                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                <Line
+                  type="monotone"
+                  dataKey="avgBookingValue"
+                  stroke="#14b8a6"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Avg value"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardTitle>Average lead time</CardTitle>
+            <CardDescription>Days between booking and visit</CardDescription>
+          </CardHeader>
+          <CardContent className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthBuckets}>
+                <XAxis dataKey="label" />
+                <YAxis />
+                <Tooltip
+                  formatter={(value) =>
+                    `${Number(value).toFixed(1)} days`
+                  }
+                />
+                <Line
+                  type="monotone"
+                  dataKey="leadTimeAvg"
+                  stroke="#6366f1"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Lead time"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/60 bg-card/90">
+          <CardHeader>
+            <CardTitle>Cancellation rate</CardTitle>
+            <CardDescription>Cancelled bookings by month</CardDescription>
+          </CardHeader>
+          <CardContent className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthBuckets}>
+                <XAxis dataKey="label" />
+                <YAxis domain={[0, 100]} />
+                <Tooltip
+                  formatter={(value) => `${Number(value).toFixed(1)}%`}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="cancellationRate"
+                  stroke="#f97316"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Cancellation rate"
+                />
+              </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
