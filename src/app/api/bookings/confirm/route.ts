@@ -187,6 +187,14 @@ export async function POST(request: Request) {
 
   try {
     const stripeSession = await fetchStripeSession(body.sessionId);
+    const sessionReference = (stripeSession.metadata as Record<string, string> | undefined)
+      ?.reference;
+    if (!sessionReference || sessionReference !== body.reference) {
+      return NextResponse.json(
+        { error: "Session reference mismatch." },
+        { status: 400 },
+      );
+    }
     if (stripeSession.payment_status !== "paid") {
       return NextResponse.json(
         { error: "Payment was not completed." },

@@ -75,6 +75,33 @@ const fetchBookingByReference = async (reference: string) => {
   return data[0] ?? null;
 };
 
+const updateBookingByReference = async (
+  reference: string,
+  updates: Record<string, unknown>,
+) => {
+  if (!supabaseConfig.url || !supabaseHeaders) {
+    throw new Error("Supabase configuration is missing.");
+  }
+
+  const response = await fetch(
+    `${supabaseConfig.url}/rest/v1/bookings?reference=eq.${encodeURIComponent(
+      reference,
+    )}`,
+    {
+      method: "PATCH",
+      headers: supabaseHeaders,
+      body: JSON.stringify(updates),
+    },
+  );
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Unable to update booking.");
+  }
+
+  return response.json();
+};
+
 const updateSeriesById = async (seriesId: string, updates: Record<string, unknown>) => {
   if (!supabaseConfig.url || !supabaseHeaders) {
     throw new Error("Supabase configuration is missing.");
@@ -191,33 +218,51 @@ export async function POST(request: Request) {
   try {
     if (eventType === "checkout.session.completed") {
       const session = event.data.object as Record<string, unknown>;
-      if (session.mode !== "subscription") {
-        return NextResponse.json({ received: true });
-      }
-
       const reference = (session.metadata as Record<string, string>)?.reference;
-      const subscriptionId = session.subscription as string | undefined;
-      if (!reference || !subscriptionId) {
+
+      if (!reference) {
         return NextResponse.json({ received: true });
       }
 
-      const booking = await fetchBookingByReference(reference);
-      if (!booking?.series_id) {
+      if (session.mode === "payment") {
+        const amountPaid =
+          typeof session.amount_total === "number" ? session.amount_total / 100 : 0;
+        const currency = (session.currency as string | undefined) ?? "GBP";
+
+        await updateBookingByReference(reference, {
+          status: "paid",
+          stripe_session_id: session.id as string | undefined,
+          payment_amount: amountPaid,
+          payment_currency: currency,
+        });
+
         return NextResponse.json({ received: true });
       }
 
-      const subscription = await fetchStripeSubscription(subscriptionId);
-      const subscriptionStatus = subscription.status as string | undefined;
-      const currentPeriodEnd = subscription.current_period_end
-        ? new Date(subscription.current_period_end * 1000).toISOString()
-        : null;
+      if (session.mode === "subscription") {
+        const subscriptionId = session.subscription as string | undefined;
+        if (!subscriptionId) {
+          return NextResponse.json({ received: true });
+        }
 
-      await updateSeriesById(booking.series_id, {
-        stripe_subscription_id: subscriptionId,
-        stripe_customer_id: session.customer as string | undefined,
-        stripe_subscription_status: subscriptionStatus ?? "active",
-        stripe_current_period_end: currentPeriodEnd,
-      });
+        const booking = await fetchBookingByReference(reference);
+        if (!booking?.series_id) {
+          return NextResponse.json({ received: true });
+        }
+
+        const subscription = await fetchStripeSubscription(subscriptionId);
+        const subscriptionStatus = subscription.status as string | undefined;
+        const currentPeriodEnd = subscription.current_period_end
+          ? new Date(subscription.current_period_end * 1000).toISOString()
+          : null;
+
+        await updateSeriesById(booking.series_id, {
+          stripe_subscription_id: subscriptionId,
+          stripe_customer_id: session.customer as string | undefined,
+          stripe_subscription_status: subscriptionStatus ?? "active",
+          stripe_current_period_end: currentPeriodEnd,
+        });
+      }
 
       return NextResponse.json({ received: true });
     }
